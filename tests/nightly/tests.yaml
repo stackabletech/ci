@@ -15,6 +15,8 @@
   operator_logs:
     - zookeeper
   test_params: --parallel 1
+  slack_listener:
+    - "#notifications-jenkins"
 - name: zookeeper-operator-nightly-k8s
   platform: ionos-k8s
   platform_overlay: |
@@ -29,3 +31,6 @@
   operator_logs:
     - zookeeper
   test_params: --parallel 1
+  slack_listener:
+    - "#notifications-jenkins"
+    - "#product-zookeeper"

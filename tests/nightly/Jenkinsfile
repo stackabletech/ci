@@ -48,6 +48,9 @@ pipeline {
                         docker.stackable.tech/ci-preprocessor:latest
                     mkdir -p target/${env.TEST_NAME}/target/
                 """
+                script {
+                    env.SLACK_LISTENERS = sh(script: "cat target/${env.TEST_NAME}/slack_listeners || true", returnStdout: true).trim()
+                }
             }
         }
 
@@ -58,7 +61,6 @@ pipeline {
                         // run the test in the T2 testdriver container
                         testdriverExitCode = sh (script: """
                             touch target/${env.TEST_NAME}/target/test.log
-                            exit 254
                         """, returnStatus: true)
 
 // TODO this is "the real thing" and has to be activated
@@ -108,13 +110,25 @@ pipeline {
 
     post {
         unstable {
-            slackSend channel: 'U02G2BBMZHR', message: "*${env.JOB_NAME}* - ${env.BUILD_DISPLAY_NAME} is *unstable* (<${env.BUILD_URL}|Open in Jenkins>)", color: 'warning'
+            script {
+                if(env.SLACK_LISTENERS!=null && env.SLACK_LISTENERS.length()>0) {
+                    slackSend channel: env.SLACK_LISTENERS, message: "*${env.JOB_NAME}* - ${env.BUILD_DISPLAY_NAME} is *unstable* (<${env.BUILD_URL}|Open in Jenkins>)", color: 'warning'
+                }
+            }
         }
         failure {
-            slackSend channel: 'U02G2BBMZHR', message: "*${env.JOB_NAME}* - ${env.BUILD_DISPLAY_NAME} *failed* (<${env.BUILD_URL}|Open in Jenkins>)", color: 'danger'
+            script {
+                if(env.SLACK_LISTENERS!=null && env.SLACK_LISTENERS.length()>0) {
+                    slackSend channel: env.SLACK_LISTENERS, message: "*${env.JOB_NAME}* - ${env.BUILD_DISPLAY_NAME} *failed* (<${env.BUILD_URL}|Open in Jenkins>)", color: 'danger'
+                }
+            }
         }
         fixed {
-            slackSend channel: 'U02G2BBMZHR', message: "*${env.JOB_NAME}* - ${env.BUILD_DISPLAY_NAME} *back to normal* :smiley: (<${env.BUILD_URL}|Open in Jenkins>)", color: 'good'
+            script {
+                if(env.SLACK_LISTENERS!=null && env.SLACK_LISTENERS.length()>0) {
+                    slackSend channel: env.SLACK_LISTENERS, message: "*${env.JOB_NAME}* - ${env.BUILD_DISPLAY_NAME} *back to normal* :smiley: (<${env.BUILD_URL}|Open in Jenkins>)", color: 'good'
+                }
+            }
         }
     }
 
