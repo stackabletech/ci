@@ -1,0 +1,31 @@
+---
+- name: zookeeper-operator-nightly
+  platform: hcloud-k3s-centos-8
+  platform_overlay: |
+    spec:
+      nodes:
+        main:
+          numberOfNodes: 4
+      k8sVersion: stable
+      versions:
+        _-operator: NIGHTLY
+        zookeeper-operator: NIGHTLY
+  git_branch: main
+  git_repo: zookeeper-operator
+  operator_logs:
+    - zookeeper
+  test_params: --parallel 1
+- name: zookeeper-operator-nightly-k8s
+  platform: ionos-k8s
+  platform_overlay: |
+    spec:
+      node_count: 4
+      k8sVersion: stable
+      versions:
+        _-operator: NIGHTLY
+        zookeeper-operator: NIGHTLY
+  git_branch: main
+  git_repo: zookeeper-operator
+  operator_logs:
+    - zookeeper
+  test_params: --parallel 1
