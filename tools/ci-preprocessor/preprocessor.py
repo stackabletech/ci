@@ -65,6 +65,15 @@ def write_test_script(test, folder):
         f.write(test_script_template.render(test))
         f.close()
 
+def write_slack_listener_file(test, folder):
+    if 'slack_listener' in test:
+        if type(test['slack_listener']) is list:
+            if len(test['slack_listener']) > 0:
+                os.makedirs(folder, exist_ok = True)
+                with open (f"{folder}slack_listeners", "w") as f:
+                    f.write(','.join(test['slack_listener']))
+                    f.close()
+
 def yamlToString(yaml):
     return hiyapyco.dump(yaml, default_flow_style=False, width=1000)
 
@@ -104,4 +113,8 @@ if __name__ == "__main__":
 
     # write the test script to disk
     write_test_script(test, f"/target/{test_name}/")
+
+    # write the list of Slack listeners to disk
+    write_slack_listener_file(test, f"/target/{test_name}/")
+
 
