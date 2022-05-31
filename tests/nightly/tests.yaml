@@ -12,6 +12,9 @@
         zookeeper-operator: NIGHTLY
   git_branch: main
   git_repo: zookeeper-operator
+  helm_repos:
+    - id: bitnami
+      url: https://charts.bitnami.com/bitnami
   operator_logs:
     - zookeeper
   test_params: --parallel 1
