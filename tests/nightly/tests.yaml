@@ -12,6 +12,8 @@
     - druid
     - commons
     - secret
+    - hdfs
+    - opa
     - zookeeper
   test_params: --parallel 1
   slack_listener:
