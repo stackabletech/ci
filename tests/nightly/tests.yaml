@@ -124,6 +124,23 @@
   slack_listener:
     - "#notifications-jenkins"
     - "#product-spark-k8s"
+- name: spark-operator-nightly
+  platform: hcloud-k3s-centos-8
+  platform_overlay: |
+    spec:
+      k8sVersion: stable
+      versions:
+        _-operator: NIGHTLY
+  git_branch: main
+  git_repo: spark-operator
+  operator_logs:
+    - spark
+    - commons
+    - secret
+  test_params: --parallel 4
+  slack_listener:
+    - "#notifications-jenkins"
+    - "#product-spark"
 - name: zookeeper-operator-nightly
   platform: hcloud-k3s-centos-8
   platform_overlay: |
