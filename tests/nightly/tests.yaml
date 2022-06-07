@@ -36,6 +36,24 @@
   slack_listener:
     - "#notifications-jenkins"
     - "#product-hbase"
+- name: hdfs-operator-nightly
+  platform: hcloud-k3s-centos-8
+  platform_overlay: |
+    spec:
+      k8sVersion: stable
+      versions:
+        _-operator: NIGHTLY
+  git_branch: main
+  git_repo: hdfs-operator
+  operator_logs:
+    - hdfs
+    - commons
+    - secret
+    - zookeeper
+  test_params: --parallel 4
+  slack_listener:
+    - "#notifications-jenkins"
+    - "#product-hdfs"
 - name: opa-operator-nightly
   platform: hcloud-k3s-centos-8
   platform_overlay: |
