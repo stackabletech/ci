@@ -17,7 +17,7 @@
       url: https://charts.bitnami.com/bitnami
   operator_logs:
     - zookeeper
-  test_params: --parallel 4
+  test_params: --parallel 1
   slack_listener:
     - "#notifications-jenkins"
     - "#product-zookeeper"
