@@ -9,15 +9,26 @@
       k8sVersion: stable
       versions:
         _-operator: NIGHTLY
-        zookeeper-operator: NIGHTLY
   git_branch: main
   git_repo: zookeeper-operator
-  helm_repos:
-    - id: bitnami
-      url: https://charts.bitnami.com/bitnami
   operator_logs:
     - zookeeper
   test_params: --parallel 1
   slack_listener:
     - "#notifications-jenkins"
     - "#product-zookeeper"
+- name: opa-operator-nightly
+  platform: hcloud-k3s-centos-8
+  platform_overlay: |
+    spec:
+      k8sVersion: stable
+      versions:
+        _-operator: NIGHTLY
+  git_branch: main
+  git_repo: opa-operator
+  operator_logs:
+    - opa
+  test_params: --parallel 1
+  slack_listener:
+    - "#notifications-jenkins"
+    - "#product-opa"
