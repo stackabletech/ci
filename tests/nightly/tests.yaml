@@ -71,6 +71,25 @@
   slack_listener:
     - "#notifications-jenkins"
     - "#product-hive"
+- name: kafka-operator-nightly
+  platform: hcloud-k3s-centos-8
+  platform_overlay: |
+    spec:
+      k8sVersion: stable
+      versions:
+        _-operator: NIGHTLY
+  git_branch: main
+  git_repo: kafka-operator
+  operator_logs:
+    - kafka
+    - commons
+    - secret
+    - opa
+    - zookeeper
+  test_params: --parallel 1
+  slack_listener:
+    - "#notifications-jenkins"
+    - "#product-kafka"
 - name: opa-operator-nightly
   platform: hcloud-k3s-centos-8
   platform_overlay: |
