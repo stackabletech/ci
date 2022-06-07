@@ -5,7 +5,7 @@
     spec:
       nodes:
         main:
-          numberOfNodes: 4
+          numberOfNodes: 8
       k8sVersion: stable
       versions:
         _-operator: NIGHTLY
@@ -17,23 +17,7 @@
       url: https://charts.bitnami.com/bitnami
   operator_logs:
     - zookeeper
-  test_params: --parallel 1
-  slack_listener:
-    - "#notifications-jenkins"
-- name: zookeeper-operator-nightly-k8s
-  platform: ionos-k8s
-  platform_overlay: |
-    spec:
-      node_count: 4
-      k8sVersion: stable
-      versions:
-        _-operator: NIGHTLY
-        zookeeper-operator: NIGHTLY
-  git_branch: main
-  git_repo: zookeeper-operator
-  operator_logs:
-    - zookeeper
-  test_params: --parallel 1
+  test_params: --parallel 4
   slack_listener:
     - "#notifications-jenkins"
     - "#product-zookeeper"
