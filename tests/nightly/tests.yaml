@@ -1,4 +1,39 @@
 ---
+- name: druid-operator-nightly
+  platform: hcloud-k3s-centos-8
+  platform_overlay: |
+    spec:
+      k8sVersion: stable
+      versions:
+        _-operator: NIGHTLY
+  git_branch: main
+  git_repo: druid-operator
+  operator_logs:
+    - druid
+    - commons
+    - secret
+    - zookeeper
+  test_params: --parallel 1
+  slack_listener:
+    - "#notifications-jenkins"
+    - "#product-druid"
+- name: opa-operator-nightly
+  platform: hcloud-k3s-centos-8
+  platform_overlay: |
+    spec:
+      k8sVersion: stable
+      versions:
+        _-operator: NIGHTLY
+  git_branch: main
+  git_repo: opa-operator
+  operator_logs:
+    - opa
+    - commons
+    - secret
+  test_params: --parallel 1
+  slack_listener:
+    - "#notifications-jenkins"
+    - "#product-opa"
 - name: zookeeper-operator-nightly
   platform: hcloud-k3s-centos-8
   platform_overlay: |
@@ -13,22 +48,9 @@
   git_repo: zookeeper-operator
   operator_logs:
     - zookeeper
+    - commons
+    - secret
   test_params: --parallel 1
   slack_listener:
     - "#notifications-jenkins"
     - "#product-zookeeper"
-- name: opa-operator-nightly
-  platform: hcloud-k3s-centos-8
-  platform_overlay: |
-    spec:
-      k8sVersion: stable
-      versions:
-        _-operator: NIGHTLY
-  git_branch: main
-  git_repo: opa-operator
-  operator_logs:
-    - opa
-  test_params: --parallel 1
-  slack_listener:
-    - "#notifications-jenkins"
-    - "#product-opa"
