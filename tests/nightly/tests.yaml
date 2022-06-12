@@ -166,6 +166,23 @@
   slack_listener:
     - "#notifications-jenkins"
     - "#product-trino"
+- name: superset-operator-nightly
+  platform: hcloud-k3s-centos-8
+  platform_overlay: |
+    spec:
+      k8sVersion: stable
+      versions:
+        _-operator: NIGHTLY
+  git_branch: main
+  git_repo: superset-operator
+  operator_logs:
+    - superset
+    - commons
+    - secret
+  test_params: --parallel 2
+  slack_listener:
+    - "#notifications-jenkins"
+    - "#product-superset"
 - name: zookeeper-operator-nightly
   platform: hcloud-k3s-centos-8
   platform_overlay: |
