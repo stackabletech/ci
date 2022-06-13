@@ -126,7 +126,7 @@
     - spark-k8s
     - commons
     - secret
-  test_params: --parallel 4
+  test_params: --parallel 1
   slack_listener:
     - "#notifications-jenkins"
     - "#product-spark-k8s"
