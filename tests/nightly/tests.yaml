@@ -120,6 +120,7 @@
       k8sVersion: stable
       versions:
         _-operator: NIGHTLY
+        spark-operator: NONE
   git_branch: main
   git_repo: spark-k8s-operator
   operator_logs:
