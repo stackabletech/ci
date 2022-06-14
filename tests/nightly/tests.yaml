@@ -190,7 +190,7 @@
       nodes:
         main:
           numberOfNodes: 8
-      k8sVersion: latest
+      k8sVersion: stable
       versions:
         _-operator: NIGHTLY
   git_branch: main
