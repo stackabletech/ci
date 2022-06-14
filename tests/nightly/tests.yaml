@@ -1,4 +1,24 @@
 ---
+- name: airflow-operator-nightly
+  platform: hcloud-k3s-centos-8
+  platform_overlay: |
+    spec:
+      k8sVersion: stable
+      nodes:
+        main:
+          serverType: cx41
+      versions:
+        _-operator: NIGHTLY
+  git_branch: main
+  git_repo: airflow-operator
+  operator_logs:
+    - airflow
+    - commons
+    - secret
+  test_params: --parallel 1
+  slack_listener:
+    - "#notifications-jenkins"
+    - "#product-airflow"
 - name: druid-operator-nightly
   platform: hcloud-k3s-centos-8
   platform_overlay: |
