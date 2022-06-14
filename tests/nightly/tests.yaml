@@ -96,6 +96,24 @@
   slack_listener:
     - "#notifications-jenkins"
     - "#product-kafka"
+- name: nifi-operator-nightly
+  platform: hcloud-k3s-centos-8
+  platform_overlay: |
+    spec:
+      k8sVersion: stable
+      versions:
+        _-operator: NIGHTLY
+  git_branch: main
+  git_repo: nifi-operator
+  operator_logs:
+    - nifi
+    - commons
+    - secret
+    - zookeeper
+  test_params: --parallel 1
+  slack_listener:
+    - "#notifications-jenkins"
+    - "#product-nifi"
 - name: opa-operator-nightly
   platform: hcloud-k3s-centos-8
   platform_overlay: |
