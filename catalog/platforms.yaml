@@ -1,0 +1,82 @@
+---
+- name: hcloud-k3s-centos-8
+  description: K3s on Hetzner Cloud
+  k8s_versions:
+    - latest
+    - stable
+    - v1.23
+    - v1.22
+    - v1.21
+  cluster_definition:
+    apiVersion: t2.stackable.tech/v1
+    kind: Infra
+    template: hcloud-centos-8
+    metadata: 
+      name: hcloud-k3s-centos-8
+      description: "Cluster for Stackable T2 (Hetzner Cloud / K3s / CentOS 8)"
+    domain: stackable.test
+    spec:
+      location: "hel1"
+      k8sVersion: stable
+      nodes:
+        main:
+          numberOfNodes: 3
+      versions:
+        _-operator: NIGHTLY
+- name: ionos-k8s
+  description: IONOS managed K8s
+  k8s_versions:
+    - "1.23.6"
+    - "1.22.9"
+    - "1.21.12"
+  cluster_definition:
+    apiVersion: t2.stackable.tech/v1
+    kind: Infra
+    template: ionos-k8s
+    metadata: 
+      name: ionos-k8s
+      description: "Cluster for Stackable T2 (IONOS Cloud managed K8s)"
+    spec:
+      region: de/fra
+      k8sVersion: "1.23.6"
+      node_count: 3
+      versions:
+        _-operator: NIGHTLY
+- name: azure-aks
+  description: Microsoft Azure AKS
+  k8s_versions:
+    - "1.24.0"
+    - "1.23.5"
+    - "1.22.6"
+    - "1.21.9"
+  cluster_definition:
+    apiVersion: t2.stackable.tech/v1
+    kind: Infra
+    template: azure-aks
+    metadata: 
+      name: azure-aks
+      description: "Cluster for Stackable T2 (Azure AKS)"
+    spec:
+      k8sVersion: "1.22.6"
+      node_count: 3
+      versions:
+        _-operator: NIGHTLY
+- name: aws-eks
+  description: Amazon AWS EKS
+  k8s_versions:
+    - "1.22"
+    - "1.21"
+    - "1.20"
+    - "1.19"
+  cluster_definition:
+    apiVersion: t2.stackable.tech/v1
+    kind: Infra
+    template: aws-eks
+    metadata: 
+      name: aws-eks
+      description: "Cluster for Stackable T2 (AWS EKS)"
+    spec:
+      k8sVersion: "1.22"
+      node_count: 3
+      versions:
+        _-operator: NIGHTLY

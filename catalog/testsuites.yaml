@@ -1,0 +1,278 @@
+---
+- name: airflow-operator
+  display_name: Airflow Operator
+  git_repo: airflow-operator
+  operator_logs:
+    - airflow
+    - commons
+    - secret
+  test_params: --parallel 1
+  platforms: 
+    - name: hcloud-k3s-centos-8
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            main:
+              serverType: cx41
+    - name: ionos-k8s
+      cluster_definition_overlay: |
+        spec:
+          numberOfCores: 8
+          memoryMb: 8192
+    - name: azure-aks
+      cluster_definition_overlay: |
+        spec:
+          vm_size: "Standard_D3_v2"
+    - name: aws-eks
+      cluster_definition_overlay: |
+        spec:
+          awsInstanceType: "t2.xlarge"
+  slack_channels: "#product-airflow"
+- name: druid-operator
+  display_name: Druid Operator
+  git_repo: druid-operator
+  operator_logs:
+    - druid
+    - commons
+    - secret
+    - hdfs
+    - opa
+    - zookeeper
+  test_params: --parallel 1
+  platforms: 
+    - name: hcloud-k3s-centos-8
+    - name: ionos-k8s
+    - name: azure-aks
+    - name: aws-eks
+      cluster_definition_overlay: |
+        spec:
+          node_count: 5
+          awsInstanceType: "t2.xlarge"
+  slack_channels: "#product-druid"
+- name: hbase-operator
+  display_name: HBase Operator
+  git_repo: hbase-operator
+  operator_logs:
+    - hbase
+    - hdfs
+    - commons
+    - secret
+    - zookeeper
+  test_params: --parallel 1
+  platforms: 
+    - name: hcloud-k3s-centos-8
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            main:
+              numberOfNodes: 8
+              serverType: cx41
+    - name: ionos-k8s
+      cluster_definition_overlay: |
+        spec:
+          node_count: 8
+          numberOfCores: 8
+          memoryMb: 8192
+    - name: azure-aks
+      cluster_definition_overlay: |
+        spec:
+          node_count: 8
+          vm_size: "Standard_D3_v2"
+    - name: aws-eks
+      cluster_definition_overlay: |
+        spec:
+          node_count: 8
+          awsInstanceType: "t2.xlarge"
+  slack_channels: "#product-hbase"
+- name: hdfs-operator
+  display_name: HDFS Operator
+  git_repo: hdfs-operator
+  operator_logs:
+    - hdfs
+    - commons
+    - secret
+    - zookeeper
+  test_params: --parallel 4
+  platforms: 
+    - name: hcloud-k3s-centos-8
+    - name: ionos-k8s
+    - name: azure-aks
+    - name: aws-eks
+  slack_channels: "#product-hdfs"
+- name: hive-operator
+  display_name: Hive Operator
+  git_repo: hive-operator
+  operator_logs:
+    - hive
+    - commons
+    - secret
+  test_params: --parallel 1
+  platforms: 
+    - name: hcloud-k3s-centos-8
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            main:
+              numberOfNodes: 5
+              serverType: cx41
+    - name: ionos-k8s
+      cluster_definition_overlay: |
+        spec:
+          node_count: 5
+          numberOfCores: 8
+          memoryMb: 8192
+    - name: azure-aks
+      cluster_definition_overlay: |
+        spec:
+          node_count: 5
+          vm_size: "Standard_D3_v2"
+    - name: aws-eks
+      cluster_definition_overlay: |
+        spec:
+          node_count: 5
+          awsInstanceType: "t2.xlarge"
+  slack_channels: "#product-hive"
+- name: kafka-operator
+  display_name: Kafka Operator
+  git_repo: kafka-operator
+  operator_logs:
+    - kafka
+    - commons
+    - secret
+    - opa
+    - zookeeper
+  test_params: --parallel 1
+  platforms: 
+    - name: hcloud-k3s-centos-8
+    - name: ionos-k8s
+    - name: azure-aks
+    - name: aws-eks
+  slack_channels: "#product-kafka"
+- name: nifi-operator
+  display_name: NiFi Operator
+  git_repo: nifi-operator
+  operator_logs:
+    - nifi
+    - commons
+    - secret
+    - zookeeper
+  test_params: --parallel 1
+  platforms: 
+    - name: hcloud-k3s-centos-8
+    - name: ionos-k8s
+    - name: azure-aks
+    - name: aws-eks
+  slack_channels: "#product-nifi"
+- name: opa-operator
+  display_name: OPA Operator
+  git_repo: opa-operator
+  operator_logs:
+    - opa
+    - commons
+    - secret
+  test_params: --parallel 1
+  platforms: 
+    - name: hcloud-k3s-centos-8
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            main:
+              serverType: cx41
+          versions:
+            _-operator: NONE
+            commons-operator: NIGHTLY
+            secret-operator: NIGHTLY
+            opa-operator: NIGHTLY
+    - name: ionos-k8s
+      cluster_definition_overlay: |
+        spec:
+          numberOfCores: 8
+          memoryMb: 8192
+          versions:
+            _-operator: NONE
+            commons-operator: NIGHTLY
+            secret-operator: NIGHTLY
+            opa-operator: NIGHTLY
+    - name: azure-aks
+      cluster_definition_overlay: |
+        spec:
+          vm_size: "Standard_D3_v2"
+          versions:
+            _-operator: NONE
+            commons-operator: NIGHTLY
+            secret-operator: NIGHTLY
+            opa-operator: NIGHTLY
+    - name: aws-eks
+      cluster_definition_overlay: |
+        spec:
+          awsInstanceType: "t2.xlarge"
+          versions:
+            _-operator: NONE
+            commons-operator: NIGHTLY
+            secret-operator: NIGHTLY
+            opa-operator: NIGHTLY
+  slack_channels: "#product-opa"
+- name: spark-k8s-operator
+  display_name: Spark K8s Operator
+  git_repo: spark-k8s-operator
+  operator_logs:
+    - spark-k8s
+    - commons
+    - secret
+  test_params: --parallel 1
+  platforms: 
+    - name: hcloud-k3s-centos-8
+    - name: ionos-k8s
+    - name: azure-aks
+    - name: aws-eks
+  slack_channels: "#product-spark-k8s"
+- name: superset-operator
+  display_name: Superset Operator
+  git_repo: superset-operator
+  operator_logs:
+    - superset
+    - commons
+    - secret
+  test_params: --parallel 2
+  platforms: 
+    - name: hcloud-k3s-centos-8
+    - name: ionos-k8s
+    - name: azure-aks
+    - name: aws-eks
+  slack_channels: "#product-superset"
+- name: trino-operator
+  display_name: Trino Operator
+  git_repo: trino-operator
+  operator_logs:
+    - trino
+    - commons
+    - secret
+    - hive
+    - opa
+  test_params: --parallel 1
+  platforms: 
+    - name: hcloud-k3s-centos-8
+    - name: ionos-k8s
+    - name: azure-aks
+    - name: aws-eks
+  slack_channels: "#product-trino"
+- name: zookeeper-operator
+  display_name: ZooKeeper Operator
+  git_repo: zookeeper-operator
+  operator_logs:
+    - zookeeper
+    - commons
+    - secret
+  test_params: --parallel 1
+  platforms: 
+    - name: hcloud-k3s-centos-8
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            main:
+              numberOfNodes: 8
+    - name: ionos-k8s
+      cluster_definition_overlay: |
+        spec:
+          node_count: 5
+  slack_channels: "#product-zookeeper"
