@@ -274,5 +274,13 @@
     - name: ionos-k8s
       cluster_definition_overlay: |
         spec:
-          node_count: 5
+          node_count: 8
+    - name: azure-aks
+      cluster_definition_overlay: |
+        spec:
+          node_count: 8
+    - name: aws-eks
+      cluster_definition_overlay: |
+        spec:
+          node_count: 8
   slack_channels: "#product-zookeeper"
