@@ -18,7 +18,7 @@
     publicKeys: []
     spec:
       location: "hel1"
-      k8sVersion: stable
+      k8sVersion: latest
       nodes:
         main:
           numberOfNodes: 3
@@ -60,7 +60,7 @@
       description: "Cluster for Stackable T2 (Azure AKS)"
     publicKeys: []
     spec:
-      k8sVersion: "1.22.6"
+      k8sVersion: "1.24.0"
       node_count: 3
       versions:
         _-operator: NIGHTLY
@@ -69,8 +69,6 @@
   k8s_versions:
     - "1.22"
     - "1.21"
-    - "1.20"
-    - "1.19"
   cluster_definition:
     apiVersion: t2.stackable.tech/v1
     kind: Infra

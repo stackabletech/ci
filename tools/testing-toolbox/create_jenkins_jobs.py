@@ -7,6 +7,7 @@ catalog_platforms = None
 catalog_platforms_with_versions = None
 catalog_testsuites = None
 custom_test_jobs_template = None
+nightly_test_jobs_template = None
 jjb_conf_template = None
 
 def check_prerequisites():
@@ -33,9 +34,12 @@ def read_catalogs():
 
 def read_templates():
     global custom_test_jobs_template
+    global nightly_test_jobs_template
     global jjb_conf_template
     with open ("/jjb/custom_test_jobs.j2", "r") as f:
         custom_test_jobs_template = Template(f.read())
+    with open ("/jjb/nightly_test_jobs.j2", "r") as f:
+        nightly_test_jobs_template = Template(f.read())
     with open ("/jjb/jjb.conf.j2", "r") as f:
         jjb_conf_template = Template(f.read())
 
@@ -50,11 +54,17 @@ def generate_custom_test_jobs_definitions():
         f.write(custom_test_jobs_template.render( { 'testsuites': catalog_testsuites, 'platforms': platforms_by_testsuite } ))
         f.close()
 
+def generate_nightly_test_jobs_definitions():
+    with open ("/jjb/nightly_tests.yaml", 'w') as f:
+        f.write(nightly_test_jobs_template.render( { 'testsuites': catalog_testsuites } ))
+        f.close()
+
 def execute_jjb():
     """
         Executes the Jenkins Job Builder
     """
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/custom_tests.yaml")
+    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/nightly_tests.yaml")
 
 def create_jenkins_jobs():
     """ 
@@ -68,8 +78,5 @@ def create_jenkins_jobs():
     read_templates()
     generate_jjb_config()
     generate_custom_test_jobs_definitions()
+    generate_nightly_test_jobs_definitions()
     execute_jjb()
-
-    with open ("/jjb/custom_tests.yaml", 'r') as f:
-        print(f.read())
-        f.close()
