@@ -81,19 +81,17 @@
 
             cat testsuite/cluster.yaml
             cat testsuite/test.sh
-            exit 0
 
             # Run testdriver
-            # mkdir -p testsuite/target/
-            # docker run --rm \
-            #     --volume "$HOST_WORKSPACE/testsuite/target/:/target/" \
-            #     --volume "$HOST_WORKSPACE/testsuite/cluster.yaml:/cluster.yaml" \
-            #     --volume "$HOST_WORKSPACE/testsuite/test.sh:/test.sh" \
-            #     --env T2_TOKEN=todo \
-            #     --env T2_URL=https://t2.stackable.tech \
-            #     --env UID_GID=$DOCKER_UID_GID \
-            #     --env DRY_RUN=true \
-            #     docker.stackable.tech/t2-testdriver    
+            mkdir -p testsuite/target/
+            docker run --rm \
+                --volume "$HOST_WORKSPACE/testsuite/target/:/target/" \
+                --volume "$HOST_WORKSPACE/testsuite/cluster.yaml:/cluster.yaml" \
+                --volume "$HOST_WORKSPACE/testsuite/test.sh:/test.sh" \
+                --env T2_TOKEN=todo \
+                --env T2_URL=https://t2.stackable.tech \
+                --env UID_GID=$DOCKER_UID_GID \
+                docker.stackable.tech/t2-testdriver    
     publishers:
       - archive:
           artifacts: 'testsuite/target/*'
