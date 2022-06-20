@@ -79,9 +79,6 @@
               --env OPERATOR_VERSION=$OPERATOR_VERSION \
               docker.stackable.tech/testing-toolbox:latest create-testsuite
 
-            cat testsuite/cluster.yaml
-            cat testsuite/test.sh
-
             # Run testdriver
             mkdir -p testsuite/target/
             docker run --rm \
