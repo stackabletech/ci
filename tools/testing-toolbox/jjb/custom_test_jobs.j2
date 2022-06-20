@@ -36,12 +36,17 @@
             - {{ platform.display_name }}, {{ platform.version }} <{{ platform.id }}|{{ platform.version }}>{% endfor %}
           description: On which platform should the test run?
       - extended-choice:
-            name: OPERATOR_VERSION
-            description: Version of the operator (binary) this test should use
-            property-file: /var/jenkins_home/workspace/Available Versions/versions.properties
-            property-key: {{ testsuite.name }}
-            quote-value: false
-            visible-items: 10
+          name: OPERATOR_VERSION
+          description: Version of the operator (binary) this test should use
+          property-file: /var/jenkins_home/workspace/Available Versions/versions.properties
+          property-key: {{ testsuite.name }}
+          quote-value: false
+          visible-items: 10
+    wrappers:
+      - credentials-binding:
+          - text:
+              credential-id: T2_TOKEN
+              variable: T2_TOKEN
     builders:
       - shell: 
           unstable-return: 255
@@ -85,7 +90,7 @@
                 --volume "$HOST_WORKSPACE/testsuite/target/:/target/" \
                 --volume "$HOST_WORKSPACE/testsuite/cluster.yaml:/cluster.yaml" \
                 --volume "$HOST_WORKSPACE/testsuite/test.sh:/test.sh" \
-                --env T2_TOKEN=todo \
+                --env T2_TOKEN=$T2_TOKEN \
                 --env T2_URL=https://t2.stackable.tech \
                 --env UID_GID=$DOCKER_UID_GID \
                 docker.stackable.tech/t2-testdriver    
