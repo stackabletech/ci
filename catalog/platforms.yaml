@@ -15,6 +15,7 @@
       name: hcloud-k3s-centos-8
       description: "Cluster for Stackable T2 (Hetzner Cloud / K3s / CentOS 8)"
     domain: stackable.test
+    publicKeys: []
     spec:
       location: "hel1"
       k8sVersion: stable
@@ -36,6 +37,7 @@
     metadata: 
       name: ionos-k8s
       description: "Cluster for Stackable T2 (IONOS Cloud managed K8s)"
+    publicKeys: []
     spec:
       region: de/fra
       k8sVersion: "1.23.6"
@@ -56,6 +58,7 @@
     metadata: 
       name: azure-aks
       description: "Cluster for Stackable T2 (Azure AKS)"
+    publicKeys: []
     spec:
       k8sVersion: "1.22.6"
       node_count: 3
@@ -75,6 +78,7 @@
     metadata: 
       name: aws-eks
       description: "Cluster for Stackable T2 (AWS EKS)"
+    publicKeys: []
     spec:
       k8sVersion: "1.22"
       node_count: 3
