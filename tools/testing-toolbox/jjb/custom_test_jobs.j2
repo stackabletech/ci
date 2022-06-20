@@ -94,7 +94,7 @@
           artifacts: 'testsuite/target/*'
           allow-empty: true
       - slack: 
-          room: 'U02G2BBMZHR'
+          room: '{{ testsuite.slack_channels }}'
           notify-success: True
           notify-unstable: True
           notify-every-failure: True
