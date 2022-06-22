@@ -10,7 +10,7 @@ git clone https://github.com/stackabletech/{{ testsuite.git_repo }}.git
 {% for helm_repo in testsuite.helm_repos %}helm repo add {{ helm_repo.id }} {{ helm_repo.url }}
 {% endfor %}
 
-(cd {{ testsuite.git_repo }}/ && ./scripts/run_tests.sh {{ testsuite.test_params }})
+(cd {{ testsuite.git_repo }}/ && ./scripts/run_tests.sh {{ test_params }})
 exit_code=$?
 
 {% for operator in testsuite.operator_logs %}./operator-logs.sh {{ operator }} > /target/{{ operator }}-operator.log

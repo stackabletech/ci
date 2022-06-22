@@ -69,9 +69,9 @@ def write_cluster_definition(cluster_definition):
         f.write(yaml_to_string(cluster_definition))
         f.close()
 
-def write_test_script(testsuite):
+def write_test_script(testsuite, test_params):
     with open ('/target/test.sh', 'w') as f:
-        f.write(test_script_template.render( { 'testsuite': testsuite, 'git_branch': git_branch }))
+        f.write(test_script_template.render( { 'testsuite': testsuite, 'git_branch': git_branch, 'test_params': test_params }))
         f.close()
 
 def yaml_to_string(yaml):
@@ -112,6 +112,9 @@ def create_testsuite():
         print(f"No platform definition for '{platform_name}' could be found in the testsuite '{testsuite_name}'.")
         exit(1)
 
+    if('cluster_definition_overlay' in testsuite):
+        cluster_definition = merge_yaml(yaml_to_string(cluster_definition), testsuite['cluster_definition_overlay'])
+
     if('cluster_definition_overlay' in testsuite_platform_definition):
         cluster_definition = merge_yaml(yaml_to_string(cluster_definition), testsuite_platform_definition['cluster_definition_overlay'])
 
@@ -122,4 +125,4 @@ def create_testsuite():
         cluster_definition['spec']['versions'][testsuite_name] = operator_version
 
     write_cluster_definition(cluster_definition)
-    write_test_script(testsuite)
+    write_test_script(testsuite, testsuite_platform_definition['test_params'] if 'test_params' in testsuite_platform_definition else '')

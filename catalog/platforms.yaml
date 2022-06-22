@@ -23,7 +23,9 @@
         main:
           numberOfNodes: 3
       versions:
-        _-operator: NIGHTLY
+        _-operator: NONE
+        secret-operator: NIGHTLY
+        commons-operator: NIGHTLY
 - name: ionos-k8s
   description: IONOS managed K8s
   k8s_versions:
@@ -43,7 +45,9 @@
       k8sVersion: "1.23.6"
       node_count: 3
       versions:
-        _-operator: NIGHTLY
+        _-operator: NONE
+        secret-operator: NIGHTLY
+        commons-operator: NIGHTLY
 - name: azure-aks
   description: Microsoft Azure AKS
   k8s_versions:
@@ -63,7 +67,9 @@
       k8sVersion: "1.24.0"
       node_count: 3
       versions:
-        _-operator: NIGHTLY
+        _-operator: NONE
+        secret-operator: NIGHTLY
+        commons-operator: NIGHTLY
 - name: aws-eks
   description: Amazon AWS EKS
   k8s_versions:
@@ -81,4 +87,6 @@
       k8sVersion: "1.22"
       node_count: 3
       versions:
-        _-operator: NIGHTLY
+        _-operator: NONE
+        secret-operator: NIGHTLY
+        commons-operator: NIGHTLY
