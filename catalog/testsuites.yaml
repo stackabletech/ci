@@ -46,14 +46,30 @@
   platforms: 
     - name: hcloud-k3s-centos-8
     - name: ionos-k8s
+      cluster_definition_overlay: |
+        spec:
+          node_count: 5
+          numberOfCores: 4
+          memoryMb: 16384
+          versions:
+            _-operator: NONE
+            druid-operator: NIGHTLY
+            hdfs-operator: NIGHTLY
+            opa-operator: NIGHTLY
+            zookeeper-operator: NIGHTLY
+            commons-operator: NIGHTLY
+            secret-operator: NIGHTLY
     - name: azure-aks
       cluster_definition_overlay: |
         spec:
           node_count: 5
-          vm_size: "Standard_E4-2ds_v4"
+          vm_size: "Standard_E4-2s_v3"
           versions:
             _-operator: NONE
             druid-operator: NIGHTLY
+            hdfs-operator: NIGHTLY
+            opa-operator: NIGHTLY
+            zookeeper-operator: NIGHTLY
             commons-operator: NIGHTLY
             secret-operator: NIGHTLY
     - name: aws-eks
@@ -64,6 +80,9 @@
           versions:
             _-operator: NONE
             druid-operator: NIGHTLY
+            hdfs-operator: NIGHTLY
+            opa-operator: NIGHTLY
+            zookeeper-operator: NIGHTLY
             commons-operator: NIGHTLY
             secret-operator: NIGHTLY
   nightly_test:
