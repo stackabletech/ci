@@ -76,7 +76,7 @@
       cluster_definition_overlay: |
         spec:
           node_count: 5
-          awsInstanceType: "t2.xlarge"
+          awsInstanceType: "t2.2xlarge"
           versions:
             _-operator: NONE
             druid-operator: NIGHTLY
