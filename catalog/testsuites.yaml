@@ -42,7 +42,7 @@
     - hdfs
     - opa
     - zookeeper
-  test_params: --parallel 1
+  test_params: --parallel 4
   platforms: 
     - name: hcloud-k3s-centos-8
     - name: ionos-k8s
@@ -52,6 +52,11 @@
         spec:
           node_count: 5
           awsInstanceType: "t2.xlarge"
+          versions:
+            _-operator: NONE
+            druid-operator: NIGHTLY
+            commons-operator: NIGHTLY
+            secret-operator: NIGHTLY
   nightly_test:
     platform: hcloud-k3s-centos-8
     slack_channels: "#notifications-jenkins,#product-druid"
