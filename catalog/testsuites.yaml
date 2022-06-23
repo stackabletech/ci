@@ -223,9 +223,18 @@
     - name: hcloud-k3s-centos-8
       test_params: --parallel 1
     - name: ionos-k8s
-      test_params: --parallel 1
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          node_count: 6
+          numberOfCores: 4
+          memoryMb: 16384
     - name: azure-aks
-      test_params: --parallel 1
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          node_count: 5
+          vm_size: "Standard_E2s_v3"
     - name: aws-eks
       test_params: --parallel 1
   nightly_test:
