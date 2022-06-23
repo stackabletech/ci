@@ -236,7 +236,11 @@
           node_count: 5
           vm_size: "Standard_E2s_v3"
     - name: aws-eks
-      test_params: --parallel 1
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          node_count: 6
+          awsInstanceType: "t2.xlarge"
   nightly_test:
     platform: hcloud-k3s-centos-8
     slack_channels: "#product-kafka"
