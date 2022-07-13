@@ -327,7 +327,7 @@
           node_count: 5
           awsInstanceType: "t2.xlarge"
   nightly_test:
-    platform: hcloud-k3s-centos-8
+    platform: hcloud-k3s-centos-stream-9
     slack_channels: "#product-opa"
   custom_test:
     slack_channels: "#product-opa"
