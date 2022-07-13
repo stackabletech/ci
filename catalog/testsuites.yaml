@@ -300,6 +300,13 @@
           nodes:
             main:
               serverType: cx41
+    - name: hcloud-k3s-centos-stream-9
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            main:
+              serverType: cx41
     - name: ionos-k8s
       test_params: --parallel 1
       cluster_definition_overlay: |
