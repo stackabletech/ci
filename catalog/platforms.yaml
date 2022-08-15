@@ -18,7 +18,6 @@
     domain: stackable.test
     publicKeys: []
     spec:
-      location: "hel1"
       k8sVersion: latest
       nodes:
         main:
@@ -46,7 +45,6 @@
     domain: stackable.test
     publicKeys: []
     spec:
-      location: "hel1"
       k8sVersion: latest
       nodes:
         main:
