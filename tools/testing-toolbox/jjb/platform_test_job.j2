@@ -73,8 +73,10 @@
 
             if [ "$T2_INSTANCE" = "T2_PROD" ]; then
               export T2_TOKEN=$T2_PROD_TOKEN
+              export T2_URL="https://t2.stackable.tech"
             elif [ "$T2_INSTANCE" = "T2_DEV" ]; then
               export T2_TOKEN=$T2_DEV_TOKEN
+              export T2_URL="https://t2-dev.stackable.tech"
             else
               echo "unknown T2 instance"
               exit 1
@@ -82,9 +84,14 @@
 
             # Run testdriver
             mkdir -p testsuite/target/
-
-            echo "test completed" > testsuite/target/test.log
-
+            docker run --rm \
+                --volume "$HOST_WORKSPACE/testsuite/target/:/target/" \
+                --volume "$HOST_WORKSPACE/testsuite/cluster.yaml:/cluster.yaml" \
+                --volume "$HOST_WORKSPACE/testsuite/test.sh:/test.sh" \
+                --env T2_TOKEN=$T2_TOKEN \
+                --env T2_URL=$T2_URL \
+                --env UID_GID=$DOCKER_UID_GID \
+                docker.stackable.tech/t2-testdriver    
     publishers:
       - archive:
           artifacts: 'testsuite/target/*'
