@@ -48,7 +48,11 @@ def write_cluster_definition(cluster_definition):
 
 def write_test_script():
     with open ('/target/test.sh', 'w') as f:
-        f.write('echo dummy')
+        f.write("""sleep 10
+kubectl get nodes
+echo ""
+echo ""
+helm list""")
         f.close()
 
 def yaml_to_string(yaml):
