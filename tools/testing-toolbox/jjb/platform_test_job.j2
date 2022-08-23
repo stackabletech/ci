@@ -16,8 +16,10 @@
     parameters
       - choice:
           name: TEST_PLATFORM
-          choices:{% for platform in platforms %}
-            - {{ platform.display_name }}, {{ platform.version }} <{{ platform.id }}|{{ platform.version }}>{% endfor %}
+          choices:
+            - a
+            - b
+            - c
           description: Which platform do you want to test?
     wrappers:
       - credentials-binding:
