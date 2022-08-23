@@ -67,7 +67,7 @@ def create_platform_testsuite():
         The entry point method for this module, creates the files for the testsuite.
     """
     print()
-    print("create testsuite")
+    print("create platform testsuite")
     print()
     check_prerequisites()
     clean_target()

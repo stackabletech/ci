@@ -6,7 +6,7 @@
     description: ''
     disabled: false
     display-name: 'T2 custom platform test'
-    concurrent: false
+    concurrent: true
     quiet-period: 5
     logrotate:
       daysToKeep: -1
@@ -22,14 +22,17 @@
       - choice:
           name: T2_INSTANCE
           choices:
-            - T2
+            - T2_PROD
             - T2_DEV
           description: Which T2 instance should create the test cluster?
     wrappers:
       - credentials-binding:
           - text:
               credential-id: T2_TOKEN
-              variable: T2_TOKEN
+              variable: T2_PROD_TOKEN
+          - text:
+              credential-id: T2_TOKEN_DEV
+              variable: T2_DEV_TOKEN
 
     builders:
       - shell: 
@@ -67,6 +70,15 @@
               --env PLATFORM=$PLATFORM_ID \
               --env K8S_VERSION=$K8S_VERSION \
               docker.stackable.tech/testing-toolbox:latest create-platform-testsuite
+
+            if [ "$T2_INSTANCE" = "T2_PROD" ]; then
+              echo "proddi"
+            elif [ "$T2_INSTANCE" = "T2_DE" ]; then
+              echo "devvi"
+            else
+              echo "nix da"
+              exit 1
+            fi
 
 
             # Run testdriver
