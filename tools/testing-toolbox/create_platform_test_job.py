@@ -45,8 +45,6 @@ def generate_platform_test_job_definition():
     with open ("/jjb/platform_test.yaml", 'w') as f:
         f.write(platform_test_job_template.render( { 'platforms': catalog_platforms_with_versions } ))
         f.close()
-    with open ("/jjb/platform_test.yaml", "r") as f:
-        print(f.read())
 
 def execute_jjb():
     """
