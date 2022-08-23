@@ -62,7 +62,7 @@ def merge_yaml(base_yaml, yaml_to_merge):
     """
     return hiyapyco.load([base_yaml, yaml_to_merge], method=hiyapyco.METHOD_MERGE)
 
-def create_testsuite():
+def create_platform_testsuite():
     """ 
         The entry point method for this module, creates the files for the testsuite.
     """
