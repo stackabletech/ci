@@ -13,6 +13,12 @@
       numToKeep: 20
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
+    parameters
+      - choice:
+          name: TEST_PLATFORM
+          choices:{% for p in platforms %}
+            - {{ p.display_name }}, {{ p.version }} <{{ p.id }}|{{ p.version }}>{% endfor %}
+          description: On which platform should the test run?
     wrappers:
       - credentials-binding:
           - text:
@@ -48,7 +54,7 @@
             # Run testdriver
             mkdir -p testsuite/target/
 
-            echo "test completed!!!" > testsuite/target/test.log
+            echo "test completed" > testsuite/target/test.log
 
     publishers:
       - archive:
