@@ -17,6 +17,15 @@ test_script_template = None
 def check_prerequisites():
     """ 
         Checks the prerequisites of this module and fails if they are not satisfied.
+
+        mandatory params:
+        - TESTSUITE
+        - PLATFORM
+
+        optional params:
+        - K8S_VERSION
+        - GIT_BRANCH
+        - OPERATOR_VERSION
     """
     global testsuite_name
     global platform_name
