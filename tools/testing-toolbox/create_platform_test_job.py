@@ -66,4 +66,4 @@ def create_platform_test_job():
     read_templates()
     generate_jjb_config()
     generate_platform_test_job_definition()
-#    execute_jjb()
+    execute_jjb()
