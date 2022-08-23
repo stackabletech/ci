@@ -72,13 +72,15 @@
               docker.stackable.tech/testing-toolbox:latest create-platform-testsuite
 
             if [ "$T2_INSTANCE" = "T2_PROD" ]; then
-              echo "proddi"
-            elif [ "$T2_INSTANCE" = "T2_DE" ]; then
-              echo "devvi"
+              export T2_TOKEN=$T2_PROD_TOKEN
+            elif [ "$T2_INSTANCE" = "T2_DEV" ]; then
+              export T2_TOKEN=$T2_DEV_TOKEN
             else
-              echo "nix da"
+              echo "unknown T2 instance"
               exit 1
             fi
+
+            echo $T2_TOKEN
 
 
             # Run testdriver
