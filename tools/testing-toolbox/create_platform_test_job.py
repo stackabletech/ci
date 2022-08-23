@@ -27,7 +27,6 @@ def read_catalogs():
     global catalog_platforms_with_versions
     catalog_platforms = hiyapyco.load("/catalog/platforms.yaml")
     catalog_platforms_with_versions = [ { 'display_name' : p['description'], 'id': p['name'], 'version': v } for p in catalog_platforms for v in p['k8s_versions'] ]
-    print(catalog_platforms_with_versions)
 
 def read_templates():
     global platform_test_job_template
@@ -46,6 +45,8 @@ def generate_platform_test_job_definition():
     with open ("/jjb/platform_test.yaml", 'w') as f:
         f.write(platform_test_job_template.render( { 'platforms': catalog_platforms_with_versions } ))
         f.close()
+    with open ("/jjb/platform_test.yaml", "r") as f:
+        print(f.read())
 
 def execute_jjb():
     """
@@ -65,4 +66,4 @@ def create_platform_test_job():
     read_templates()
     generate_jjb_config()
     generate_platform_test_job_definition()
-    execute_jjb()
+#    execute_jjb()
