@@ -13,13 +13,11 @@
       numToKeep: 20
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
-    parameters
+    parameters:
       - choice:
           name: TEST_PLATFORM
-          choices:
-            - a
-            - b
-            - c
+          choices:{% for platform in platforms %}
+            - {{ platform.display_name }}, {{ platform.version }} <{{ platform.id }}|{{ platform.version }}>{% endfor %}
           description: Which platform do you want to test?
     wrappers:
       - credentials-binding:
