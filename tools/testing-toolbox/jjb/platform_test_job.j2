@@ -62,6 +62,12 @@
 
             # Create testsuite files
             mkdir -p testsuite/
+            docker run --rm \
+              --volume "$HOST_WORKSPACE/testsuite/:/target/" \
+              --env PLATFORM=$PLATFORM_ID \
+              --env K8S_VERSION=$K8S_VERSION \
+              docker.stackable.tech/testing-toolbox:latest create-platform-testsuite
+
 
             # Run testdriver
             mkdir -p testsuite/target/
