@@ -1,7 +1,7 @@
 import sys
 import create_jenkins_jobs
 import create_testsuite
-import create_platform_test_job
+import create_platform_test_jobs
 import create_platform_testsuite
 
 if __name__ == "__main__":
@@ -19,7 +19,7 @@ if __name__ == "__main__":
         create_jenkins_jobs.create_jenkins_jobs()
 
     if("create-platform-test-job"==sys.argv[1]):
-        create_platform_test_job.create_platform_test_job()
+        create_platform_test_jobs.create_platform_test_jobs()
 
     if("create-platform-testsuite"==sys.argv[1]):
         create_platform_testsuite.create_platform_testsuite()
