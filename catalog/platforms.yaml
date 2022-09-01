@@ -1,6 +1,6 @@
 ---
 - name: hcloud-k3s-centos-8
-  description: K3s on Hetzner Cloud
+  description: K3s on Hetzner Cloud CentOS 8
   k8s_versions:
     - latest
     - stable
@@ -26,8 +26,8 @@
         _-operator: NONE
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
-- name: hcloud-k3s-centos-stream-9
-  description: K3s on Hetzner Cloud CentOS Stream 9
+- name: hcloud-k3s-centos-9
+  description: K3s on Hetzner Cloud CentOS 9
   k8s_versions:
     - latest
     - stable
@@ -53,8 +53,62 @@
         _-operator: NONE
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
+- name: hcloud-k3s-debian-10
+  description: K3s on Hetzner Cloud Debian 10
+  k8s_versions:
+    - latest
+    - stable
+    - testing
+    - v1.24
+    - v1.23
+    - v1.22
+  cluster_definition:
+    apiVersion: t2.stackable.tech/v1
+    kind: Infra
+    template: hcloud-debian-10
+    metadata: 
+      name: hcloud-k3s-debian-10
+      description: "Cluster for Stackable T2 (Hetzner Cloud / K3s / Debian Linux 10)"
+    domain: stackable.test
+    publicKeys: []
+    spec:
+      k8sVersion: latest
+      nodes:
+        main:
+          numberOfNodes: 3
+      versions:
+        _-operator: NONE
+        secret-operator: NIGHTLY
+        commons-operator: NIGHTLY
+- name: hcloud-k3s-debian-11
+  description: K3s on Hetzner Cloud Debian 11
+  k8s_versions:
+    - latest
+    - stable
+    - testing
+    - v1.24
+    - v1.23
+    - v1.22
+  cluster_definition:
+    apiVersion: t2.stackable.tech/v1
+    kind: Infra
+    template: hcloud-debian-11
+    metadata: 
+      name: hcloud-k3s-debian-11
+      description: "Cluster for Stackable T2 (Hetzner Cloud / K3s / Debian Linux 11)"
+    domain: stackable.test
+    publicKeys: []
+    spec:
+      k8sVersion: latest
+      nodes:
+        main:
+          numberOfNodes: 3
+      versions:
+        _-operator: NONE
+        secret-operator: NIGHTLY
+        commons-operator: NIGHTLY
 - name: ionos-k3s-centos-8
-  description: K3s on IONOS Cloud
+  description: K3s on IONOS Cloud CentOS 8
   k8s_versions:
     - latest
     - stable
@@ -69,6 +123,62 @@
     metadata: 
       name: ionos-k3s-centos-8
       description: "Cluster for Stackable T2 (IONOS Cloud / K3s / CentOS 8)"
+    domain: stackable.test
+    publicKeys: []
+    spec:
+      region: de/fra
+      k8sVersion: latest
+      nodes:
+        main:
+          numberOfNodes: 3
+      versions:
+        _-operator: NONE
+        secret-operator: NIGHTLY
+        commons-operator: NIGHTLY
+- name: ionos-k3s-debian-10
+  description: K3s on IONOS Cloud Debian 10
+  k8s_versions:
+    - latest
+    - stable
+    - testing
+    - v1.24
+    - v1.23
+    - v1.22
+  cluster_definition:
+    apiVersion: t2.stackable.tech/v1
+    kind: Infra
+    template: ionos-debian-10
+    metadata: 
+      name: ionos-k3s-debian-10
+      description: "Cluster for Stackable T2 (IONOS Cloud / K3s / Debian Linux 10)"
+    domain: stackable.test
+    publicKeys: []
+    spec:
+      region: de/fra
+      k8sVersion: latest
+      nodes:
+        main:
+          numberOfNodes: 3
+      versions:
+        _-operator: NONE
+        secret-operator: NIGHTLY
+        commons-operator: NIGHTLY
+- name: ionos-k3s-debian-11
+  description: K3s on IONOS Cloud Debian 11
+  k8s_versions:
+    - latest
+    - stable
+    - testing
+    - v1.24
+    - v1.23
+    - v1.22
+  cluster_definition:
+    apiVersion: t2.stackable.tech/v1
+    kind: Infra
+    template: ionos-debian-11
+    metadata: 
+      name: ionos-k3s-debian-11
+      description: "Cluster for Stackable T2 (IONOS Cloud / K3s / Debian Linux 11)"
     domain: stackable.test
     publicKeys: []
     spec:
