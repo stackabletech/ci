@@ -102,8 +102,11 @@
       test_params: --parallel 2
       cluster_definition_overlay: |
         spec:
+          orchestrator:
+            serverType: cpx41
           nodes:
             main:
+              serverType: cpx21
               numberOfNodes: 9
     - name: hcloud-k3s-centos-9
       test_params: --parallel 2
