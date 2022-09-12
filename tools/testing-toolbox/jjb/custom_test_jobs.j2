@@ -90,6 +90,7 @@
                 --volume "$HOST_WORKSPACE/testsuite/target/:/target/" \
                 --volume "$HOST_WORKSPACE/testsuite/cluster.yaml:/cluster.yaml" \
                 --volume "$HOST_WORKSPACE/testsuite/test.sh:/test.sh" \
+                --env CLUSTER=MANAGED \
                 --env T2_TOKEN=$T2_TOKEN \
                 --env T2_URL=https://t2.stackable.tech \
                 --env UID_GID=$DOCKER_UID_GID \
