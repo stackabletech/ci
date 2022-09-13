@@ -17,28 +17,28 @@
         spec:
           nodes:
             main:
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-centos-9
       test_params: --parallel 1
       cluster_definition_overlay: |
         spec:
           nodes:
             main:
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-debian-10
       test_params: --parallel 1
       cluster_definition_overlay: |
         spec:
           nodes:
             main:
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-debian-11
       test_params: --parallel 1
       cluster_definition_overlay: |
         spec:
           nodes:
             main:
-              serverType: cx41
+              serverType: cpx41
     - name: ionos-k3s-centos-8
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -194,7 +194,7 @@
           nodes:
             main:
               numberOfNodes: 8
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-centos-9
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -202,7 +202,7 @@
           nodes:
             main:
               numberOfNodes: 8
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-debian-10
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -210,7 +210,7 @@
           nodes:
             main:
               numberOfNodes: 8
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-debian-11
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -218,7 +218,7 @@
           nodes:
             main:
               numberOfNodes: 8
-              serverType: cx41
+              serverType: cpx41
     - name: ionos-k3s-centos-8
       test_params: --parallel 4
       cluster_definition_overlay: |
@@ -317,7 +317,7 @@
           nodes:
             main:
               numberOfNodes: 5
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-centos-9
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -325,7 +325,7 @@
           nodes:
             main:
               numberOfNodes: 5
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-debian-10
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -333,7 +333,7 @@
           nodes:
             main:
               numberOfNodes: 5
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-debian-11
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -341,7 +341,7 @@
           nodes:
             main:
               numberOfNodes: 5
-              serverType: cx41
+              serverType: cpx41
     - name: ionos-k3s-centos-8
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -508,28 +508,28 @@
         spec:
           nodes:
             main:
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-centos-9
       test_params: --parallel 1
       cluster_definition_overlay: |
         spec:
           nodes:
             main:
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-debian-10
       test_params: --parallel 1
       cluster_definition_overlay: |
         spec:
           nodes:
             main:
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-debian-11
       test_params: --parallel 1
       cluster_definition_overlay: |
         spec:
           nodes:
             main:
-              serverType: cx41
+              serverType: cpx41
     - name: ionos-k3s-centos-8
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -713,7 +713,7 @@
           nodes:
             main:
               numberOfNodes: 4
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-debian-10
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -721,7 +721,7 @@
           nodes:
             main:
               numberOfNodes: 4
-              serverType: cx41
+              serverType: cpx41
     - name: hcloud-k3s-debian-11
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -729,7 +729,7 @@
           nodes:
             main:
               numberOfNodes: 4
-              serverType: cx41
+              serverType: cpx41
     - name: ionos-k3s-centos-8
       test_params: --parallel 1
       cluster_definition_overlay: |
