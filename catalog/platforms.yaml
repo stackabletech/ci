@@ -5,9 +5,9 @@
     - latest
     - stable
     - testing
+    - v1.25
     - v1.24
     - v1.23
-    - v1.22
   cluster_definition:
     apiVersion: t2.stackable.tech/v1
     kind: Infra
@@ -32,9 +32,9 @@
     - latest
     - stable
     - testing
+    - v1.25
     - v1.24
     - v1.23
-    - v1.22
   cluster_definition:
     apiVersion: t2.stackable.tech/v1
     kind: Infra
@@ -59,9 +59,9 @@
     - latest
     - stable
     - testing
+    - v1.25
     - v1.24
     - v1.23
-    - v1.22
   cluster_definition:
     apiVersion: t2.stackable.tech/v1
     kind: Infra
@@ -86,9 +86,9 @@
     - latest
     - stable
     - testing
+    - v1.25
     - v1.24
     - v1.23
-    - v1.22
   cluster_definition:
     apiVersion: t2.stackable.tech/v1
     kind: Infra
@@ -113,9 +113,9 @@
     - latest
     - stable
     - testing
+    - v1.25
     - v1.24
     - v1.23
-    - v1.22
   cluster_definition:
     apiVersion: t2.stackable.tech/v1
     kind: Infra
@@ -141,9 +141,9 @@
     - latest
     - stable
     - testing
+    - v1.25
     - v1.24
     - v1.23
-    - v1.22
   cluster_definition:
     apiVersion: t2.stackable.tech/v1
     kind: Infra
