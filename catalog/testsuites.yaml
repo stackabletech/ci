@@ -155,10 +155,10 @@
           numberOfCores: 4
           memoryMb: 16384
     - name: azure-aks
-      test_params: --parallel 4
+      test_params: --parallel 2
       cluster_definition_overlay: |
         spec:
-          node_count: 5
+          node_count: 6
           vm_size: "Standard_E2s_v3"
     - name: aws-eks
       test_params: --parallel 4
@@ -167,7 +167,7 @@
           node_count: 5
           awsInstanceType: "t2.2xlarge"
   nightly_test:
-    platform: hcloud-k3s-centos-8
+    platform: azure-aks
     slack_channels: "#product-druid"
   custom_test:
     slack_channels: "#product-druid"
@@ -446,7 +446,7 @@
           node_count: 6
           awsInstanceType: "t2.xlarge"
   nightly_test:
-    platform: hcloud-k3s-centos-8
+    platform: azure-aks
     slack_channels: "#product-kafka"
   custom_test:
     slack_channels: "#product-kafka"
@@ -754,13 +754,17 @@
           memoryMb: 16384
     - name: azure-aks
       test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          node_count: 4
+          vm_size: "Standard_E2s_v3"
     - name: aws-eks
       test_params: --parallel 1
       cluster_definition_overlay: |
         spec:
           awsInstanceType: "t2.xlarge"
   nightly_test:
-    platform: hcloud-k3s-centos-8
+    platform: azure-aks
     slack_channels: "#product-trino"
   custom_test:
     slack_channels: "#product-trino"
