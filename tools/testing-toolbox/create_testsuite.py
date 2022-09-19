@@ -1,7 +1,8 @@
-import sys
+import re
 import os
 import os.path
 import hiyapyco
+import random
 from jinja2 import Template
 
 testsuite_name = None
@@ -13,6 +14,20 @@ git_branch = None
 catalog_platforms = None
 catalog_testsuites = None
 test_script_template = None
+
+def read_env_input(env_var_name):
+
+    REGEX_RANDOM_SELECTION = re.compile('random\((.*)\)')
+    REGEX_LIST = re.compile('([^,\s]+)')
+
+    matcher_random_selection = REGEX_RANDOM_SELECTION.match(os.environ[env_var_name])
+    if(matcher_random_selection):
+        values = REGEX_LIST.findall(matcher_random_selection.group(1))
+        pick = random.choice(values)
+        print(f"Randomly picked {pick} from a list in {env_var_name}")
+        return pick
+    return os.environ[env_var_name]
+
 
 def check_prerequisites():
     """ 
@@ -41,14 +56,14 @@ def check_prerequisites():
     if not os.path.isdir('/target/'):
         print("Error: Please supply /target folder as volume.")
         exit(1)
-    testsuite_name = os.environ["TESTSUITE"]
-    platform_name = os.environ["PLATFORM"]
+    testsuite_name = read_env_input("TESTSUITE")
+    platform_name = read_env_input("PLATFORM")
     if 'K8S_VERSION' in os.environ:
-        k8s_version = os.environ["K8S_VERSION"]
+        k8s_version = read_env_input("K8S_VERSION")
     if 'OPERATOR_VERSION' in os.environ:
-        operator_version = os.environ["OPERATOR_VERSION"]
+        operator_version = read_env_input("OPERATOR_VERSION")
     if 'GIT_BRANCH' in os.environ:
-        git_branch = os.environ["GIT_BRANCH"]
+        git_branch = read_env_input("GIT_BRANCH")
 
 def clean_target():
     os.system('rm -rf /target/*')
