@@ -76,7 +76,7 @@
         spec:
           awsInstanceType: "t2.xlarge"
   nightly_test:
-    platform: hcloud-k3s-centos-8
+    platform: "'random(ionos-k8s, azure-aks, aws-eks)'"
     slack_channels: "#product-airflow"
   custom_test:
     slack_channels: "#product-airflow"
@@ -167,7 +167,7 @@
           node_count: 5
           awsInstanceType: "t2.2xlarge"
   nightly_test:
-    platform: azure-aks
+    platform: "'random(ionos-k8s, azure-aks, aws-eks)'"
     slack_channels: "#product-druid"
   custom_test:
     slack_channels: "#product-druid"
@@ -257,7 +257,7 @@
           node_count: 5
           awsInstanceType: "t2.xlarge"
   nightly_test:
-    platform: hcloud-k3s-centos-8
+    platform: "'random(ionos-k8s, azure-aks, aws-eks)'"
     slack_channels: "#product-hbase"
   custom_test:
     slack_channels: "#product-hbase"
@@ -294,7 +294,7 @@
     - name: aws-eks
       test_params: --parallel 4
   nightly_test:
-    platform: hcloud-k3s-centos-8
+    platform: "'random(ionos-k8s, azure-aks, aws-eks)'"
     slack_channels: "#product-hdfs"
   custom_test:
     slack_channels: "#product-hdfs"
@@ -380,7 +380,7 @@
           node_count: 5
           awsInstanceType: "t2.xlarge"
   nightly_test:
-    platform: hcloud-k3s-centos-8
+    platform: "'random(ionos-k8s, azure-aks, aws-eks)'"
     slack_channels: "#product-hive"
   custom_test:
     slack_channels: "#product-hive"
@@ -446,7 +446,7 @@
           node_count: 6
           awsInstanceType: "t2.xlarge"
   nightly_test:
-    platform: azure-aks
+    platform: "'random(ionos-k8s, azure-aks, aws-eks)'"
     slack_channels: "#product-kafka"
   custom_test:
     slack_channels: "#product-kafka"
@@ -486,7 +486,7 @@
           node_count: 5
           awsInstanceType: "t2.xlarge"
   nightly_test:
-    platform: hcloud-k3s-centos-8
+    platform: "'random(ionos-k8s, azure-aks, aws-eks)'"
     slack_channels: "#product-nifi"
   custom_test:
     slack_channels: "#product-nifi"
@@ -633,7 +633,7 @@
           awsInstanceType: "t2.xlarge"
       test_params: --parallel 1
   nightly_test:
-    platform: hcloud-k3s-centos-8
+    platform: "'random(ionos-k8s, azure-aks, aws-eks)'"
     slack_channels: "#product-spark-k8s"
   custom_test:
     slack_channels: "#product-spark-k8s"
@@ -672,7 +672,7 @@
           node_count: 5
           awsInstanceType: "t2.xlarge"
   nightly_test:
-    platform: hcloud-k3s-centos-8
+    platform: "'random(ionos-k8s, azure-aks, aws-eks)'"
     slack_channels: "#product-superset"
   custom_test:
     slack_channels: "#product-superset"
@@ -764,7 +764,7 @@
         spec:
           awsInstanceType: "t2.xlarge"
   nightly_test:
-    platform: azure-aks
+    platform: "'random(ionos-k8s, azure-aks, aws-eks)'"
     slack_channels: "#product-trino"
   custom_test:
     slack_channels: "#product-trino"
@@ -838,7 +838,7 @@
         spec:
           node_count: 8
   nightly_test:
-    platform: hcloud-k3s-centos-8
+    platform: "'random(ionos-k8s, azure-aks, aws-eks)'"
     slack_channels: "#product-zookeeper"
   custom_test:
     slack_channels: "#product-zookeeper"
