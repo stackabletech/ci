@@ -568,7 +568,7 @@
           node_count: 5
           awsInstanceType: "t2.xlarge"
   nightly_test:
-    platform: random(ionos-k8s, azure-aks, aws-eks)
+    platform: "'random(ionos-k8s, azure-aks, aws-eks)'"
     slack_channels: "#product-opa"
   custom_test:
     slack_channels: "#product-opa"
