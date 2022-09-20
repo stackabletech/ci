@@ -59,7 +59,6 @@
             export PLATFORM_ID=`echo $TEST_PLATFORM | cut -d '<' -f 2 | cut -d '|' -f 1`
             export K8S_VERSION=`echo $TEST_PLATFORM | cut -d '<' -f 2 | cut -d '|' -f 2 | cut -d '>' -f 1`
             export GIT_BRANCH=`echo $GIT_BRANCH_OR_TAG | sed s#origin/##g`
-            echo "build_run_label::#${PLATFORM_ID} ${K8S_VERSION}#"
 
             # We're using Docker from within a Docker container, so we have to make sure to provide
             # the Docker daemon with the proper absolute path for volume mounts.
@@ -84,6 +83,9 @@
               --env GIT_BRANCH=$GIT_BRANCH \
               --env OPERATOR_VERSION=$OPERATOR_VERSION \
               docker.stackable.tech/testing-toolbox:latest create-testsuite
+
+            cat testsuite/cluster.yaml | yq -e '.template'
+            cat testsuite/cluster.yaml | yq -e '.spec.k8sVersion'
 
 #            # Run testdriver
 #            mkdir -p testsuite/target/
