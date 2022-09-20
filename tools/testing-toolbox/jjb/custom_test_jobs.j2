@@ -84,8 +84,10 @@
               --env OPERATOR_VERSION=$OPERATOR_VERSION \
               docker.stackable.tech/testing-toolbox:latest create-testsuite
 
-            cat testsuite/cluster.yaml | yq -e '.template'
-            cat testsuite/cluster.yaml | yq -e '.spec.k8sVersion'
+            # Determine platform and version from generated cluster definition file
+            export BUILD_RUN_T2_TEMPLATE = `cat testsuite/cluster.yaml | yq -e '.template'`
+            export BUILD_RUN_K8S_VERSION = `cat testsuite/cluster.yaml | yq -e '.spec.k8sVersion'`
+            echo "build_run_label::#${BUILD_RUN_T2_TEMPLATE} ${BUILD_RUN_K8S_VERSION}#"
 
 #            # Run testdriver
 #            mkdir -p testsuite/target/
