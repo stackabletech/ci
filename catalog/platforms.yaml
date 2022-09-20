@@ -1,6 +1,6 @@
 ---
 - name: hcloud-k3s-centos-8
-  description: K3s on Hetzner Cloud CentOS 8
+  description: K3s HCloud CentOS 8
   k8s_versions:
     - latest
     - stable
@@ -14,7 +14,7 @@
     template: hcloud-centos-8
     metadata: 
       name: hcloud-k3s-centos-8
-      description: "Cluster for Stackable T2 (Hetzner Cloud / K3s / CentOS 8)"
+      description: K3s HCloud CentOS 8
     domain: stackable.test
     publicKeys: []
     spec:
@@ -27,7 +27,7 @@
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
 - name: hcloud-k3s-centos-9
-  description: K3s on Hetzner Cloud CentOS 9
+  description: K3s HCloud CentOS 9
   k8s_versions:
     - latest
     - stable
@@ -41,7 +41,7 @@
     template: hcloud-centos-stream-9
     metadata: 
       name: hcloud-k3s-centos-stream-9
-      description: "Cluster for Stackable T2 (Hetzner Cloud / K3s / CentOS Stream 9)"
+      description: K3s HCloud CentOS 9
     domain: stackable.test
     publicKeys: []
     spec:
@@ -54,7 +54,7 @@
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
 - name: hcloud-k3s-debian-10
-  description: K3s on Hetzner Cloud Debian 10
+  description: K3s HCloud Debian 10
   k8s_versions:
     - latest
     - stable
@@ -68,7 +68,7 @@
     template: hcloud-debian-10
     metadata: 
       name: hcloud-k3s-debian-10
-      description: "Cluster for Stackable T2 (Hetzner Cloud / K3s / Debian Linux 10)"
+      description: K3s HCloud Debian 10
     domain: stackable.test
     publicKeys: []
     spec:
@@ -81,7 +81,7 @@
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
 - name: hcloud-k3s-debian-11
-  description: K3s on Hetzner Cloud Debian 11
+  description: K3s HCloud Debian 11
   k8s_versions:
     - latest
     - stable
@@ -95,7 +95,7 @@
     template: hcloud-debian-11
     metadata: 
       name: hcloud-k3s-debian-11
-      description: "Cluster for Stackable T2 (Hetzner Cloud / K3s / Debian Linux 11)"
+      description: K3s HCloud Debian 11
     domain: stackable.test
     publicKeys: []
     spec:
@@ -108,7 +108,7 @@
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
 - name: ionos-k3s-centos-8
-  description: K3s on IONOS Cloud CentOS 8
+  description: K3s IONOS CentOS 8
   k8s_versions:
     - latest
     - stable
@@ -122,7 +122,7 @@
     template: ionos-centos-8
     metadata: 
       name: ionos-k3s-centos-8
-      description: "Cluster for Stackable T2 (IONOS Cloud / K3s / CentOS 8)"
+      description: K3s IONOS CentOS 8
     domain: stackable.test
     publicKeys: []
     spec:
@@ -136,7 +136,7 @@
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
 - name: ionos-k3s-debian-11
-  description: K3s on IONOS Cloud Debian 11
+  description: K3s IONOS Debian 11
   k8s_versions:
     - latest
     - stable
@@ -150,7 +150,7 @@
     template: ionos-debian-11
     metadata: 
       name: ionos-k3s-debian-11
-      description: "Cluster for Stackable T2 (IONOS Cloud / K3s / Debian Linux 11)"
+      description: K3s IONOS Debian 11
     domain: stackable.test
     publicKeys: []
     spec:
@@ -164,7 +164,7 @@
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
 - name: ionos-k8s
-  description: IONOS managed K8s
+  description: IONOS K8s
   k8s_versions:
     - "1.23.10"
     - "1.22.13"
@@ -175,7 +175,7 @@
     template: ionos-k8s
     metadata: 
       name: ionos-k8s
-      description: "Cluster for Stackable T2 (IONOS Cloud managed K8s)"
+      description: IONOS K8s
     publicKeys: []
     spec:
       region: de/fra
@@ -186,7 +186,7 @@
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
 - name: azure-aks
-  description: Microsoft Azure AKS
+  description: Azure AKS
   k8s_versions:
     - "1.24.3"
     - "1.23.8"
@@ -197,7 +197,7 @@
     template: azure-aks
     metadata: 
       name: azure-aks
-      description: "Cluster for Stackable T2 (Azure AKS)"
+      description: Azure AKS
     publicKeys: []
     spec:
       k8sVersion: "1.24.3"
@@ -207,7 +207,7 @@
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
 - name: aws-eks
-  description: Amazon AWS EKS
+  description: AWS EKS
   k8s_versions:
     - "1.23"
     - "1.22"
@@ -218,7 +218,7 @@
     template: aws-eks
     metadata: 
       name: aws-eks
-      description: "Cluster for Stackable T2 (AWS EKS)"
+      description: AWS EKS
     publicKeys: []
     spec:
       k8sVersion: "1.22"

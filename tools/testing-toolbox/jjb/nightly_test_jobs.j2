@@ -61,6 +61,14 @@
               --env OPERATOR_VERSION=NIGHTLY \
               docker.stackable.tech/testing-toolbox:latest create-testsuite
 
+            # Collect information to print out after the test job
+            export BUILD_RUN_PLATFORM=`cat testsuite/cluster.yaml | yq -e '.metadata.description'`
+            export BUILD_RUN_K8S_VERSION=`cat testsuite/cluster.yaml | yq -e '.spec.k8sVersion'`
+            export BUILD_RUN_LABEL="${BUILD_RUN_PLATFORM} | ${BUILD_RUN_K8S_VERSION}"
+
+            # This string can be parsed by the description-setter publisher
+            echo "build_run_label::#${BUILD_RUN_PLATFORM} | ${BUILD_RUN_K8S_VERSION}#"
+
             # Run testdriver
             mkdir -p testsuite/target/
             docker run --rm \
@@ -84,5 +92,9 @@
           include-custom-message: True
           custom-message: |
             (<$BUILD_URL|Open in classic Jenkins UI>)
+      - description-setter:
+          regexp: ".*build_run_label::#(.*)#.*"
+          regexp-for-failed: ".*build_run_label::#(.*)#"
+          set-for-matrix: false
 {% endfor %}
 
