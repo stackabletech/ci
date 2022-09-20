@@ -69,23 +69,23 @@
             # This string can be parsed by the description-setter publisher
             echo "build_run_label::#${BUILD_RUN_PLATFORM} | ${BUILD_RUN_K8S_VERSION}#"
 
-#            # Run testdriver
-#            mkdir -p testsuite/target/
-#            docker run --rm \
-#                --volume "$HOST_WORKSPACE/testsuite/target/:/target/" \
-#                --volume "$HOST_WORKSPACE/testsuite/cluster.yaml:/cluster.yaml" \
-#                --volume "$HOST_WORKSPACE/testsuite/test.sh:/test.sh" \
-#                --env CLUSTER=MANAGED \
-#                --env T2_TOKEN=$T2_TOKEN \
-#                --env T2_URL=https://t2.stackable.tech \
-#                --env UID_GID=$DOCKER_UID_GID \
-#                docker.stackable.tech/t2-testdriver    
+            # Run testdriver
+            mkdir -p testsuite/target/
+            docker run --rm \
+                --volume "$HOST_WORKSPACE/testsuite/target/:/target/" \
+                --volume "$HOST_WORKSPACE/testsuite/cluster.yaml:/cluster.yaml" \
+                --volume "$HOST_WORKSPACE/testsuite/test.sh:/test.sh" \
+                --env CLUSTER=MANAGED \
+                --env T2_TOKEN=$T2_TOKEN \
+                --env T2_URL=https://t2.stackable.tech \
+                --env UID_GID=$DOCKER_UID_GID \
+                docker.stackable.tech/t2-testdriver    
     publishers:
       - archive:
           artifacts: 'testsuite/target/*'
           allow-empty: true
       - slack: 
-          room: 'U02G2BBMZHR'
+          room: '{{ testsuite.nightly_test.slack_channels }}'
           notify-unstable: True
           notify-every-failure: True
           notify-back-to-normal: True
