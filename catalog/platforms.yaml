@@ -221,7 +221,7 @@
       description: "Cluster for Stackable T2 (AWS EKS)"
     publicKeys: []
     spec:
-      k8sVersion: "1.23"
+      k8sVersion: "1.22"
       node_count: 3
       versions:
         _-operator: NONE
