@@ -111,7 +111,11 @@
             *branch or tag:* `$GIT_BRANCH_OR_TAG`
             *operator version:* `$OPERATOR_VERSION`
             (<$BUILD_URL|Open in classic Jenkins UI>)
-      - description-setter
-          description: hurz
+      - description-setter:
+          regexp: ".*(<a href=.*a>)"
+          regexp-for-failed: ".*(<a href=.*a>)"
+          description: "some description"
+          description-for-failed: "another description"
+          set-for-matrix: true
 {% endfor %}
 
