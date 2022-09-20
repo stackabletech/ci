@@ -61,17 +61,26 @@
               --env OPERATOR_VERSION=NIGHTLY \
               docker.stackable.tech/testing-toolbox:latest create-testsuite
 
-            # Run testdriver
-            mkdir -p testsuite/target/
-            docker run --rm \
-                --volume "$HOST_WORKSPACE/testsuite/target/:/target/" \
-                --volume "$HOST_WORKSPACE/testsuite/cluster.yaml:/cluster.yaml" \
-                --volume "$HOST_WORKSPACE/testsuite/test.sh:/test.sh" \
-                --env CLUSTER=MANAGED \
-                --env T2_TOKEN=$T2_TOKEN \
-                --env T2_URL=https://t2.stackable.tech \
-                --env UID_GID=$DOCKER_UID_GID \
-                docker.stackable.tech/t2-testdriver    
+            # Collect information to print out after the test job (on Slack and Jenkins description)
+            export BUILD_RUN_PLATFORM=`cat testsuite/cluster.yaml | yq -e '.metadata.description'`
+            export BUILD_RUN_K8S_VERSION=`cat testsuite/cluster.yaml | yq -e '.spec.k8sVersion'`
+            export BUILD_RUN_LABEL="${BUILD_RUN_PLATFORM} | ${BUILD_RUN_K8S_VERSION}"
+
+            # This string can be parsed by the description-setter publisher
+            echo "build_run_label::#${BUILD_RUN_PLATFORM} | ${BUILD_RUN_K8S_VERSION}#"
+
+            exit 1
+#            # Run testdriver
+#            mkdir -p testsuite/target/
+#            docker run --rm \
+#                --volume "$HOST_WORKSPACE/testsuite/target/:/target/" \
+#                --volume "$HOST_WORKSPACE/testsuite/cluster.yaml:/cluster.yaml" \
+#                --volume "$HOST_WORKSPACE/testsuite/test.sh:/test.sh" \
+#                --env CLUSTER=MANAGED \
+#                --env T2_TOKEN=$T2_TOKEN \
+#                --env T2_URL=https://t2.stackable.tech \
+#                --env UID_GID=$DOCKER_UID_GID \
+#                docker.stackable.tech/t2-testdriver    
     publishers:
       - archive:
           artifacts: 'testsuite/target/*'
@@ -83,6 +92,11 @@
           notify-back-to-normal: True
           include-custom-message: True
           custom-message: |
+            *platform:* $BUILD_RUN_LABEL
             (<$BUILD_URL|Open in classic Jenkins UI>)
+      - description-setter:
+          regexp: ".*build_run_label::#(.*)#.*"
+          regexp-for-failed: ".*build_run_label::#(.*)#"
+          set-for-matrix: false
 {% endfor %}
 
