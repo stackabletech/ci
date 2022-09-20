@@ -59,6 +59,7 @@
             export PLATFORM_ID=`echo $TEST_PLATFORM | cut -d '<' -f 2 | cut -d '|' -f 1`
             export K8S_VERSION=`echo $TEST_PLATFORM | cut -d '<' -f 2 | cut -d '|' -f 2 | cut -d '>' -f 1`
             export GIT_BRANCH=`echo $GIT_BRANCH_OR_TAG | sed s#origin/##g`
+            echo "build_run_label::#${PLATFORM_ID} ${K8S_VERSION}#"
 
             # We're using Docker from within a Docker container, so we have to make sure to provide
             # the Docker daemon with the proper absolute path for volume mounts.
@@ -84,17 +85,17 @@
               --env OPERATOR_VERSION=$OPERATOR_VERSION \
               docker.stackable.tech/testing-toolbox:latest create-testsuite
 
-            # Run testdriver
-            mkdir -p testsuite/target/
-            docker run --rm \
-                --volume "$HOST_WORKSPACE/testsuite/target/:/target/" \
-                --volume "$HOST_WORKSPACE/testsuite/cluster.yaml:/cluster.yaml" \
-                --volume "$HOST_WORKSPACE/testsuite/test.sh:/test.sh" \
-                --env CLUSTER=MANAGED \
-                --env T2_TOKEN=$T2_TOKEN \
-                --env T2_URL=https://t2.stackable.tech \
-                --env UID_GID=$DOCKER_UID_GID \
-                docker.stackable.tech/t2-testdriver    
+#            # Run testdriver
+#            mkdir -p testsuite/target/
+#            docker run --rm \
+#                --volume "$HOST_WORKSPACE/testsuite/target/:/target/" \
+#                --volume "$HOST_WORKSPACE/testsuite/cluster.yaml:/cluster.yaml" \
+#                --volume "$HOST_WORKSPACE/testsuite/test.sh:/test.sh" \
+#                --env CLUSTER=MANAGED \
+#                --env T2_TOKEN=$T2_TOKEN \
+#                --env T2_URL=https://t2.stackable.tech \
+#                --env UID_GID=$DOCKER_UID_GID \
+#                docker.stackable.tech/t2-testdriver    
     publishers:
       - archive:
           artifacts: 'testsuite/target/*'
