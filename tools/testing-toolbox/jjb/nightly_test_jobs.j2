@@ -61,7 +61,7 @@
               --env OPERATOR_VERSION=NIGHTLY \
               docker.stackable.tech/testing-toolbox:latest create-testsuite
 
-            # Collect information to print out after the test job (on Slack and Jenkins description)
+            # Collect information to print out after the test job
             export BUILD_RUN_PLATFORM=`cat testsuite/cluster.yaml | yq -e '.metadata.description'`
             export BUILD_RUN_K8S_VERSION=`cat testsuite/cluster.yaml | yq -e '.spec.k8sVersion'`
             export BUILD_RUN_LABEL="${BUILD_RUN_PLATFORM} | ${BUILD_RUN_K8S_VERSION}"
