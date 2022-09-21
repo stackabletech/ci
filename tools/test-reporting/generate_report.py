@@ -201,6 +201,21 @@ def teststeps(build):
         } for testcase in teststeps_grouped_by_testcase for teststep in teststeps_grouped_by_testcase[testcase]]
 
 
+def duration_series(testcases):
+    return [ { 'duration_sec': tc['duration_sec'], 'result': tc['result'] } for tc in testcases ]
+
+
+def is_flaky_series(runs):
+    allPassed = all((lambda run: run['result']=='passed')(run) for run in runs)
+    allFailed = all((lambda run: run['result']=='failed')(run) for run in runs)
+    return not (allPassed or allFailed)
+
+def add_average_failure_duration_ratio(testcase):
+    fails_durations = [ run['duration_sec'] for run in testcase['runs'] if run['result'] == 'failed']
+    pass_durations = [ run['duration_sec'] for run in testcase['runs'] if run['result'] == 'passed']
+
+    testcase['average_failure_duration_ratio'] = (sum(fails_durations)/len(fails_durations))  / (sum(pass_durations)/len(pass_durations))
+
 if __name__ == "__main__":
 
     archive('products.json', PRODUCTS)
@@ -220,3 +235,23 @@ if __name__ == "__main__":
     teststeps_flat = sorted([t for g in teststeps_grouped_by_build for t in g], key=lambda b: (b['product'], b['date'], b['testcase'], b['teststep']))
     archive('teststeps.json', teststeps_flat)
     print(f"Dumped {len(teststeps_flat)} test steps.")
+
+    test_runs_grouped_by_testcase = {}
+    for tc in testcases_flat:
+        test_runs_grouped_by_testcase.setdefault(f"{tc['product']}/{tc['testcase']}", []).append(tc)
+ 
+    test_case_duration_series = [ { 'name': tc, 'runs': duration_series(test_runs_grouped_by_testcase[tc]) } for tc in test_runs_grouped_by_testcase ]
+    test_case_duration_series = [ tc for tc in test_case_duration_series if is_flaky_series(tc['runs']) ]
+    for tc in test_case_duration_series:
+        add_average_failure_duration_ratio(tc)
+    test_case_duration_series = sorted(test_case_duration_series, key=lambda tc: tc['average_failure_duration_ratio'])        
+
+    with open (f"target/timeout-flakiness.txt", "w") as f:
+        for tc in test_case_duration_series:
+            f.write(f"{tc['name']}\n")
+            f.write(f"ratio [average failure duration/average pass duration]: {tc['average_failure_duration_ratio']}\n")
+            for run in tc['runs']:
+                f.write(f"{run['result']} after {run['duration_sec']} sec\n")
+            f.write("\n")
+        f.close()
+
