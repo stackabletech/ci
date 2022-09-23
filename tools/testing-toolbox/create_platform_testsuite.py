@@ -48,7 +48,10 @@ def write_cluster_definition(cluster_definition):
 
 def write_test_script():
     with open ('/target/test.sh', 'w') as f:
-        f.write("""sleep 10
+        f.write("""echo "Sleeping for an hour..."
+sleep 3600
+echo "Sleeping for another hour..."
+sleep 3600
 kubectl get nodes
 echo ""
 echo ""
