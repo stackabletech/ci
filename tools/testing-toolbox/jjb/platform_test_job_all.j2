@@ -54,7 +54,7 @@
             export DOCKER_UID_GID="$(id -u):$(id -g)"
 
             # Pull the testdriver Docker image
-            docker pull docker.stackable.tech/t2-testdriver:2071768
+            docker pull docker.stackable.tech/t2-testdriver:latest
             
             echo "$PLATFORM_ID"
             echo "$T2_INSTANCE"
@@ -87,7 +87,7 @@
                 --env T2_TOKEN=$T2_TOKEN \
                 --env T2_URL=$T2_URL \
                 --env UID_GID=$DOCKER_UID_GID \
-                docker.stackable.tech/t2-testdriver:2071768
+                docker.stackable.tech/t2-testdriver:latest
     publishers:
       - archive:
           artifacts: 'testsuite/target/*'
