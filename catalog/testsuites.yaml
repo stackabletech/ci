@@ -293,6 +293,8 @@
       test_params: --parallel 4
     - name: aws-eks
       test_params: --parallel 4
+    - name: gke
+      test_params: --parallel 4
   nightly_test:
     platform: "'random(aws-eks)'"
     slack_channels: "#product-hdfs"
