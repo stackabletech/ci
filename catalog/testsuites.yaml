@@ -75,6 +75,12 @@
       cluster_definition_overlay: |
         spec:
           awsInstanceType: "t2.xlarge"
+    - name: gke
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          node_count: 5
+          machineType: e2-standard-4
   nightly_test:
     platform: "'random(aws-eks)'"
     slack_channels: "#product-airflow"
@@ -166,6 +172,12 @@
         spec:
           node_count: 5
           awsInstanceType: "t2.2xlarge"
+    - name: gke
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          node_count: 5
+          machineType: e2-standard-4
   nightly_test:
     platform: "'random(aws-eks)'"
     slack_channels: "#product-druid"
@@ -256,6 +268,12 @@
         spec:
           node_count: 5
           awsInstanceType: "t2.xlarge"
+    - name: gke
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          node_count: 5
+          machineType: e2-standard-4
   nightly_test:
     platform: "'random(aws-eks)'"
     slack_channels: "#product-hbase"
@@ -381,6 +399,12 @@
         spec:
           node_count: 5
           awsInstanceType: "t2.xlarge"
+    - name: gke
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          node_count: 5
+          machineType: e2-highcpu-8
   nightly_test:
     platform: "'random(aws-eks)'"
     slack_channels: "#product-hive"
@@ -447,6 +471,12 @@
         spec:
           node_count: 6
           awsInstanceType: "t2.xlarge"
+    - name: gke
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          node_count: 6
+          machineType: e2-standard-4
   nightly_test:
     platform: "'random(aws-eks)'"
     slack_channels: "#product-kafka"
@@ -487,6 +517,11 @@
         spec:
           node_count: 5
           awsInstanceType: "t2.xlarge"
+    - name: gke
+      cluster_definition_overlay: |
+        spec:
+          node_count: 5
+          machineType: e2-standard-4
   nightly_test:
     platform: "'random(aws-eks)'"
     slack_channels: "#product-nifi"
@@ -569,6 +604,12 @@
         spec:
           node_count: 5
           awsInstanceType: "t2.xlarge"
+    - name: gke
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          node_count: 5
+          machineType: e2-standard-4
   nightly_test:
     platform: "'random(aws-eks)'"
     slack_channels: "#product-opa"
@@ -634,6 +675,12 @@
           node_count: 8
           awsInstanceType: "t2.xlarge"
       test_params: --parallel 1
+    - name: gke
+      cluster_definition_overlay: |
+        spec:
+          node_count: 8
+          machineType: e2-standard-4
+      test_params: --parallel 1
   nightly_test:
     platform: "'random(aws-eks)'"
     slack_channels: "#product-spark-k8s"
@@ -673,6 +720,12 @@
         spec:
           node_count: 5
           awsInstanceType: "t2.xlarge"
+    - name: gke
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          node_count: 3
+          machineType: e2-standard-4
   nightly_test:
     platform: "'random(aws-eks)'"
     slack_channels: "#product-superset"
@@ -765,6 +818,12 @@
       cluster_definition_overlay: |
         spec:
           awsInstanceType: "t2.xlarge"
+    - name: gke
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          node_count: 3
+          machineType: e2-standard-4
   nightly_test:
     platform: "'random(aws-eks)'"
     slack_channels: "#product-trino"
@@ -835,6 +894,11 @@
         spec:
           node_count: 8
     - name: aws-eks
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          node_count: 8
+    - name: gke
       test_params: --parallel 1
       cluster_definition_overlay: |
         spec:
