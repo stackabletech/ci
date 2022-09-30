@@ -311,6 +311,9 @@
       test_params: --parallel 4
     - name: aws-eks
       test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          awsInstanceType: "t2.large"
     - name: gke
       test_params: --parallel 4
   nightly_test:
