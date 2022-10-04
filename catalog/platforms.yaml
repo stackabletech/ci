@@ -22,6 +22,7 @@
       nodes:
         main:
           numberOfNodes: 3
+          serverType: cpx21
       versions:
         _-operator: NONE
         secret-operator: NIGHTLY
@@ -49,6 +50,7 @@
       nodes:
         main:
           numberOfNodes: 3
+          serverType: cpx21
       versions:
         _-operator: NONE
         secret-operator: NIGHTLY
@@ -76,6 +78,7 @@
       nodes:
         main:
           numberOfNodes: 3
+          serverType: cpx21
       versions:
         _-operator: NONE
         secret-operator: NIGHTLY
@@ -103,6 +106,7 @@
       nodes:
         main:
           numberOfNodes: 3
+          serverType: cpx21
       versions:
         _-operator: NONE
         secret-operator: NIGHTLY
@@ -131,6 +135,10 @@
       nodes:
         main:
           numberOfNodes: 3
+          numberOfCores: 4
+          memoryMb: 4096
+          diskType: SSD
+          diskSizeGb: 100
       versions:
         _-operator: NONE
         secret-operator: NIGHTLY
@@ -159,6 +167,10 @@
       nodes:
         main:
           numberOfNodes: 3
+          numberOfCores: 4
+          memoryMb: 4096
+          diskType: SSD
+          diskSizeGb: 100
       versions:
         _-operator: NONE
         secret-operator: NIGHTLY
@@ -179,8 +191,12 @@
     publicKeys: []
     spec:
       region: de/fra
-      k8sVersion: "1.23.9"
+      k8sVersion: "1.24.6"
       node_count: 3
+      numberOfCores: 4
+      memoryMb: 4096
+      diskType: SSD
+      diskSizeGb: 250
       versions:
         _-operator: NONE
         secret-operator: NIGHTLY
@@ -202,6 +218,7 @@
     spec:
       k8sVersion: "1.24.3"
       node_count: 3
+      vm_size: "Standard_D2_v2"
       versions:
         _-operator: NONE
         secret-operator: NIGHTLY
@@ -223,6 +240,7 @@
     spec:
       k8sVersion: "1.22"
       node_count: 3
+      awsInstanceType: "t2.small"
       versions:
         _-operator: NONE
         secret-operator: NIGHTLY
@@ -245,6 +263,7 @@
       region: europe-central2
       k8sVersion: 1.24
       node_count: 3
+      machineType: e2-standard-2
       versions:
         _-operator: NONE
         secret-operator: NIGHTLY
