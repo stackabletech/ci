@@ -272,26 +272,26 @@
         zookeeper-operator: NIGHTLY
   platforms: 
     - name: hcloud-k3s-centos-8
-      test_params: --parallel 4
+      test_params: --parallel 2
     - name: hcloud-k3s-centos-9
-      test_params: --parallel 4
+      test_params: --parallel 2
     - name: hcloud-k3s-debian-10
-      test_params: --parallel 4
+      test_params: --parallel 2
     - name: ionos-k3s-centos-8
-      test_params: --parallel 4
+      test_params: --parallel 2
     - name: ionos-k3s-debian-11
-      test_params: --parallel 4
+      test_params: --parallel 2
     - name: ionos-k8s
-      test_params: --parallel 4
+      test_params: --parallel 2
     - name: azure-aks
-      test_params: --parallel 4
+      test_params: --parallel 2
     - name: aws-eks
-      test_params: --parallel 4
+      test_params: --parallel 2
       cluster_definition_overlay: |
         spec:
           awsInstanceType: "t2.large"
     - name: gke
-      test_params: --parallel 4
+      test_params: --parallel 2
   nightly_test:
     platform: "'random(aws-eks)'"
     slack_channels: "#product-hdfs"
