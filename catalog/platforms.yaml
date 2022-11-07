@@ -204,6 +204,7 @@
 - name: azure-aks
   description: Azure AKS
   k8s_versions:
+    - "1.25.2"
     - "1.24.6"
     - "1.23.12"
     - "1.22.15"
