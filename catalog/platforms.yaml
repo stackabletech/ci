@@ -303,9 +303,9 @@
       name: gke
       description: deprecated
       labels:
-        cloud-vendor: Google_GKE
+        cloud-vendor: google-gke
         k8s: managed
-        purpose: platform_test
+        purpose: platform-test
     publicKeys: []
     spec:
       region: europe-central2
