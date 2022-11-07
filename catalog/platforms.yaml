@@ -16,10 +16,10 @@
       name: hcloud-k3s-centos-8
       description: deprecated
       labels:
-        cloud-vendor: Hetzner_HCloud
-        os: CentOS8
-        k8s: K3s
-        purpose: platform_test
+        cloud-vendor: hetzner-hcloud
+        os: centos-8
+        k8s: k3s
+        purpose: platform-test
     domain: stackable.test
     publicKeys: []
     spec:
@@ -49,10 +49,10 @@
       name: hcloud-k3s-centos-stream-9
       description: deprecated
       labels:
-        cloud-vendor: Hetzner_HCloud
-        os: CentOS-Stream-9
-        k8s: K3s
-        purpose: platform_test
+        cloud-vendor: hetzner-hcloud
+        os: centos-stream-9
+        k8s: k3s
+        purpose: platform-test
     domain: stackable.test
     publicKeys: []
     spec:
@@ -82,10 +82,10 @@
       name: hcloud-k3s-debian-10
       description: deprecated
       labels:
-        cloud-vendor: Hetzner_HCloud
-        os: Debian10
-        k8s: K3s
-        purpose: platform_test
+        cloud-vendor: hetzner-hcloud
+        os: debian-10
+        k8s: k3s
+        purpose: platform-test
     domain: stackable.test
     publicKeys: []
     spec:
@@ -115,10 +115,10 @@
       name: hcloud-k3s-debian-11
       description: deprecated
       labels:
-        cloud-vendor: Hetzner_HCloud
-        os: Debian11
-        k8s: K3s
-        purpose: platform_test
+        cloud-vendor: hetzner-hcloud
+        os: debian-11
+        k8s: k3s
+        purpose: platform-test
     domain: stackable.test
     publicKeys: []
     spec:
@@ -148,10 +148,10 @@
       name: ionos-k3s-centos-8
       description: deprecated
       labels:
-        cloud-vendor: IONOS_Cloud
-        os: CentOS8
-        k8s: K3s
-        purpose: platform_test
+        cloud-vendor: ionos-cloud
+        os: centos-8
+        k8s: k3s
+        purpose: platform-test
     domain: stackable.test
     publicKeys: []
     spec:
@@ -185,10 +185,10 @@
       name: ionos-k3s-debian-11
       description: deprecated
       labels:
-        cloud-vendor: IONOS_Cloud
-        os: Debian11
-        k8s: K3s
-        purpose: platform_test
+        cloud-vendor: ionos-cloud
+        os: debian-11
+        k8s: k3s
+        purpose: platform-test
     domain: stackable.test
     publicKeys: []
     spec:
@@ -219,9 +219,9 @@
       name: ionos-k8s
       description: deprecated
       labels:
-        cloud-vendor: IONOS_Cloud
-        k8s: managed
-        purpose: platform_test
+        cloud-vendor: ionos-cloud
+        k8s: managed-k8s
+        purpose: platform-test
     publicKeys: []
     spec:
       region: de/fra
@@ -250,9 +250,9 @@
       name: azure-aks
       description: deprecated
       labels:
-        cloud-vendor: Microsoft_Azure
-        k8s: managed
-        purpose: platform_test
+        cloud-vendor: microsoft-azure
+        k8s: azure-aks
+        purpose: platform-test
     publicKeys: []
     spec:
       location: northeurope
@@ -277,9 +277,9 @@
       name: aws-eks
       description: deprecated
       labels:
-        cloud-vendor: Amazon_AWS
-        k8s: managed
-        purpose: platform_test
+        cloud-vendor: aws-eks
+        k8s: managed-k8s
+        purpose: platform-test
     publicKeys: []
     spec:
       k8sVersion: "1.22"
@@ -303,8 +303,8 @@
       name: gke
       description: deprecated
       labels:
-        cloud-vendor: google-gke
-        k8s: managed
+        cloud-vendor: google-cloud
+        k8s: gke
         purpose: platform-test
     publicKeys: []
     spec:
