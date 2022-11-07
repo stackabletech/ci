@@ -212,7 +212,7 @@
     apiVersion: t2.stackable.tech/v1
     kind: Infra
     template: azure-aks
-    location: "North Europe"
+    location: northeurope
     metadata: 
       name: azure-aks
       description: Azure AKS
