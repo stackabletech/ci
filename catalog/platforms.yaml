@@ -212,12 +212,12 @@
     apiVersion: t2.stackable.tech/v1
     kind: Infra
     template: azure-aks
-    location: northeurope
     metadata: 
       name: azure-aks
       description: Azure AKS
     publicKeys: []
     spec:
+      location: northeurope
       k8sVersion: "1.24.3"
       node_count: 3
       vm_size: "Standard_D2_v2"
