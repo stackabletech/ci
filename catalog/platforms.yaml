@@ -21,7 +21,6 @@
         k8s: k3s
         purpose: platform-test
     domain: stackable.test
-    publicKeys: []
     spec:
       k8sVersion: latest
       nodes:
@@ -54,7 +53,6 @@
         k8s: k3s
         purpose: platform-test
     domain: stackable.test
-    publicKeys: []
     spec:
       k8sVersion: latest
       nodes:
@@ -87,7 +85,6 @@
         k8s: k3s
         purpose: platform-test
     domain: stackable.test
-    publicKeys: []
     spec:
       k8sVersion: latest
       nodes:
@@ -120,7 +117,6 @@
         k8s: k3s
         purpose: platform-test
     domain: stackable.test
-    publicKeys: []
     spec:
       k8sVersion: latest
       nodes:
@@ -153,7 +149,6 @@
         k8s: k3s
         purpose: platform-test
     domain: stackable.test
-    publicKeys: []
     spec:
       region: de/fra
       k8sVersion: latest
@@ -190,7 +185,6 @@
         k8s: k3s
         purpose: platform-test
     domain: stackable.test
-    publicKeys: []
     spec:
       region: de/fra
       k8sVersion: latest
@@ -222,7 +216,6 @@
         cloud-vendor: ionos-cloud
         k8s: managed-k8s
         purpose: platform-test
-    publicKeys: []
     spec:
       region: de/fra
       k8sVersion: "1.24.6"
@@ -253,7 +246,6 @@
         cloud-vendor: microsoft-azure
         k8s: azure-aks
         purpose: platform-test
-    publicKeys: []
     spec:
       location: northeurope
       k8sVersion: "1.24.3"
@@ -280,7 +272,6 @@
         cloud-vendor: aws-eks
         k8s: managed-k8s
         purpose: platform-test
-    publicKeys: []
     spec:
       k8sVersion: "1.22"
       node_count: 3
@@ -306,7 +297,6 @@
         cloud-vendor: google-cloud
         k8s: gke
         purpose: platform-test
-    publicKeys: []
     spec:
       region: europe-central2
       k8sVersion: 1.24
