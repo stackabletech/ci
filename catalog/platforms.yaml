@@ -14,7 +14,7 @@
     template: hcloud-centos-8
     metadata: 
       name: hcloud-k3s-centos-8
-      description: deprecated
+      description: K3s HCloud CentOS 8
       labels:
         cloud-vendor: hetzner-hcloud
         os: centos-8
@@ -46,7 +46,7 @@
     template: hcloud-centos-stream-9
     metadata: 
       name: hcloud-k3s-centos-stream-9
-      description: deprecated
+      description: K3s HCloud CentOS 9
       labels:
         cloud-vendor: hetzner-hcloud
         os: centos-stream-9
@@ -78,7 +78,7 @@
     template: hcloud-debian-10
     metadata: 
       name: hcloud-k3s-debian-10
-      description: deprecated
+      description: K3s HCloud Debian 10
       labels:
         cloud-vendor: hetzner-hcloud
         os: debian-10
@@ -110,7 +110,7 @@
     template: hcloud-debian-11
     metadata: 
       name: hcloud-k3s-debian-11
-      description: deprecated
+      description: K3s HCloud Debian 11
       labels:
         cloud-vendor: hetzner-hcloud
         os: debian-11
@@ -142,7 +142,7 @@
     template: ionos-centos-8
     metadata: 
       name: ionos-k3s-centos-8
-      description: deprecated
+      description: K3s IONOS CentOS 8
       labels:
         cloud-vendor: ionos-cloud
         os: centos-8
@@ -178,7 +178,7 @@
     template: ionos-debian-11
     metadata: 
       name: ionos-k3s-debian-11
-      description: deprecated
+      description: K3s IONOS Debian 11
       labels:
         cloud-vendor: ionos-cloud
         os: debian-11
@@ -211,7 +211,7 @@
     template: ionos-k8s
     metadata: 
       name: ionos-k8s
-      description: deprecated
+      description: IONOS K8s
       labels:
         cloud-vendor: ionos-cloud
         k8s: managed-k8s
@@ -241,7 +241,7 @@
     template: azure-aks
     metadata: 
       name: azure-aks
-      description: deprecated
+      description: Azure AKS
       labels:
         cloud-vendor: microsoft-azure
         k8s: azure-aks
@@ -267,7 +267,7 @@
     template: aws-eks
     metadata: 
       name: aws-eks
-      description: deprecated
+      description: AWS EKS
       labels:
         cloud-vendor: aws-eks
         k8s: managed-k8s
@@ -292,7 +292,7 @@
     template: gke
     metadata: 
       name: gke
-      description: deprecated
+      description: Google GKE
       labels:
         cloud-vendor: google-cloud
         k8s: gke
