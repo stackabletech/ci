@@ -9,9 +9,8 @@
     - v1.24
     - v1.23
   cluster_definition:
-    apiVersion: t2.stackable.tech/v1
-    kind: Infra
-    template: hcloud-centos-8
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
     metadata: 
       name: hcloud-k3s-centos-8
       description: K3s HCloud CentOS 8
@@ -20,14 +19,14 @@
         os: centos-8
         k8s: k3s
         purpose: platform-test
-    domain: stackable.test
     spec:
+      template: hcloud-centos-8
       k8sVersion: latest
       nodes:
         main:
-          numberOfNodes: 3
+          count: 3
           serverType: cpx21
-      versions:
+      stackableVersions:
         _-operator: NONE
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
@@ -41,9 +40,8 @@
     - v1.24
     - v1.23
   cluster_definition:
-    apiVersion: t2.stackable.tech/v1
-    kind: Infra
-    template: hcloud-centos-stream-9
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
     metadata: 
       name: hcloud-k3s-centos-stream-9
       description: K3s HCloud CentOS 9
@@ -52,14 +50,14 @@
         os: centos-stream-9
         k8s: k3s
         purpose: platform-test
-    domain: stackable.test
     spec:
+      template: hcloud-centos-stream-9
       k8sVersion: latest
       nodes:
         main:
-          numberOfNodes: 3
+          count: 3
           serverType: cpx21
-      versions:
+      stackableVersions:
         _-operator: NONE
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
@@ -73,9 +71,8 @@
     - v1.24
     - v1.23
   cluster_definition:
-    apiVersion: t2.stackable.tech/v1
-    kind: Infra
-    template: hcloud-debian-10
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
     metadata: 
       name: hcloud-k3s-debian-10
       description: K3s HCloud Debian 10
@@ -84,14 +81,14 @@
         os: debian-10
         k8s: k3s
         purpose: platform-test
-    domain: stackable.test
     spec:
+      template: hcloud-debian-10
       k8sVersion: latest
       nodes:
         main:
-          numberOfNodes: 3
+          count: 3
           serverType: cpx21
-      versions:
+      stackableVersions:
         _-operator: NONE
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
@@ -105,9 +102,8 @@
     - v1.24
     - v1.23
   cluster_definition:
-    apiVersion: t2.stackable.tech/v1
-    kind: Infra
-    template: hcloud-debian-11
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
     metadata: 
       name: hcloud-k3s-debian-11
       description: K3s HCloud Debian 11
@@ -116,14 +112,14 @@
         os: debian-11
         k8s: k3s
         purpose: platform-test
-    domain: stackable.test
     spec:
+      template: hcloud-debian-11
       k8sVersion: latest
       nodes:
         main:
-          numberOfNodes: 3
+          count: 3
           serverType: cpx21
-      versions:
+      stackableVersions:
         _-operator: NONE
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
@@ -137,9 +133,8 @@
     - v1.24
     - v1.23
   cluster_definition:
-    apiVersion: t2.stackable.tech/v1
-    kind: Infra
-    template: ionos-centos-8
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
     metadata: 
       name: ionos-k3s-centos-8
       description: K3s IONOS CentOS 8
@@ -148,18 +143,18 @@
         os: centos-8
         k8s: k3s
         purpose: platform-test
-    domain: stackable.test
     spec:
+      template: ionos-centos-8
       region: de/fra
       k8sVersion: latest
       nodes:
         main:
-          numberOfNodes: 3
+          count: 3
           numberOfCores: 4
           memoryMb: 4096
           diskType: SSD
           diskSizeGb: 100
-      versions:
+      stackableVersions:
         _-operator: NONE
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
@@ -173,9 +168,8 @@
     - v1.24
     - v1.23
   cluster_definition:
-    apiVersion: t2.stackable.tech/v1
-    kind: Infra
-    template: ionos-debian-11
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
     metadata: 
       name: ionos-k3s-debian-11
       description: K3s IONOS Debian 11
@@ -184,31 +178,30 @@
         os: debian-11
         k8s: k3s
         purpose: platform-test
-    domain: stackable.test
     spec:
+      template: ionos-debian-11
       region: de/fra
       k8sVersion: latest
       nodes:
         main:
-          numberOfNodes: 3
+          count: 3
           numberOfCores: 4
           memoryMb: 4096
           diskType: SSD
           diskSizeGb: 100
-      versions:
+      stackableVersions:
         _-operator: NONE
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
 - name: ionos-k8s
   description: IONOS K8s
   k8s_versions:
-    - "1.24.6"
-    - "1.23.12"
-    - "1.22.15"
+    - "1.24"
+    - "1.23"
+    - "1.22"
   cluster_definition:
-    apiVersion: t2.stackable.tech/v1
-    kind: Infra
-    template: ionos-k8s
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
     metadata: 
       name: ionos-k8s
       description: IONOS K8s
@@ -217,28 +210,29 @@
         k8s: managed-k8s
         purpose: platform-test
     spec:
+      template: ionos-k8s
       region: de/fra
-      k8sVersion: "1.24.6"
-      node_count: 3
-      numberOfCores: 4
-      memoryMb: 4096
-      diskType: SSD
-      diskSizeGb: 250
-      versions:
+      k8sVersion: "1.24"
+      nodes:
+        count: 3
+        numberOfCores: 4
+        memoryMb: 4096
+        diskType: SSD
+        diskSizeGb: 250
+      stackableVersions:
         _-operator: NONE
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
 - name: azure-aks
   description: Azure AKS
   k8s_versions:
-    - "1.25.2"
-    - "1.24.6"
-    - "1.23.12"
-    - "1.22.15"
+    - "1.25"
+    - "1.24"
+    - "1.23"
+    - "1.22"
   cluster_definition:
-    apiVersion: t2.stackable.tech/v1
-    kind: Infra
-    template: azure-aks
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
     metadata: 
       name: azure-aks
       description: Azure AKS
@@ -247,11 +241,13 @@
         k8s: azure-aks
         purpose: platform-test
     spec:
+      template: azure-aks
       location: northeurope
-      k8sVersion: "1.24.3"
-      node_count: 3
-      vm_size: "Standard_D2_v2"
-      versions:
+      k8sVersion: "1.25"
+      nodes:
+        count: 3
+        vmSize: Standard_D2_v2
+      stackableVersions:
         _-operator: NONE
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
@@ -262,9 +258,8 @@
     - "1.22"
     - "1.21"
   cluster_definition:
-    apiVersion: t2.stackable.tech/v1
-    kind: Infra
-    template: aws-eks
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
     metadata: 
       name: aws-eks
       description: AWS EKS
@@ -273,23 +268,25 @@
         k8s: managed-k8s
         purpose: platform-test
     spec:
+      template: aws-eks
       k8sVersion: "1.22"
-      node_count: 3
-      awsInstanceType: "t2.small"
-      versions:
+      nodes:
+        count: 3
+        instanceType: t2.small
+      stackableVersions:
         _-operator: NONE
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
 - name: gke
   description: Google GKE
   k8s_versions:
+    - "1.25"
     - "1.24"
     - "1.23"
     - "1.22"
   cluster_definition:
-    apiVersion: t2.stackable.tech/v1
-    kind: Infra
-    template: gke
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
     metadata: 
       name: gke
       description: Google GKE
@@ -298,11 +295,13 @@
         k8s: gke
         purpose: platform-test
     spec:
+      template: gke
       region: europe-central2
-      k8sVersion: 1.24
-      node_count: 3
-      machineType: e2-standard-2
-      versions:
+      k8sVersion: "1.25"
+      nodes:
+        count: 3
+        machineType: e2-standard-2
+      stackableVersions:
         _-operator: NONE
         secret-operator: NIGHTLY
         commons-operator: NIGHTLY
