@@ -77,10 +77,10 @@
 
             if [ "$T2_INSTANCE" = "T2_PROD" ]; then
               export T2_TOKEN=$T2_PROD_TOKEN
-              export T2_URL="https://t2.stackable.tech"
+              export T2_URL="https://api.t2.stackable.tech"
             elif [ "$T2_INSTANCE" = "T2_DEV" ]; then
               export T2_TOKEN=$T2_DEV_TOKEN
-              export T2_URL="https://t2-dev.stackable.tech"
+              export T2_URL="https://api.t2-dev.stackable.tech"
             else
               echo "unknown T2 instance"
               exit 1
