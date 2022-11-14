@@ -146,7 +146,7 @@ def create_testsuite():
         cluster_definition['spec']['k8sVersion'] = k8s_version
 
     if(operator_version):
-        cluster_definition['spec']['versions'][testsuite_name] = operator_version
+        cluster_definition['spec']['stackableVersions'][testsuite_name] = operator_version
 
     write_cluster_definition(cluster_definition)
     write_test_script(testsuite, testsuite_platform_definition['test_params'] if 'test_params' in testsuite_platform_definition else '')
