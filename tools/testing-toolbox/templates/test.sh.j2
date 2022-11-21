@@ -1,4 +1,5 @@
 #!/bin/bash
+# wait a minute for cluster to be REALLY ready
 sleep 60
 
 {% if git_branch %}
@@ -15,5 +16,8 @@ exit_code=$?
 
 {% for operator in testsuite.operator_logs %}./operator-logs.sh {{ operator }} > /target/{{ operator }}-operator.log
 {% endfor %}
+
+# cleanup of the test resources might take a while, so we wait another minute
+sleep 60
 
 exit $exit_code
