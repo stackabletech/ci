@@ -14,11 +14,10 @@
     metadata: 
       name: hcloud-k3s-centos-8
       description: K3s HCloud CentOS 8
-      labels:
-        cloud-vendor: hetzner-hcloud
-        os: centos-8
-        k8s: k3s
-        purpose: platform-test
+      annotations:
+        t2.stackable.tech/cloud-vendor: "Hetzner HCloud"
+        t2.stackable.tech/os: "CentOS 8"
+        t2.stackable.tech/k8s: "K3s"
     spec:
       template: hcloud-centos-8
       k8sVersion: latest
@@ -45,11 +44,10 @@
     metadata: 
       name: hcloud-k3s-centos-stream-9
       description: K3s HCloud CentOS 9
-      labels:
-        cloud-vendor: hetzner-hcloud
-        os: centos-stream-9
-        k8s: k3s
-        purpose: platform-test
+      annotations:
+        t2.stackable.tech/cloud-vendor: "Hetzner HCloud"
+        t2.stackable.tech/os: "CentOS Stream 9"
+        t2.stackable.tech/k8s: "K3s"
     spec:
       template: hcloud-centos-stream-9
       k8sVersion: latest
@@ -76,11 +74,10 @@
     metadata: 
       name: hcloud-k3s-debian-10
       description: K3s HCloud Debian 10
-      labels:
-        cloud-vendor: hetzner-hcloud
-        os: debian-10
-        k8s: k3s
-        purpose: platform-test
+      annotations:
+        t2.stackable.tech/cloud-vendor: "Hetzner HCloud"
+        t2.stackable.tech/os: "Debian 10"
+        t2.stackable.tech/k8s: "K3s"
     spec:
       template: hcloud-debian-10
       k8sVersion: latest
@@ -107,11 +104,10 @@
     metadata: 
       name: hcloud-k3s-debian-11
       description: K3s HCloud Debian 11
-      labels:
-        cloud-vendor: hetzner-hcloud
-        os: debian-11
-        k8s: k3s
-        purpose: platform-test
+      annotations:
+        t2.stackable.tech/cloud-vendor: "Hetzner HCloud"
+        t2.stackable.tech/os: "Debian 11"
+        t2.stackable.tech/k8s: "K3s"
     spec:
       template: hcloud-debian-11
       k8sVersion: latest
@@ -138,11 +134,10 @@
     metadata: 
       name: ionos-k3s-rockylinux-8
       description: K3s IONOS CentOS 8
-      labels:
-        cloud-vendor: ionos-cloud
-        os: rocky-8
-        k8s: k3s
-        purpose: platform-test
+      annotations:
+        t2.stackable.tech/cloud-vendor: "IONOS Cloud"
+        t2.stackable.tech/os: "Rocky Linux 8"
+        t2.stackable.tech/k8s: "K3s"
     spec:
       template: ionos-rocky-8
       region: de/fra
@@ -173,11 +168,10 @@
     metadata: 
       name: ionos-k3s-debian-10
       description: K3s IONOS Debian 10
-      labels:
-        cloud-vendor: ionos-cloud
-        os: debian-10
-        k8s: k3s
-        purpose: platform-test
+      annotations:
+        t2.stackable.tech/cloud-vendor: "IONOS Cloud"
+        t2.stackable.tech/os: "Debian 10"
+        t2.stackable.tech/k8s: "K3s"
     spec:
       template: ionos-debian-10
       region: de/fra
@@ -208,11 +202,10 @@
     metadata: 
       name: ionos-k3s-debian-11
       description: K3s IONOS Debian 11
-      labels:
-        cloud-vendor: ionos-cloud
-        os: debian-11
-        k8s: k3s
-        purpose: platform-test
+      annotations:
+        t2.stackable.tech/cloud-vendor: "IONOS Cloud"
+        t2.stackable.tech/os: "Debian 11"
+        t2.stackable.tech/k8s: "K3s"
     spec:
       template: ionos-debian-11
       region: de/fra
@@ -240,10 +233,9 @@
     metadata: 
       name: ionos-k8s
       description: IONOS K8s
-      labels:
-        cloud-vendor: ionos-cloud
-        k8s: managed-k8s
-        purpose: platform-test
+      annotations:
+        t2.stackable.tech/cloud-vendor: "IONOS Cloud"
+        t2.stackable.tech/k8s: "Managed Kubernetes"
     spec:
       template: ionos-k8s
       region: de/fra
@@ -271,10 +263,9 @@
     metadata: 
       name: azure-aks
       description: Azure AKS
-      labels:
-        cloud-vendor: microsoft-azure
-        k8s: azure-aks
-        purpose: platform-test
+      annotations:
+        t2.stackable.tech/cloud-vendor: "Microsoft Azure"
+        t2.stackable.tech/k8s: "Azure AKS"
     spec:
       template: azure-aks
       location: northeurope
@@ -298,10 +289,9 @@
     metadata: 
       name: aws-eks
       description: AWS EKS
-      labels:
-        cloud-vendor: aws-eks
-        k8s: managed-k8s
-        purpose: platform-test
+      annotations:
+        t2.stackable.tech/cloud-vendor: "Amazon AWS"
+        t2.stackable.tech/k8s: "AWS EKS"
     spec:
       template: aws-eks
       k8sVersion: "1.22"
@@ -325,10 +315,9 @@
     metadata: 
       name: gke
       description: Google GKE
-      labels:
-        cloud-vendor: google-cloud
-        k8s: gke
-        purpose: platform-test
+      annotations:
+        t2.stackable.tech/cloud-vendor: "Google Cloud"
+        t2.stackable.tech/k8s: "GKE"
     spec:
       template: gke
       region: europe-central2

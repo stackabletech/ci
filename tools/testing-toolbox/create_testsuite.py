@@ -10,6 +10,7 @@ platform_name = None
 k8s_version = None
 operator_version = None
 git_branch = None
+metadata_annotations = {}
 
 catalog_platforms = None
 catalog_testsuites = None
@@ -28,6 +29,9 @@ def read_env_input(env_var_name):
         return pick
     return os.environ[env_var_name]
 
+def read_metadata_annotations_from_env():
+    env_prefix = "METADATA_ANNOTATION_"
+    return { k[len(env_prefix):] :v for k,v in os.environ.items() if k.startswith(env_prefix)}
 
 def check_prerequisites():
     """ 
@@ -41,12 +45,14 @@ def check_prerequisites():
         - K8S_VERSION
         - GIT_BRANCH
         - OPERATOR_VERSION
+        - METADATA_ANNOTATION_xyz
     """
     global testsuite_name
     global platform_name
     global k8s_version
     global operator_version
     global git_branch
+    global metadata_annotations
     if not 'TESTSUITE' in os.environ:
         print("Error: Please supply TESTSUITE as an environment variable.")
         exit(1)
@@ -64,6 +70,7 @@ def check_prerequisites():
         operator_version = read_env_input("OPERATOR_VERSION")
     if 'GIT_BRANCH' in os.environ:
         git_branch = read_env_input("GIT_BRANCH")
+    metadata_annotations = read_metadata_annotations_from_env()
 
 def clean_target():
     os.system('rm -rf /target/*')
@@ -147,6 +154,9 @@ def create_testsuite():
 
     if(operator_version):
         cluster_definition['spec']['stackableVersions'][testsuite_name] = operator_version
+
+    for key,value in metadata_annotations.items():
+        cluster_definition['metadata']['annotations'][key] = value
 
     write_cluster_definition(cluster_definition)
     write_test_script(testsuite, testsuite_platform_definition['test_params'] if 'test_params' in testsuite_platform_definition else '')

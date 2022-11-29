@@ -75,6 +75,9 @@
               --env PLATFORM=$PLATFORM_ID \
               --env K8S_VERSION=$K8S_VERSION \
               --env OPERATOR_VERSION=$OPERATOR_VERSION \
+              --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user=${BUILD_USER} \
+              --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-id=${BUILD_USER_ID} \
+              --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-email=${BUILD_USER_EMAIL} \
               docker.stackable.tech/testing-toolbox:latest create-testsuite
 
             # Collect information to print out after the test job
