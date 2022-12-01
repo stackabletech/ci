@@ -155,7 +155,9 @@ def create_testsuite():
     if(operator_version):
         cluster_definition['spec']['stackableVersions'][testsuite_name] = operator_version
 
-    if(not cluster_definition['metadata']['annotations'] and len(metadata_annotations)>0):
+    if(not 'metadata' in cluster_definition):
+        cluster_definition['metadata'] = {}
+    if(not 'annotations' in cluster_definition['metadata'] and len(metadata_annotations)>0):
         cluster_definition['metadata']['annotations'] = {}
     for key,value in metadata_annotations.items():
         cluster_definition['metadata']['annotations'][key] = value
