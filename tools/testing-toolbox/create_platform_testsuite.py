@@ -93,6 +93,8 @@ def create_platform_testsuite():
     if(k8s_version):
         cluster_definition['spec']['k8sVersion'] = k8s_version
 
+    if(not cluster_definition['metadata']['annotations'] and len(metadata_annotations)>0):
+        cluster_definition['metadata']['annotations'] = {}
     for key,value in metadata_annotations.items():
         cluster_definition['metadata']['annotations'][key] = value
 
