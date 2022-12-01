@@ -6,8 +6,13 @@ from jinja2 import Template
 
 platform_name = None
 k8s_version = None
+metadata_annotations = {}
 
 catalog_platforms = None
+
+def read_metadata_annotations_from_env():
+    env_prefix = "METADATA_ANNOTATION_"
+    return { k[len(env_prefix):] :v for k,v in os.environ.items() if k.startswith(env_prefix)}
 
 def check_prerequisites():
     """ 
@@ -18,9 +23,11 @@ def check_prerequisites():
 
         optional params:
         - K8S_VERSION
+        - METADATA_ANNOTATION_xyz
     """
     global platform_name
     global k8s_version
+    global metadata_annotations
     if not 'PLATFORM' in os.environ:
         print("Error: Please supply PLATFORM as an environment variable.")
         exit(1)
@@ -30,6 +37,7 @@ def check_prerequisites():
     platform_name = os.environ["PLATFORM"]
     if 'K8S_VERSION' in os.environ:
         k8s_version = os.environ["K8S_VERSION"]
+    metadata_annotations = read_metadata_annotations_from_env()
 
 def clean_target():
     os.system('rm -rf /target/*')
@@ -48,7 +56,7 @@ def write_cluster_definition(cluster_definition):
 
 def write_test_script():
     with open ('/target/test.sh', 'w') as f:
-        f.write("""sleep 10
+        f.write("""sleep 300
 kubectl get nodes
 echo ""
 echo ""
@@ -84,6 +92,9 @@ def create_platform_testsuite():
 
     if(k8s_version):
         cluster_definition['spec']['k8sVersion'] = k8s_version
+
+    for key,value in metadata_annotations.items():
+        cluster_definition['metadata']['annotations'][key] = value
 
     write_cluster_definition(cluster_definition)
     write_test_script()

@@ -37,7 +37,7 @@
           - text:
               credential-id: T2_TOKEN_DEV
               variable: T2_DEV_TOKEN
-
+      - build-user-vars
     builders:
       - shell: 
           unstable-return: 255
@@ -73,6 +73,9 @@
               --volume "$HOST_WORKSPACE/testsuite/:/target/" \
               --env PLATFORM=$PLATFORM_ID \
               --env K8S_VERSION=$K8S_VERSION \
+              --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user="${BUILD_USER}" \
+              --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-id=${BUILD_USER_ID} \
+              --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-email=${BUILD_USER_EMAIL} \
               docker.stackable.tech/testing-toolbox:latest create-platform-testsuite
 
             if [ "$T2_INSTANCE" = "T2_PROD" ]; then
