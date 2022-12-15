@@ -11,6 +11,8 @@ git clone https://github.com/stackabletech/{{ testsuite.git_repo }}.git
 {% for helm_repo in testsuite.helm_repos %}helm repo add {{ helm_repo.id }} {{ helm_repo.url }}
 {% endfor %}
 
+export VECTOR_AGGREGATOR=vector-aggregator.t2-cluster-logging.svc.cluster.local:6000
+
 (cd {{ testsuite.git_repo }}/ && ./scripts/run_tests.sh {{ test_params }})
 exit_code=$?
 
