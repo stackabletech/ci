@@ -81,6 +81,7 @@
                 --env CLUSTER=MANAGED \
                 --env T2_TOKEN=$T2_TOKEN \
                 --env T2_URL=https://api.t2.stackable.tech \
+                --env OPENSEARCH_DASHBOARDS_URL=https://logs.t2.stackable.tech \
                 --env UID_GID=$DOCKER_UID_GID \
                 docker.stackable.tech/t2-testdriver    
     publishers:

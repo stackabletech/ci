@@ -81,9 +81,11 @@
             if [ "$T2_INSTANCE" = "T2_PROD" ]; then
               export T2_TOKEN=$T2_PROD_TOKEN
               export T2_URL="https://api.t2.stackable.tech"
+              export OPENSEARCH_DASHBOARDS_URL="https://logs.t2.stackable.tech"
             elif [ "$T2_INSTANCE" = "T2_DEV" ]; then
               export T2_TOKEN=$T2_DEV_TOKEN
               export T2_URL="https://api.t2-dev.stackable.tech"
+              export OPENSEARCH_DASHBOARDS_URL="https://logs.t2-dev.stackable.tech"
             else
               echo "unknown T2 instance"
               exit 1
@@ -98,6 +100,7 @@
                 --env CLUSTER=MANAGED \
                 --env T2_TOKEN=$T2_TOKEN \
                 --env T2_URL=$T2_URL \
+                --env OPENSEARCH_DASHBOARDS_URL=$OPENSEARCH_DASHBOARDS_URL \
                 --env UID_GID=$DOCKER_UID_GID \
                 docker.stackable.tech/t2-testdriver:$T2_TESTDRIVER_TAG
     publishers:
