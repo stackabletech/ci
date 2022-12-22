@@ -5,6 +5,7 @@
     - latest
     - stable
     - testing
+    - v1.26
     - v1.25
     - v1.24
     - v1.23
@@ -31,6 +32,7 @@
     - latest
     - stable
     - testing
+    - v1.26
     - v1.25
     - v1.24
     - v1.23
@@ -57,6 +59,7 @@
     - latest
     - stable
     - testing
+    - v1.26
     - v1.25
     - v1.24
     - v1.23
@@ -83,6 +86,7 @@
     - latest
     - stable
     - testing
+    - v1.26
     - v1.25
     - v1.24
     - v1.23
@@ -109,6 +113,7 @@
     - latest
     - stable
     - testing
+    - v1.26
     - v1.25
     - v1.24
     - v1.23
@@ -139,6 +144,7 @@
     - latest
     - stable
     - testing
+    - v1.26
     - v1.25
     - v1.24
     - v1.23
@@ -169,6 +175,7 @@
     - latest
     - stable
     - testing
+    - v1.26
     - v1.25
     - v1.24
     - v1.23
@@ -196,9 +203,9 @@
 - name: ionos-k8s
   description: IONOS K8s
   k8s_versions:
-    - "1.24.8"
-    - "1.23.14"
-    - "1.22.16"
+    - "1.24.9"
+    - "1.23.15"
+    - "1.22.17"
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
