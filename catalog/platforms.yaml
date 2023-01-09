@@ -275,6 +275,7 @@
 - name: gke
   description: Google GKE
   k8s_versions:
+    - "1.26"
     - "1.25"
     - "1.24"
     - "1.23"
