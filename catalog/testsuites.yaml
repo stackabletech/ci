@@ -388,7 +388,7 @@
         spec:
           nodes:
             count: 5
-            vmSize: Standard_D3_v2
+            vmSize: Standard_D4s_v3
     - name: aws-eks
       test_params: --parallel 1
       cluster_definition_overlay: |

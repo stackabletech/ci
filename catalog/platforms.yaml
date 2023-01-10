@@ -245,7 +245,7 @@
       k8sVersion: "1.25.2"
       nodes:
         count: 3
-        vmSize: Standard_D2_v2
+        vmSize: Standard_D2s_v3
       stackableVersions:
         _-operator: NONE
         secret-operator: NIGHTLY
