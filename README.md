@@ -17,6 +17,26 @@ Config files for Jenkins jobs ran by our infrastructure
 
 * Release notes: https://github.com/Azure/AKS/releases
 
+### VM Sizes:
+
+We use 2 kinds of VMs in Azure:
+
+* D-Series v3 ("The 3rd generation D family sizes for your general purpose needs")
+* E-Series v3 ("The 3rd generation E family sizes for your high memory needs")
+
+The default Azure test platform has 3 nodes of the type `Standard_D2s_v3`. 
+
+Use the following table to select the appropriate VM size:
+
+| key | # CPUs | RAM in GB  |
+|---|---|---|
+| `Standard_D2s_v3` | 2 | 8 |
+| `Standard_D4s_v3` | 4 | 16 |
+| `Standard_D8s_v3` | 8 | 32 |
+| `Standard_E2s_v3` | 2 | 16 |
+| `Standard_E4s_v3` | 4 | 32 |
+| `Standard_E8s_v3` | 8 | 64 |
+
 ## IONOS K8s
 
 * Home: https://docs.ionos.com/cloud/managed-services/managed-kubernetes
