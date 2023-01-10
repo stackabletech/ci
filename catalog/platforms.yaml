@@ -241,7 +241,7 @@
       description: Azure AKS
     spec:
       template: azure-aks
-      location: northeurope
+      location: westeurope
       k8sVersion: "1.25.2"
       nodes:
         count: 3
