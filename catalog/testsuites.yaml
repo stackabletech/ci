@@ -531,7 +531,7 @@
             count: 5
             machineType: e2-standard-4
   nightly_test:
-    platform: "'random(aws-eks)'"
+    platform: "'random(azure-aks)'"
     slack_channels: "#product-nifi"
   custom_test:
     slack_channels: "#product-nifi"
@@ -918,7 +918,7 @@
           nodes:
             count: 5
   nightly_test:
-    platform: "'random(gke)'"
+    platform: "'random(azure-aks)'"
     slack_channels: "#product-zookeeper"
   custom_test:
     slack_channels: "#product-zookeeper"
