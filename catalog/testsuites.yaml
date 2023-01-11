@@ -700,7 +700,7 @@
             machineType: e2-standard-8
       test_params: --parallel 1
   nightly_test:
-    platform: "'random(aws-eks)'"
+    platform: "'random(azure-aks)'"
     slack_channels: "#product-spark-k8s"
   custom_test:
     slack_channels: "#product-spark-k8s"
