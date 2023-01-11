@@ -83,7 +83,7 @@
             count: 5
             machineType: e2-standard-4
   nightly_test:
-    platform: "'random(aws-eks)'"
+    platform: "'random(azure-aks)'"
     slack_channels: "#product-airflow"
   custom_test:
     slack_channels: "#product-airflow"
@@ -177,7 +177,7 @@
             count: 5
             machineType: e2-standard-4
   nightly_test:
-    platform: "'random(aws-eks)'"
+    platform: "'random(azure-aks)'"
     slack_channels: "#product-druid"
   custom_test:
     slack_channels: "#product-druid"
@@ -272,7 +272,7 @@
             count: 5
             machineType: e2-standard-4
   nightly_test:
-    platform: "'random(aws-eks)'"
+    platform: "'random(azure-aks)'"
     slack_channels: "#product-hbase"
   custom_test:
     slack_channels: "#product-hbase"
