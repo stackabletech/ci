@@ -314,7 +314,7 @@
     - name: gke
       test_params: --parallel 2
   nightly_test:
-    platform: "'random(aws-eks)'"
+    platform: "'random(azure-aks)'"
     slack_channels: "#product-hdfs"
   custom_test:
     slack_channels: "#product-hdfs"
@@ -407,7 +407,7 @@
             count: 5
             machineType: e2-highcpu-8
   nightly_test:
-    platform: "'random(aws-eks)'"
+    platform: "'random(azure-aks)'"
     slack_channels: "#product-hive"
   custom_test:
     slack_channels: "#product-hive"
@@ -748,7 +748,7 @@
             count: 3
             machineType: e2-standard-4
   nightly_test:
-    platform: "'random(aws-eks)'"
+    platform: "'random(azure-aks)'"
     slack_channels: "#product-superset"
   custom_test:
     slack_channels: "#product-superset"
