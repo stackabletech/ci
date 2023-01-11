@@ -839,7 +839,7 @@
             count: 3
             machineType: e2-standard-4
   nightly_test:
-    platform: "'random(aws-eks)'"
+    platform: "'random(azure-aks)'"
     slack_channels: "#product-trino"
   custom_test:
     slack_channels: "#product-trino"
