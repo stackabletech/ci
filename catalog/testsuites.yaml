@@ -696,8 +696,8 @@
       cluster_definition_overlay: |
         spec:
           nodes:
-            count: 3
-            machineType: e2-standard-16
+            count: 6
+            machineType: e2-standard-8
       test_params: --parallel 1
   nightly_test:
     platform: "'random(azure-aks)'"
