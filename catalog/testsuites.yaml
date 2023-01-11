@@ -697,7 +697,7 @@
         spec:
           nodes:
             count: 3
-            machineType: e2-standard-8
+            machineType: e2-standard-16
       test_params: --parallel 1
   nightly_test:
     platform: "'random(azure-aks)'"
