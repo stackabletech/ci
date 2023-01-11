@@ -13,6 +13,20 @@ Config files for Jenkins jobs ran by our infrastructure
 
 * Release notes: https://docs.aws.amazon.com/eks/latest/userguide/platform-versions.html
 
+### VM Sizes:
+
+The default AWS test platform has 3 nodes of the type `t2.small`. 
+
+Use the following table to select the appropriate VM size:
+
+| key | # CPUs | RAM in GB  |
+|---|---|---|
+| `t2.small` | 1 | 2 |
+| `t2.medium` | 2 | 4 |
+| `t2.large` | 2 | 8 |
+| `t2.xlarge` | 4 | 16 |
+| `t2.2xlarge` | 8 | 32 |
+
 ## Azure AKS
 
 * Release notes: https://github.com/Azure/AKS/releases
