@@ -689,15 +689,15 @@
       cluster_definition_overlay: |
         spec:
           nodes:
-            count: 8
-            instanceType: t2.xlarge
+            count: 3
+            instanceType: t2.2xlarge
       test_params: --parallel 1
     - name: gke
       cluster_definition_overlay: |
         spec:
           nodes:
-            count: 8
-            machineType: e2-standard-4
+            count: 3
+            machineType: e2-standard-8
       test_params: --parallel 1
   nightly_test:
     platform: "'random(aws-eks)'"
