@@ -15,7 +15,7 @@ Config files for Jenkins jobs ran by our infrastructure
 
 ### VM Sizes:
 
-The default AWS test platform has 3 nodes of the type `t2.small`. 
+The default AWS test platform has 3 nodes of the type `t2.large`. 
 
 Use the following table to select the appropriate VM size:
 
@@ -58,3 +58,26 @@ Use the following table to select the appropriate VM size:
 ## Google GKE
 
 * Release notes: https://cloud.google.com/kubernetes-engine/docs/release-notes
+
+### VM Sizes
+
+The default GKE test platform has 3 nodes of the type `e2-standard-2`. 
+
+Use the following table to select the appropriate VM size:
+
+| key | # CPUs | RAM in GB  |
+|---|---|---|
+| `e2-standard-2` | 2 | 8 |
+| `e2-standard-4` | 4 | 16 |
+| `e2-standard-8` | 8 | 32 |
+| `e2-standard-16` | 16 | 64 |
+| `e2-standard-32` | 32 | 128 |
+| `e2-highmem-2` | 2 | 16 |
+| `e2-highmem-4` | 4 | 32 |
+| `e2-highmem-8` | 8 | 64 |
+| `e2-highmem-16` | 16 | 128 |
+| `e2-highcpu-2` | 2 | 2 |
+| `e2-highcpu-4` | 4 | 4 |
+| `e2-highcpu-8` | 8 | 8 |
+| `e2-highcpu-16` | 16 | 16 |
+| `e2-highcpu-32` | 32 | 32 |

@@ -267,7 +267,7 @@
       k8sVersion: "1.22"
       nodes:
         count: 3
-        instanceType: t2.small
+        instanceType: t2.large
       stackableVersions:
         _-operator: NONE
         secret-operator: NIGHTLY
