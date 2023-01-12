@@ -304,7 +304,7 @@
       cluster_definition_overlay: |
         spec:
           nodes:
-            vmSize: Standard_D2s_v3
+            vmSize: Standard_E2s_v3
     - name: aws-eks
       test_params: --parallel 2
       cluster_definition_overlay: |
