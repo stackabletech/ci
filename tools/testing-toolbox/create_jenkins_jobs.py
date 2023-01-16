@@ -68,7 +68,6 @@ def generate_nightly_test_jobs_definitions():
         f.close()
 
 def generate_nightly_test_jobs_summary_definitions():
-    print(nightly_test_jobs_summary_template.render( { 'testsuites': catalog_testsuites } ))
     with open ("/jjb/nightly_tests_summary.yaml", 'w') as f:
         f.write(nightly_test_jobs_summary_template.render( { 'testsuites': catalog_testsuites } ))
         f.close()
