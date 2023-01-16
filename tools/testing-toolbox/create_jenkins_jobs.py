@@ -42,10 +42,10 @@ def read_templates():
     global jjb_conf_template
     with open ("/jjb/custom_test_jobs.j2", "r") as f:
         custom_test_jobs_template = Template(f.read())
-    with open ("/jjb/nightly_test_jobs_summary.j2", "r") as f:
-        nightly_test_jobs_summary_template = Template(f.read())
     with open ("/jjb/nightly_test_jobs.j2", "r") as f:
         nightly_test_jobs_template = Template(f.read())
+    with open ("/jjb/nightly_test_jobs_summary.j2", "r") as f:
+        nightly_test_jobs_summary_template = Template(f.read())
     with open ("/jjb/self_service_test_jobs.j2", "r") as f:
         self_service_test_jobs_template = Template(f.read())
     with open ("/jjb/jjb.conf.j2", "r") as f:
@@ -68,6 +68,7 @@ def generate_nightly_test_jobs_definitions():
         f.close()
 
 def generate_nightly_test_jobs_summary_definitions():
+    print(nightly_test_jobs_summary_template.render( { 'testsuites': catalog_testsuites } ))
     with open ("/jjb/nightly_tests_summary.yaml", 'w') as f:
         f.write(nightly_test_jobs_summary_template.render( { 'testsuites': catalog_testsuites } ))
         f.close()
