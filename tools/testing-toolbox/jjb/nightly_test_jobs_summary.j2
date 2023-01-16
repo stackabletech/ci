@@ -20,6 +20,11 @@
               credential-id: JENKINS_ROBOT
               username: JENKINS_ROBOT_USERNAME
               password: JENKINS_ROBOT_PASSWORD
+
+    triggers:
+      - reverse:
+            jobs: '{{ testsuite.name }}-it-nightly'
+            result: 'failure'
     builders:
       - shell: 
           unstable-return: 255
