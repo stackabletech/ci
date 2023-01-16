@@ -1,0 +1,38 @@
+---
+{% for testsuite in testsuites %}
+- job:
+    name: {{ testsuite.name }}-it-summary
+    project-type: freestyle
+    defaults: global
+    description: ''
+    disabled: false
+    display-name: '{{ testsuite.display_name }} test summary'
+    concurrent: false
+    quiet-period: 5
+    logrotate:
+      daysToKeep: -1
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    wrappers:
+      - credentials-binding:
+          - username-password-separated:
+              credential-id: JENKINS_ROBOT
+              username: JENKINS_ROBOT_USERNAME
+              password: JENKINS_ROBOT_PASSWORD
+    builders:
+      - shell: 
+          set +x
+          export OPERATOR={{ testsuite.name }}
+          # This string can be parsed by the description-setter publisher
+          echo "build_run_label::#${BUILD_DESCRIPTION}#"
+    publishers:
+      - archive:
+          artifacts: 'target/*'
+          allow-empty: true
+      - description-setter:
+          regexp: ".*build_run_label::#(.*)#.*"
+          regexp-for-failed: ".*build_run_label::#(.*)#.*"
+          set-for-matrix: false
+{% endfor %}
+
