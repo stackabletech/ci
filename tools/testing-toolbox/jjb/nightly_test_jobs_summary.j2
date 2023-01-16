@@ -22,10 +22,12 @@
               password: JENKINS_ROBOT_PASSWORD
     builders:
       - shell: 
-          set +x
-          export OPERATOR={{ testsuite.name }}
-          # This string can be parsed by the description-setter publisher
-          echo "build_run_label::#${BUILD_DESCRIPTION}#"
+          unstable-return: 255
+          command: |
+            set +x
+            export OPERATOR={{ testsuite.name }}
+            # This string can be parsed by the description-setter publisher
+            echo "build_run_label::#${BUILD_DESCRIPTION}#"
     publishers:
       - archive:
           artifacts: 'target/*'
