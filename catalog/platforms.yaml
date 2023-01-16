@@ -8,7 +8,6 @@
     - v1.26
     - v1.25
     - v1.24
-    - v1.23
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
@@ -35,7 +34,6 @@
     - v1.26
     - v1.25
     - v1.24
-    - v1.23
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
@@ -62,7 +60,6 @@
     - v1.26
     - v1.25
     - v1.24
-    - v1.23
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
@@ -89,7 +86,6 @@
     - v1.26
     - v1.25
     - v1.24
-    - v1.23
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
@@ -116,7 +112,6 @@
     - v1.26
     - v1.25
     - v1.24
-    - v1.23
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
@@ -147,7 +142,6 @@
     - v1.26
     - v1.25
     - v1.24
-    - v1.23
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
@@ -178,7 +172,6 @@
     - v1.26
     - v1.25
     - v1.24
-    - v1.23
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
@@ -232,7 +225,6 @@
     - "1.25"
     - "1.24"
     - "1.23"
-    - "1.22"
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
