@@ -229,7 +229,7 @@
 - name: azure-aks
   description: Azure AKS
   k8s_versions:
-    - "1.25.2"
+    - "1.25"
     - "1.24"
     - "1.23"
     - "1.22"
@@ -242,7 +242,7 @@
     spec:
       template: azure-aks
       location: westeurope
-      k8sVersion: "1.25.2"
+      k8sVersion: "1.25"
       nodes:
         count: 3
         vmSize: Standard_D2s_v3
