@@ -30,13 +30,13 @@
             mkdir -p target/
 
             curl -s --user $JENKINS_ROBOT_USERNAME:$JENKINS_ROBOT_PASSWORD \
-                https://ci.stackable.tech/job/$OPERATOR-operator-it-nightly/lastBuild/api/json > build_result.json 
+                https://ci.stackable.tech/job/$OPERATOR-it-nightly/lastBuild/api/json > build_result.json 
                 
             curl -s --user $JENKINS_ROBOT_USERNAME:$JENKINS_ROBOT_PASSWORD \
-                https://ci.stackable.tech/job/$OPERATOR-operator-it-nightly/lastBuild/artifact/testsuite/target/test-output.log > target/test-output.log
+                https://ci.stackable.tech/job/$OPERATOR-it-nightly/lastBuild/artifact/testsuite/target/test-output.log > target/test-output.log
 
             curl -s --user $JENKINS_ROBOT_USERNAME:$JENKINS_ROBOT_PASSWORD \
-                https://ci.stackable.tech/job/$OPERATOR-operator-it-nightly/lastBuild/artifact/testsuite/target/stackable-versions.txt > target/cluster.txt
+                https://ci.stackable.tech/job/$OPERATOR-it-nightly/lastBuild/artifact/testsuite/target/stackable-versions.txt > target/cluster.txt
 
             export BUILD_RESULT=$(cat build_result.json | jq -r '.result')
             export BUILD_NUMBER=$(cat build_result.json | jq -r '.number')
