@@ -1,4 +1,97 @@
 ---
+- name: azure-aks
+  description: Azure AKS
+  k8s_versions:
+    - "1.25"
+    - "1.24"
+    - "1.23"
+  cluster_definition:
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
+    metadata:
+      name: azure-aks
+      description: Azure AKS
+    spec:
+      template: azure-aks
+      location: westeurope
+      k8sVersion: "1.25"
+      nodes:
+        count: 3
+        vmSize: Standard_D2s_v3
+      stackableVersions:
+        _-operator: NONE
+        secret-operator: NIGHTLY
+        commons-operator: NIGHTLY
+- name: gke
+  description: Google GKE
+  k8s_versions:
+    - "1.26"
+    - "1.25"
+    - "1.24"
+  cluster_definition:
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
+    metadata:
+      name: gke
+      description: Google GKE
+    spec:
+      template: gke
+      region: europe-central2
+      k8sVersion: "1.26"
+      nodes:
+        count: 3
+        machineType: e2-standard-2
+      stackableVersions:
+        _-operator: NONE
+        secret-operator: NIGHTLY
+        commons-operator: NIGHTLY
+- name: aws-eks
+  description: AWS EKS
+  k8s_versions:
+    - "1.24"
+    - "1.23"
+  cluster_definition:
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
+    metadata:
+      name: aws-eks
+      description: AWS EKS
+    spec:
+      template: aws-eks
+      k8sVersion: "1.24"
+      nodes:
+        count: 3
+        instanceType: t2.large
+      stackableVersions:
+        _-operator: NONE
+        secret-operator: NIGHTLY
+        commons-operator: NIGHTLY
+- name: ionos-k8s
+  description: IONOS K8s
+  k8s_versions:
+    - "1.24.9"
+    - "1.23.15"
+    - "1.22.17"
+  cluster_definition:
+    apiVersion: t2.stackable.tech/v2
+    kind: StackableT2Cluster
+    metadata:
+      name: ionos-k8s
+      description: IONOS K8s
+    spec:
+      template: ionos-k8s
+      region: de/fra
+      k8sVersion: "1.24.9"
+      nodes:
+        count: 3
+        numberOfCores: 4
+        memoryMb: 4096
+        diskType: SSD
+        diskSizeGb: 250
+      stackableVersions:
+        _-operator: NONE
+        secret-operator: NIGHTLY
+        commons-operator: NIGHTLY
 - name: hcloud-k3s-centos-8
   description: K3s HCloud CentOS 8
   k8s_versions:
@@ -11,7 +104,7 @@
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
-    metadata: 
+    metadata:
       name: hcloud-k3s-centos-8
       description: K3s HCloud CentOS 8
     spec:
@@ -37,7 +130,7 @@
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
-    metadata: 
+    metadata:
       name: hcloud-k3s-centos-stream-9
       description: K3s HCloud CentOS 9
     spec:
@@ -63,7 +156,7 @@
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
-    metadata: 
+    metadata:
       name: hcloud-k3s-debian-10
       description: K3s HCloud Debian 10
     spec:
@@ -89,7 +182,7 @@
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
-    metadata: 
+    metadata:
       name: hcloud-k3s-debian-11
       description: K3s HCloud Debian 11
     spec:
@@ -115,7 +208,7 @@
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
-    metadata: 
+    metadata:
       name: ionos-k3s-rockylinux-8
       description: K3s IONOS CentOS 8
     spec:
@@ -145,7 +238,7 @@
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
-    metadata: 
+    metadata:
       name: ionos-k3s-debian-10
       description: K3s IONOS Debian 10
     spec:
@@ -175,7 +268,7 @@
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
-    metadata: 
+    metadata:
       name: ionos-k3s-debian-11
       description: K3s IONOS Debian 11
     spec:
@@ -189,99 +282,6 @@
           memoryMb: 4096
           diskType: SSD
           diskSizeGb: 100
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
-- name: ionos-k8s
-  description: IONOS K8s
-  k8s_versions:
-    - "1.24.9"
-    - "1.23.15"
-    - "1.22.17"
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata: 
-      name: ionos-k8s
-      description: IONOS K8s
-    spec:
-      template: ionos-k8s
-      region: de/fra
-      k8sVersion: "1.24.9"
-      nodes:
-        count: 3
-        numberOfCores: 4
-        memoryMb: 4096
-        diskType: SSD
-        diskSizeGb: 250
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
-- name: azure-aks
-  description: Azure AKS
-  k8s_versions:
-    - "1.25"
-    - "1.24"
-    - "1.23"
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata: 
-      name: azure-aks
-      description: Azure AKS
-    spec:
-      template: azure-aks
-      location: westeurope
-      k8sVersion: "1.25"
-      nodes:
-        count: 3
-        vmSize: Standard_D2s_v3
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
-- name: aws-eks
-  description: AWS EKS
-  k8s_versions:
-    - "1.24"
-    - "1.23"
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata: 
-      name: aws-eks
-      description: AWS EKS
-    spec:
-      template: aws-eks
-      k8sVersion: "1.24"
-      nodes:
-        count: 3
-        instanceType: t2.large
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
-- name: gke
-  description: Google GKE
-  k8s_versions:
-    - "1.26"
-    - "1.25"
-    - "1.24"
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata: 
-      name: gke
-      description: Google GKE
-    spec:
-      template: gke
-      region: europe-central2
-      k8sVersion: "1.26"
-      nodes:
-        count: 3
-        machineType: e2-standard-2
       stackableVersions:
         _-operator: NONE
         secret-operator: NIGHTLY
