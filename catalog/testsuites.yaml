@@ -7,6 +7,33 @@
       stackableVersions:
         airflow-operator: NIGHTLY
   platforms: 
+    - name: azure-aks
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            vmSize: Standard_D4s_v3
+    - name: gke
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            machineType: e2-standard-4
+    - name: aws-eks
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            instanceType: t2.xlarge
+    - name: ionos-k8s
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            numberOfCores: 4
+            memoryMb: 16384
     - name: hcloud-k3s-centos-8
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -55,33 +82,6 @@
               count: 5
               numberOfCores: 4
               memoryMb: 16384
-    - name: ionos-k8s
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            numberOfCores: 4
-            memoryMb: 16384
-    - name: azure-aks
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            vmSize: Standard_D4s_v3
-    - name: aws-eks
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            instanceType: t2.xlarge
-    - name: gke
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            machineType: e2-standard-4
   nightly_test:
     platform: "'random(azure-aks)'"
     slack_channels: "#product-airflow"
@@ -98,6 +98,35 @@
         opa-operator: NIGHTLY
         zookeeper-operator: NIGHTLY
   platforms: 
+    - name: azure-aks
+      test_params: --parallel 2
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            vmSize: Standard_D8s_v3
+    - name: gke
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            machineType: e2-standard-4
+    - name: aws-eks
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            instanceType: t2.2xlarge
+    - name: ionos-k8s
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          nodes: 
+            count: 5
+            numberOfCores: 4
+            memoryMb: 16384
     - name: hcloud-k3s-centos-8
       test_params: --parallel 2
       cluster_definition_overlay: |
@@ -147,35 +176,6 @@
               count: 5
               numberOfCores: 4
               memoryMb: 16384
-    - name: ionos-k8s
-      test_params: --parallel 4
-      cluster_definition_overlay: |
-        spec:
-          nodes: 
-            count: 5
-            numberOfCores: 4
-            memoryMb: 16384
-    - name: azure-aks
-      test_params: --parallel 2
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            vmSize: Standard_D8s_v3
-    - name: aws-eks
-      test_params: --parallel 4
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            instanceType: t2.2xlarge
-    - name: gke
-      test_params: --parallel 4
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            machineType: e2-standard-4
   nightly_test:
     platform: "'random(azure-aks)'"
     slack_channels: "#product-druid"
@@ -191,6 +191,35 @@
         hdfs-operator: NIGHTLY
         zookeeper-operator: NIGHTLY
   platforms: 
+    - name: azure-aks
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            vmSize: Standard_D4s_v3
+    - name: gke
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            machineType: e2-standard-4
+    - name: aws-eks
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            instanceType: t2.xlarge
+    - name: ionos-k8s
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            numberOfCores: 4
+            memoryMb: 16384
     - name: hcloud-k3s-centos-8
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -242,35 +271,6 @@
               count: 5
               numberOfCores: 4
               memoryMb: 16384
-    - name: ionos-k8s
-      test_params: --parallel 4
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            numberOfCores: 4
-            memoryMb: 16384
-    - name: azure-aks
-      test_params: --parallel 4
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            vmSize: Standard_D4s_v3
-    - name: aws-eks
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            instanceType: t2.xlarge
-    - name: gke
-      test_params: --parallel 4
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            machineType: e2-standard-4
   nightly_test:
     platform: "'random(azure-aks)'"
     slack_channels: "#product-hbase"
@@ -285,6 +285,22 @@
         hdfs-operator: NIGHTLY
         zookeeper-operator: NIGHTLY
   platforms: 
+    - name: azure-aks
+      test_params: --parallel 2
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            vmSize: Standard_D4s_v3
+    - name: gke
+      test_params: --parallel 2
+    - name: aws-eks
+      test_params: --parallel 2
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            instanceType: t2.large
+    - name: ionos-k8s
+      test_params: --parallel 2
     - name: hcloud-k3s-centos-8
       test_params: --parallel 2
     - name: hcloud-k3s-centos-9
@@ -296,22 +312,6 @@
     - name: ionos-k3s-debian-10
       test_params: --parallel 2
     - name: ionos-k3s-debian-11
-      test_params: --parallel 2
-    - name: ionos-k8s
-      test_params: --parallel 2
-    - name: azure-aks
-      test_params: --parallel 2
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            vmSize: Standard_D4s_v3
-    - name: aws-eks
-      test_params: --parallel 2
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            instanceType: t2.large
-    - name: gke
       test_params: --parallel 2
   nightly_test:
     platform: "'random(azure-aks)'"
@@ -326,6 +326,35 @@
       stackableVersions:
         hive-operator: NIGHTLY
   platforms: 
+    - name: azure-aks
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            vmSize: Standard_D4s_v3
+    - name: gke
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            machineType: e2-highcpu-8
+    - name: aws-eks
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            instanceType: t2.xlarge
+    - name: ionos-k8s
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            numberOfCores: 8
+            memoryMb: 8192
     - name: hcloud-k3s-centos-8
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -377,35 +406,6 @@
               count: 5
               numberOfCores: 8
               memoryMb: 8192
-    - name: ionos-k8s
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            numberOfCores: 8
-            memoryMb: 8192
-    - name: azure-aks
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            vmSize: Standard_D4s_v3
-    - name: aws-eks
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            instanceType: t2.xlarge
-    - name: gke
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            machineType: e2-highcpu-8
   nightly_test:
     platform: "'random(azure-aks)'"
     slack_channels: "#product-hive"
@@ -421,6 +421,35 @@
         opa-operator: NIGHTLY
         zookeeper-operator: NIGHTLY
   platforms: 
+    - name: azure-aks
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 6
+            vmSize: Standard_D4s_v3
+    - name: gke
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 6
+            machineType: e2-standard-4
+    - name: aws-eks
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 6
+            instanceType: t2.xlarge
+    - name: ionos-k8s
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 6
+            numberOfCores: 4
+            memoryMb: 16384
     - name: hcloud-k3s-centos-8
       test_params: --parallel 1
     - name: hcloud-k3s-centos-9
@@ -454,35 +483,6 @@
               count: 6
               numberOfCores: 4
               memoryMb: 16384
-    - name: ionos-k8s
-      test_params: --parallel 4
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 6
-            numberOfCores: 4
-            memoryMb: 16384
-    - name: azure-aks
-      test_params: --parallel 4
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 6
-            vmSize: Standard_D4s_v3
-    - name: aws-eks
-      test_params: --parallel 4
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 6
-            instanceType: t2.xlarge
-    - name: gke
-      test_params: --parallel 4
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 6
-            machineType: e2-standard-4
   nightly_test:
     platform: "'random(azure-aks)'"
     slack_channels: "#product-kafka"
@@ -497,6 +497,27 @@
         nifi-operator: NIGHTLY
         zookeeper-operator: NIGHTLY
   platforms: 
+    - name: azure-aks
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            vmSize: Standard_D4s_v3
+    - name: gke
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            machineType: e2-standard-4
+    - name: aws-eks
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            instanceType: t2.xlarge
+    - name: ionos-k8s
+      test_params: --parallel 1
     - name: hcloud-k3s-centos-8
       test_params: --parallel 1
     - name: hcloud-k3s-centos-9
@@ -509,27 +530,6 @@
       test_params: --parallel 1
     - name: ionos-k3s-debian-11
       test_params: --parallel 1
-    - name: ionos-k8s
-      test_params: --parallel 1
-    - name: azure-aks
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            vmSize: Standard_D4s_v3
-    - name: aws-eks
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            instanceType: t2.xlarge
-    - name: gke
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            machineType: e2-standard-4
   nightly_test:
     platform: "'random(azure-aks)'"
     slack_channels: "#product-nifi"
@@ -543,6 +543,35 @@
       stackableVersions:
         opa-operator: NIGHTLY
   platforms: 
+    - name: azure-aks
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            vmSize: Standard_D4s_v3
+    - name: gke
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            machineType: e2-standard-4
+    - name: aws-eks
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            instanceType: t2.xlarge
+    - name: ionos-k8s
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            numberOfCores: 4
+            memoryMb: 16384
     - name: hcloud-k3s-centos-8
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -591,35 +620,6 @@
               count: 5
               numberOfCores: 4
               memoryMb: 16384
-    - name: ionos-k8s
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            numberOfCores: 4
-            memoryMb: 16384
-    - name: azure-aks
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            vmSize: Standard_D4s_v3
-    - name: aws-eks
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            instanceType: t2.xlarge
-    - name: gke
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            machineType: e2-standard-4
   nightly_test:
     platform: "'random(azure-aks)'"
     slack_channels: "#product-opa"
@@ -633,6 +633,36 @@
       stackableVersions:
         spark-k8s-operator: NIGHTLY
   platforms: 
+    - name: azure-aks
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 3
+            vmSize: Standard_D8s_v3
+      test_params: --parallel 1
+    - name: gke
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 6
+            machineType: e2-standard-8
+      test_params: --parallel 1
+    - name: aws-eks
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 3
+            instanceType: t2.2xlarge
+      test_params: --parallel 1
+    - name: ionos-k8s
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 8
+            numberOfCores: 4
+            memoryMb: 16384
+            diskType: HDD
     - name: hcloud-k3s-centos-8
       test_params: --parallel 1
     - name: hcloud-k3s-centos-9
@@ -669,36 +699,6 @@
               numberOfCores: 4
               memoryMb: 16384
               diskType: HDD
-    - name: ionos-k8s
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 8
-            numberOfCores: 4
-            memoryMb: 16384
-            diskType: HDD
-    - name: azure-aks
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 3
-            vmSize: Standard_D8s_v3
-      test_params: --parallel 1
-    - name: aws-eks
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 3
-            instanceType: t2.2xlarge
-      test_params: --parallel 1
-    - name: gke
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 6
-            machineType: e2-standard-8
-      test_params: --parallel 1
   nightly_test:
     platform: "'random(azure-aks)'"
     slack_channels: "#product-spark-k8s"
@@ -712,6 +712,29 @@
       stackableVersions:
         superset-operator: NIGHTLY
   platforms: 
+    - name: azure-aks
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            vmSize: Standard_D4s_v3
+    - name: gke
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 3
+            machineType: e2-standard-4
+    - name: aws-eks
+      test_params: --parallel 4
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            instanceType: t2.xlarge
+    - name: ionos-k8s
+      test_params: --parallel 4
     - name: hcloud-k3s-centos-8
       test_params: --parallel 2
     - name: hcloud-k3s-centos-9
@@ -724,29 +747,6 @@
       test_params: --parallel 2
     - name: ionos-k3s-debian-11
       test_params: --parallel 2
-    - name: ionos-k8s
-      test_params: --parallel 4
-    - name: azure-aks
-      test_params: --parallel 4
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            vmSize: Standard_D4s_v3
-    - name: aws-eks
-      test_params: --parallel 4
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            instanceType: t2.xlarge
-    - name: gke
-      test_params: --parallel 4
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 3
-            machineType: e2-standard-4
   nightly_test:
     platform: "'random(azure-aks)'"
     slack_channels: "#product-superset"
@@ -764,6 +764,33 @@
         zookeeper-operator: NIGHTLY
         hdfs-operator: NIGHTLY
   platforms: 
+    - name: azure-aks
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+            vmSize: Standard_D4s_v3
+    - name: gke
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 3
+            machineType: e2-standard-4
+    - name: aws-eks
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            instanceType: t2.xlarge
+    - name: ionos-k8s
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            numberOfCores: 4
+            memoryMb: 16384
     - name: hcloud-k3s-centos-8
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -812,33 +839,6 @@
             main:
               numberOfCores: 4
               memoryMb: 16384
-    - name: ionos-k8s
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            numberOfCores: 4
-            memoryMb: 16384
-    - name: azure-aks
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
-            vmSize: Standard_D4s_v3
-    - name: aws-eks
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            instanceType: t2.xlarge
-    - name: gke
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 3
-            machineType: e2-standard-4
   nightly_test:
     platform: "'random(azure-aks)'"
     slack_channels: "#product-trino"
@@ -852,6 +852,30 @@
       stackableVersions:
         zookeeper-operator: NIGHTLY
   platforms: 
+    - name: azure-aks
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 8
+    - name: gke
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 5
+    - name: aws-eks
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 8
+    - name: ionos-k8s
+      test_params: --parallel 1
+      cluster_definition_overlay: |
+        spec:
+          nodes:
+            count: 8
     - name: hcloud-k3s-centos-8
       test_params: --parallel 1
       cluster_definition_overlay: |
@@ -894,30 +918,6 @@
           nodes:
             main:
               count: 8
-    - name: ionos-k8s
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 8
-    - name: azure-aks
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 8
-    - name: aws-eks
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 8
-    - name: gke
-      test_params: --parallel 1
-      cluster_definition_overlay: |
-        spec:
-          nodes:
-            count: 5
   nightly_test:
     platform: "'random(azure-aks)'"
     slack_channels: "#product-zookeeper"
