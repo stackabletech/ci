@@ -20,7 +20,7 @@ module.exports = {
       // 'stackabletech/operator-rs',
       // 'stackabletech/operator-rs'
     ],
-    gitAuthor: "Stacky McStackface <serviceaccounts@stackable.de>",
+    gitAuthor: "\"Stacky McStackface\" <serviceaccounts@stackable.de>",
     includeForks: true,
     logFileLevel: 'debug',
     logLevel: 'debug',
