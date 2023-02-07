@@ -59,8 +59,8 @@ def execute_jjb():
     """
         Executes the Jenkins Job Builder
     """
-#    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/platform_test_custom.yaml")
-#    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/platform_test_all.yaml")
+    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/platform_test_custom.yaml")
+    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/platform_test_all.yaml")
 
 def create_platform_test_jobs():
     """ 
@@ -73,6 +73,6 @@ def create_platform_test_jobs():
     read_catalogs()
     read_templates()
     generate_jjb_config()
-#    generate_platform_custom_test_job_definition()
-#    generate_platform_all_test_job_definition()
+    generate_platform_custom_test_job_definition()
+    generate_platform_all_test_job_definition()
     execute_jjb()
