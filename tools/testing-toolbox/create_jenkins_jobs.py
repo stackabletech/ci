@@ -7,6 +7,7 @@ catalog_platforms = None
 catalog_platforms_with_versions = None
 catalog_testsuites = None
 custom_test_jobs_template = None
+docs_test_jobs_template = None
 nightly_test_jobs_template = None
 nightly_test_jobs_summary_template = None
 self_service_test_jobs_template = None
@@ -36,12 +37,15 @@ def read_catalogs():
 
 def read_templates():
     global custom_test_jobs_template
+    global docs_test_jobs_template
     global nightly_test_jobs_template
     global nightly_test_jobs_summary_template
     global self_service_test_jobs_template
     global jjb_conf_template
     with open ("/jjb/custom_test_jobs.j2", "r") as f:
         custom_test_jobs_template = Template(f.read())
+    with open ("/jjb/docs_test_jobs.j2", "r") as f:
+        docs_test_jobs_template = Template(f.read())
     with open ("/jjb/nightly_test_jobs.j2", "r") as f:
         nightly_test_jobs_template = Template(f.read())
     with open ("/jjb/nightly_test_jobs_summary.j2", "r") as f:
@@ -60,6 +64,12 @@ def generate_custom_test_jobs_definitions():
     platforms_by_testsuite = { t['name']: [ item for sublist in [ catalog_platforms_with_versions[p['name']] for p in t['platforms'] ] for item in sublist ] for t in catalog_testsuites }
     with open ("/jjb/custom_tests.yaml", 'w') as f:
         f.write(custom_test_jobs_template.render( { 'testsuites': catalog_testsuites, 'platforms': platforms_by_testsuite } ))
+        f.close()
+
+def generate_docs_test_jobs_definitions():
+    platforms_by_testsuite = { t['name']: [ item for sublist in [ catalog_platforms_with_versions[p['name']] for p in t['platforms'] ] for item in sublist ] for t in catalog_testsuites }
+    with open ("/jjb/docs_tests.yaml", 'w') as f:
+        f.write(docs_test_jobs_template.render( { 'testsuites': catalog_testsuites, 'platforms': platforms_by_testsuite } ))
         f.close()
 
 def generate_nightly_test_jobs_definitions():
@@ -83,6 +93,7 @@ def execute_jjb():
         Executes the Jenkins Job Builder
     """
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/custom_tests.yaml")
+    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/docs_tests.yaml")
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/nightly_tests.yaml")
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/nightly_tests_summary.yaml")
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/self_service_tests.yaml")
@@ -101,6 +112,7 @@ def create_jenkins_jobs():
     read_templates()
     generate_jjb_config()
     generate_custom_test_jobs_definitions()
+    generate_docs_test_jobs_definitions()
     generate_nightly_test_jobs_definitions()
     generate_nightly_test_jobs_summary_definitions()
     generate_self_service_jobs_definitions()
