@@ -82,12 +82,12 @@ def execute_jjb():
     """
         Executes the Jenkins Job Builder
     """
-    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/custom_tests.yaml")
-    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/nightly_tests.yaml")
-    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/nightly_tests_summary.yaml")
-    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/self_service_tests.yaml")
-    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/delete_cluster_self_service.yaml")
-    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/update_deletable_self_service_clusters.yaml")
+#    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/custom_tests.yaml")
+#    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/nightly_tests.yaml")
+#    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/nightly_tests_summary.yaml")
+#    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/self_service_tests.yaml")
+#    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/delete_cluster_self_service.yaml")
+#    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/update_deletable_self_service_clusters.yaml")
 
 def create_jenkins_jobs():
     """ 
@@ -100,8 +100,8 @@ def create_jenkins_jobs():
     read_catalogs()
     read_templates()
     generate_jjb_config()
-    generate_custom_test_jobs_definitions()
-    generate_nightly_test_jobs_definitions()
-    generate_nightly_test_jobs_summary_definitions()
-    generate_self_service_jobs_definitions()
+#    generate_custom_test_jobs_definitions()
+#    generate_nightly_test_jobs_definitions()
+#    generate_nightly_test_jobs_summary_definitions()
+#    generate_self_service_jobs_definitions()
     execute_jjb()
