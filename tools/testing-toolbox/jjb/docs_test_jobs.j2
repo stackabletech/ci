@@ -76,18 +76,18 @@
                 mkdir -p testsuites/$1/target/
                 mkdir -p testsuites/$1/testsuite/
 
-              # create testsuite
-              docker run --rm \
-                --volume "$HOST_WORKSPACE/testsuites/$1/testsuite/:/target/" \
-                --env TESTSUITE={{ testsuite.name }} \
-                --env PLATFORM=$PLATFORM_ID \
-                --env K8S_VERSION=$K8S_VERSION \
-                --env GIT_BRANCH=$GIT_BRANCH \
-                --env TEST_SCRIPT="docs/modules/getting_started/examples/code/test_$1.sh" \
-                --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user="${BUILD_USER}" \
-                --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-id=${BUILD_USER_ID} \
-                --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-email=${BUILD_USER_EMAIL} \
-                docker.stackable.tech/testing-toolbox:latest create-docs-testsuite
+                # create testsuite
+                docker run --rm \
+                    --volume "$HOST_WORKSPACE/testsuites/$1/testsuite/:/target/" \
+                    --env TESTSUITE={{ testsuite.name }} \
+                    --env PLATFORM=$PLATFORM_ID \
+                    --env K8S_VERSION=$K8S_VERSION \
+                    --env GIT_BRANCH=$GIT_BRANCH \
+                    --env TEST_SCRIPT="docs/modules/getting_started/examples/code/test_$1.sh" \
+                    --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user="${BUILD_USER}" \
+                    --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-id=${BUILD_USER_ID} \
+                    --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-email=${BUILD_USER_EMAIL} \
+                    docker.stackable.tech/testing-toolbox:latest create-docs-testsuite
 
                 echo "Created testsuite '$1'." >> target/_summary.txt
             }
@@ -98,7 +98,7 @@
                 echo "Running testsuite '$1' ..." >> target/_summary.txt
 
                 # A failing test should not terminate the whole job
-              set +e
+                set +e
 
                 # Run testdriver
                 docker run --rm \
@@ -112,9 +112,9 @@
                     --env UID_GID=$DOCKER_UID_GID \
                     docker.stackable.tech/t2-testdriver    
 
-              # catch result of test run
-              test_result=$?
-              set -e
+                # catch result of test run
+                test_result=$?
+                set -e
                 
                 # Archive the artifacts of this testsuite
                 artifacts=$(find "testsuites/$1/target/" -type f | sed -e "s|testsuites/$1/target/||")
