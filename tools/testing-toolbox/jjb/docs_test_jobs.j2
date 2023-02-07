@@ -68,6 +68,9 @@
             # Pull the testdriver Docker image
             docker pull docker.stackable.tech/t2-testdriver:latest
             
+            # Make sure the target directory exists
+            mkdir -p target/
+
             # Create a testsuite
             create_testsuite () {
                 echo "" >> target/_summary.txt
