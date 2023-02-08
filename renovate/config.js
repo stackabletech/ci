@@ -31,6 +31,7 @@ module.exports = {
     includeForks: true,
     logFileLevel: 'debug',
     logLevel: 'debug',
+    recreateClosed: 'true',
     force: {
       schedule: [],
       prCreation: "immediate",
