@@ -165,5 +165,13 @@
       - archive:
           artifacts: 'target/*'
           allow-empty: true
+      - slack:
+          room: '{{ testsuite.nightly_test.slack_channels }}'
+          notify-unstable: True
+          notify-every-failure: True
+          notify-back-to-normal: True
+          include-custom-message: True
+          custom-message: |
+            (<$BUILD_URL|Open in classic Jenkins UI>)
 {% endfor %}
 
