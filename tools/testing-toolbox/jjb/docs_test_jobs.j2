@@ -73,41 +73,43 @@
 
             # Create a testsuite
             create_testsuite () {
+                TESTSUITE_DIR=$(echo $1 | sed -e 's|.sh|/|')
                 echo "" >> target/_summary.txt
-                echo "Creating testsuite '$1' ..." >> target/_summary.txt
+                echo "Creating testsuite for '$1' in folder testsuites/${TESTSUITE_DIR}..." >> target/_summary.txt
 
-                mkdir -p testsuites/$1/target/
-                mkdir -p testsuites/$1/testsuite/
+                mkdir -p testsuites/${TESTSUITE_DIR}target/
+                mkdir -p testsuites/${TESTSUITE_DIR}testsuite/
 
                 # create testsuite
                 docker run --rm \
-                    --volume "$HOST_WORKSPACE/testsuites/$1/testsuite/:/target/" \
+                    --volume "$HOST_WORKSPACE/testsuites/${TESTSUITE_DIR}testsuite/:/target/" \
                     --env TESTSUITE={{ testsuite.name }} \
                     --env PLATFORM=$PLATFORM_ID \
                     --env K8S_VERSION=$K8S_VERSION \
                     --env GIT_BRANCH=$GIT_BRANCH \
-                    --env TEST_SCRIPT="docs/modules/getting_started/examples/code/test_$1.sh" \
+                    --env TEST_SCRIPT="docs/$1" \
                     --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user="${BUILD_USER}" \
                     --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-id=${BUILD_USER_ID} \
                     --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-email=${BUILD_USER_EMAIL} \
                     docker.stackable.tech/testing-toolbox:latest create-docs-testsuite
 
-                echo "Created testsuite '$1'." >> target/_summary.txt
+                echo "Created testsuite for '$1' in folder testsuites/${TESTSUITE_DIR}." >> target/_summary.txt
             }
 
             # Run a testsuite
             run_testsuite () {
+                TESTSUITE_DIR=$(echo $1 | sed -e 's|.sh|/|')
                 echo "" >> target/_summary.txt
-                echo "Running testsuite '$1' ..." >> target/_summary.txt
+                echo "Running testsuite for '$1' ..." >> target/_summary.txt
 
                 # A failing test should not terminate the whole job
                 set +e
 
                 # Run testdriver
                 docker run --rm \
-                    --volume "$HOST_WORKSPACE/testsuites/$1/target/:/target/" \
-                    --volume "$HOST_WORKSPACE/testsuites/$1/testsuite/cluster.yaml:/cluster.yaml" \
-                    --volume "$HOST_WORKSPACE/testsuites/$1/testsuite/test.sh:/test.sh" \
+                    --volume "$HOST_WORKSPACE/testsuites/${TESTSUITE_DIR}target/:/target/" \
+                    --volume "$HOST_WORKSPACE/testsuites/${TESTSUITE_DIR}testsuite/cluster.yaml:/cluster.yaml" \
+                    --volume "$HOST_WORKSPACE/testsuites/${TESTSUITE_DIR}testsuite/test.sh:/test.sh" \
                     --env CLUSTER=MANAGED \
                     --env T2_TOKEN=$T2_TOKEN \
                     --env T2_URL=https://api.t2.stackable.tech \
@@ -120,10 +122,8 @@
                 set -e
                 
                 # Archive the artifacts of this testsuite
-                artifacts=$(find "testsuites/$1/target/" -type f | sed -e "s|testsuites/$1/target/||")
-                for artifact in $artifacts; do
-                  cp "testsuites/$1/target/${artifact}" "target/$1_${artifact}"
-                done
+                mkdir -p "target/${TESTSUITE_DIR}"
+                cp -r "testsuites/${TESTSUITE_DIR}target/"* "target/${TESTSUITE_DIR}"
 
                 # If test cluster could not be created => unstable
                 if [ $test_result -eq 255 ]; then
@@ -144,20 +144,20 @@
             result=0
 
             # Discover all the testsuites in this repository
-            testsuites=$(find docs/modules/getting_started/examples/code/ -name 'test_*.sh' | sed -e 's/^.*test_//; s/.sh//')
-            echo "Running the following testsuites:" > target/_summary.txt
-            for testsuite in $testsuites; do
-                echo "- $testsuite" >> target/_summary.txt
+            testscripts=$(find docs/ -name 'test_*.sh' | sed -e 's|^docs/||')
+            echo "Running the following testscripts:" > target/_summary.txt
+            for testscript in $testscripts; do
+                echo "- $testscript" >> target/_summary.txt
             done
 
             # Generate the testsuites
-            for testsuite in $testsuites; do
-                create_testsuite $testsuite
+            for testscript in $testscripts; do
+                create_testsuite $testscript
             done
 
             # Run the testsuites
-            for testsuite in $testsuites; do
-                run_testsuite $testsuite
+            for testscript in $testscripts; do
+                run_testsuite $testscript
             done
 
             exit $result
