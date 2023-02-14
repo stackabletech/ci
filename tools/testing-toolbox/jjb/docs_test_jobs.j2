@@ -163,7 +163,7 @@
             exit $result
     publishers:
       - archive:
-          artifacts: 'target/*'
+          artifacts: 'target/**'
           allow-empty: true
       - slack:
           room: '{{ testsuite.nightly_test.slack_channels }}'
