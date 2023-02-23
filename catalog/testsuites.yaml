@@ -700,7 +700,7 @@
               memoryMb: 16384
               diskType: HDD
   nightly_test:
-    platform: "'random(gke)'"
+    platform: "'random(ionos-k8s)'"
     slack_channels: "#product-spark-k8s"
   custom_test:
     slack_channels: "#product-spark-k8s"
