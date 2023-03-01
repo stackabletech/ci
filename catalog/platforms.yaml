@@ -48,6 +48,7 @@
 - name: aws-eks
   description: AWS EKS
   k8s_versions:
+    - "1.25"
     - "1.24"
     - "1.23"
   cluster_definition:
@@ -58,7 +59,7 @@
       description: AWS EKS
     spec:
       template: aws-eks
-      k8sVersion: "1.24"
+      k8sVersion: "1.25"
       nodes:
         count: 3
         instanceType: t2.large
