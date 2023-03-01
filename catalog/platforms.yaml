@@ -2,7 +2,7 @@
 - name: azure-aks
   description: Azure AKS
   k8s_versions:
-    - "1.26"
+    - "1.26.0"
     - "1.25"
     - "1.24"
   cluster_definition:
