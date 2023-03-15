@@ -20,8 +20,8 @@
         vmSize: Standard_D2s_v3
       stackableVersions:
         _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
+        secret-operator: DEV
+        commons-operator: DEV
 - name: gke
   description: Google GKE
   k8s_versions:
@@ -43,8 +43,8 @@
         machineType: e2-standard-2
       stackableVersions:
         _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
+        secret-operator: DEV
+        commons-operator: DEV
 - name: aws-eks
   description: AWS EKS
   k8s_versions:
@@ -65,8 +65,8 @@
         instanceType: t2.large
       stackableVersions:
         _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
+        secret-operator: DEV
+        commons-operator: DEV
 - name: ionos-k8s
   description: IONOS K8s
   k8s_versions:
@@ -91,8 +91,8 @@
         diskSizeGb: 250
       stackableVersions:
         _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
+        secret-operator: DEV
+        commons-operator: DEV
 - name: hcloud-k3s-centos-8
   description: K3s HCloud CentOS 8
   k8s_versions:
@@ -117,8 +117,8 @@
           serverType: cpx21
       stackableVersions:
         _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
+        secret-operator: DEV
+        commons-operator: DEV
 - name: hcloud-k3s-centos-9
   description: K3s HCloud CentOS 9
   k8s_versions:
@@ -143,8 +143,8 @@
           serverType: cpx21
       stackableVersions:
         _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
+        secret-operator: DEV
+        commons-operator: DEV
 - name: hcloud-k3s-debian-10
   description: K3s HCloud Debian 10
   k8s_versions:
@@ -169,8 +169,8 @@
           serverType: cpx21
       stackableVersions:
         _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
+        secret-operator: DEV
+        commons-operator: DEV
 - name: hcloud-k3s-debian-11
   description: K3s HCloud Debian 11
   k8s_versions:
@@ -195,8 +195,8 @@
           serverType: cpx21
       stackableVersions:
         _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
+        secret-operator: DEV
+        commons-operator: DEV
 - name: ionos-k3s-rocky-8
   description: K3s IONOS RockyLinux 8
   k8s_versions:
@@ -225,8 +225,8 @@
           diskSizeGb: 100
       stackableVersions:
         _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
+        secret-operator: DEV
+        commons-operator: DEV
 - name: ionos-k3s-debian-10
   description: K3s IONOS Debian 10
   k8s_versions:
@@ -255,8 +255,8 @@
           diskSizeGb: 100
       stackableVersions:
         _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
+        secret-operator: DEV
+        commons-operator: DEV
 - name: ionos-k3s-debian-11
   description: K3s IONOS Debian 11
   k8s_versions:
@@ -285,5 +285,5 @@
           diskSizeGb: 100
       stackableVersions:
         _-operator: NONE
-        secret-operator: NIGHTLY
-        commons-operator: NIGHTLY
+        secret-operator: DEV
+        commons-operator: DEV
