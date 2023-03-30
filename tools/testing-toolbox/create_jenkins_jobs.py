@@ -61,31 +61,32 @@ def generate_jjb_config():
         f.close()
 
 def generate_custom_test_jobs_definitions():
-    platforms_by_testsuite = { t['name']: [ item for sublist in [ catalog_platforms_with_versions[p['name']] for p in t['platforms'] ] for item in sublist ] for t in catalog_testsuites }
+    platforms_by_testsuite = { t['name']: [ item for sublist in [ catalog_platforms_with_versions[p['name']] for p in t['platforms'] ] for item in sublist ] for t in catalog_testsuites['operator_tests'] }
     with open ("/jjb/custom_tests.yaml", 'w') as f:
-        f.write(custom_test_jobs_template.render( { 'testsuites': catalog_testsuites, 'platforms': platforms_by_testsuite } ))
+        f.write(custom_test_jobs_template.render( { 'testsuites': catalog_testsuites['operator_tests'], 'platforms': platforms_by_testsuite } ))
         f.close()
 
 def generate_docs_test_jobs_definitions():
-    platforms_by_testsuite = { t['name']: [ item for sublist in [ catalog_platforms_with_versions[p['name']] for p in t['platforms'] ] for item in sublist ] for t in catalog_testsuites }
+    platforms_by_testsuite = { t['name']: [ item for sublist in [ catalog_platforms_with_versions[p['name']] for p in t['platforms'] ] for item in sublist ] for t in catalog_testsuites['operator_tests'] }
+    main_doc_test_platforms = [ item for sublist in [ catalog_platforms_with_versions[p['name']] for p in catalog_testsuites['main_documentation_test']['platforms'] ] for item in sublist ]
     with open ("/jjb/docs_tests.yaml", 'w') as f:
-        f.write(docs_test_jobs_template.render( { 'testsuites': catalog_testsuites, 'platforms': platforms_by_testsuite } ))
+        f.write(docs_test_jobs_template.render( { 'testsuites': catalog_testsuites['operator_tests'], 'platforms': platforms_by_testsuite, 'main_doc_test_platforms': main_doc_test_platforms } ))
         f.close()
 
 def generate_nightly_test_jobs_definitions():
     with open ("/jjb/nightly_tests.yaml", 'w') as f:
-        f.write(nightly_test_jobs_template.render( { 'testsuites': catalog_testsuites } ))
+        f.write(nightly_test_jobs_template.render( { 'testsuites': catalog_testsuites['operator_tests'] } ))
         f.close()
 
 def generate_nightly_test_jobs_summary_definitions():
     with open ("/jjb/nightly_tests_summary.yaml", 'w') as f:
-        f.write(nightly_test_jobs_summary_template.render( { 'testsuites': catalog_testsuites } ))
+        f.write(nightly_test_jobs_summary_template.render( { 'testsuites': catalog_testsuites['operator_tests'] } ))
         f.close()
 
 def generate_self_service_jobs_definitions():
-    platforms_by_testsuite = { t['name']: [ item for sublist in [ catalog_platforms_with_versions[p['name']] for p in t['platforms'] ] for item in sublist ] for t in catalog_testsuites }
+    platforms_by_testsuite = { t['name']: [ item for sublist in [ catalog_platforms_with_versions[p['name']] for p in t['platforms'] ] for item in sublist ] for t in catalog_testsuites['operator_tests'] }
     with open ("/jjb/self_service_tests.yaml", 'w') as f:
-        f.write(self_service_test_jobs_template.render( { 'testsuites': catalog_testsuites, 'platforms': platforms_by_testsuite } ))
+        f.write(self_service_test_jobs_template.render( { 'testsuites': catalog_testsuites['operator_tests'], 'platforms': platforms_by_testsuite } ))
         f.close()
 
 def execute_jjb():

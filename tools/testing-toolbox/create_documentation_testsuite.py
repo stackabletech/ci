@@ -89,7 +89,9 @@ def read_templates():
         test_script_template = Template(f.read())
 
 def read_testsuite_from_catalog(testsuite_name):
-    return next(filter(lambda x: x["name"]==testsuite_name, catalog_testsuites), None)
+    if ('main'==testsuite_name):
+        return catalog_testsuites['main_documentation_test']
+    return next(filter(lambda x: x["name"]==testsuite_name, catalog_testsuites['operator_tests']), None)
 
 def read_cluster_definition_from_catalog(platform_name):
     return next(filter(lambda x: x["name"]==platform_name, catalog_platforms), None)['cluster_definition']
