@@ -7,7 +7,7 @@ operator_tests:
       spec:
         stackableVersions:
           airflow-operator: DEV
-    platforms: 
+    platforms:
       - name: azure-aks
         test_params: --parallel 1
         cluster_definition_overlay: |
@@ -27,7 +27,23 @@ operator_tests:
           spec:
             nodes:
               instanceType: t2.xlarge
-      - name: ionos-k8s
+      - name: ionos-k8s-1.23
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.24
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.25
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
@@ -84,7 +100,7 @@ operator_tests:
                 numberOfCores: 4
                 memoryMb: 16384
     nightly_test:
-      platform: "'random(azure-aks)'"
+      platform: "'random(ionos-k8s-1.23, ionos-k8s-1.24, ionos-k8s-1.25)'"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -98,7 +114,7 @@ operator_tests:
           hdfs-operator: DEV
           opa-operator: DEV
           zookeeper-operator: DEV
-    platforms: 
+    platforms:
       - name: azure-aks
         test_params: --parallel 2
         cluster_definition_overlay: |
@@ -120,11 +136,27 @@ operator_tests:
             nodes:
               count: 5
               instanceType: t2.2xlarge
-      - name: ionos-k8s
+      - name: ionos-k8s-1.23
         test_params: --parallel 4
         cluster_definition_overlay: |
           spec:
-            nodes: 
+            nodes:
+              count: 5
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.24
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.25
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
               count: 5
               numberOfCores: 4
               memoryMb: 16384
@@ -178,7 +210,7 @@ operator_tests:
                 numberOfCores: 4
                 memoryMb: 16384
     nightly_test:
-      platform: "'random(azure-aks)'"
+      platform: "'random(ionos-k8s-1.23, ionos-k8s-1.24, ionos-k8s-1.25)'"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -191,7 +223,7 @@ operator_tests:
           hbase-operator: DEV
           hdfs-operator: DEV
           zookeeper-operator: DEV
-    platforms: 
+    platforms:
       - name: azure-aks
         test_params: --parallel 4
         cluster_definition_overlay: |
@@ -285,7 +317,7 @@ operator_tests:
         stackableVersions:
           hdfs-operator: DEV
           zookeeper-operator: DEV
-    platforms: 
+    platforms:
       - name: azure-aks
         test_params: --parallel 2
         cluster_definition_overlay: |
@@ -326,7 +358,7 @@ operator_tests:
       spec:
         stackableVersions:
           hive-operator: DEV
-    platforms: 
+    platforms:
       - name: azure-aks
         test_params: --parallel 1
         cluster_definition_overlay: |
@@ -421,7 +453,7 @@ operator_tests:
           kafka-operator: DEV
           opa-operator: DEV
           zookeeper-operator: DEV
-    platforms: 
+    platforms:
       - name: azure-aks
         test_params: --parallel 4
         cluster_definition_overlay: |
@@ -443,7 +475,23 @@ operator_tests:
             nodes:
               count: 6
               instanceType: t2.xlarge
-      - name: ionos-k8s
+      - name: ionos-k8s-1.23
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 6
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.24
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 6
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.25
         test_params: --parallel 4
         cluster_definition_overlay: |
           spec:
@@ -485,7 +533,7 @@ operator_tests:
                 numberOfCores: 4
                 memoryMb: 16384
     nightly_test:
-      platform: "'random(azure-aks)'"
+      platform: "'random(ionos-k8s-1.23, ionos-k8s-1.24, ionos-k8s-1.25)'"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -497,7 +545,7 @@ operator_tests:
         stackableVersions:
           nifi-operator: DEV
           zookeeper-operator: DEV
-    platforms: 
+    platforms:
       - name: azure-aks
         test_params: --parallel 1
         cluster_definition_overlay: |
@@ -543,7 +591,7 @@ operator_tests:
       spec:
         stackableVersions:
           opa-operator: DEV
-    platforms: 
+    platforms:
       - name: azure-aks
         test_params: --parallel 1
         cluster_definition_overlay: |
@@ -633,7 +681,7 @@ operator_tests:
       spec:
         stackableVersions:
           spark-k8s-operator: DEV
-    platforms: 
+    platforms:
       - name: azure-aks
         cluster_definition_overlay: |
           spec:
@@ -712,7 +760,7 @@ operator_tests:
       spec:
         stackableVersions:
           superset-operator: DEV
-    platforms: 
+    platforms:
       - name: azure-aks
         test_params: --parallel 4
         cluster_definition_overlay: |
@@ -764,7 +812,7 @@ operator_tests:
           opa-operator: DEV
           zookeeper-operator: DEV
           hdfs-operator: DEV
-    platforms: 
+    platforms:
       - name: azure-aks
         test_params: --parallel 1
         cluster_definition_overlay: |
@@ -852,7 +900,7 @@ operator_tests:
       spec:
         stackableVersions:
           zookeeper-operator: DEV
-    platforms: 
+    platforms:
       - name: azure-aks
         test_params: --parallel 1
         cluster_definition_overlay: |
@@ -926,7 +974,7 @@ operator_tests:
       slack_channels: "#notifications-jenkins"
 main_documentation_test:
   git_repo: documentation
-  platforms: 
+  platforms:
     - name: azure-aks
       test_params: --parallel 1
       cluster_definition_overlay: |
