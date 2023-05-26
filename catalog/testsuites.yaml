@@ -245,7 +245,7 @@ operator_tests:
             nodes:
               count: 5
               instanceType: t2.xlarge
-      - name: ionos-k8s
+      - name: ionos-k8s-1.25
         test_params: --parallel 4
         cluster_definition_overlay: |
           spec:
@@ -332,7 +332,7 @@ operator_tests:
           spec:
             nodes:
               instanceType: t2.large
-      - name: ionos-k8s
+      - name: ionos-k8s-1.25
         test_params: --parallel 2
       - name: hcloud-k3s-centos-8
         test_params: --parallel 2
@@ -380,7 +380,7 @@ operator_tests:
             nodes:
               count: 5
               instanceType: t2.xlarge
-      - name: ionos-k8s
+      - name: ionos-k8s-1.25
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
@@ -565,7 +565,7 @@ operator_tests:
             nodes:
               count: 5
               instanceType: t2.xlarge
-      - name: ionos-k8s
+      - name: ionos-k8s-1.25
         test_params: --parallel 1
       - name: hcloud-k3s-centos-8
         test_params: --parallel 1
@@ -613,7 +613,7 @@ operator_tests:
             nodes:
               count: 5
               instanceType: t2.xlarge
-      - name: ionos-k8s
+      - name: ionos-k8s-1.25
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
@@ -703,7 +703,7 @@ operator_tests:
               count: 3
               instanceType: t2.2xlarge
         test_params: --parallel 1
-      - name: ionos-k8s
+      - name: ionos-k8s-1.25
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
@@ -782,7 +782,7 @@ operator_tests:
             nodes:
               count: 5
               instanceType: t2.xlarge
-      - name: ionos-k8s
+      - name: ionos-k8s-1.25
         test_params: --parallel 4
       - name: hcloud-k3s-centos-8
         test_params: --parallel 2
@@ -833,7 +833,7 @@ operator_tests:
           spec:
             nodes:
               instanceType: t2.xlarge
-      - name: ionos-k8s
+      - name: ionos-k8s-1.25
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
@@ -919,7 +919,7 @@ operator_tests:
           spec:
             nodes:
               count: 8
-      - name: ionos-k8s
+      - name: ionos-k8s-1.25
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
@@ -996,7 +996,7 @@ main_documentation_test:
           nodes:
             count: 5
             instanceType: t2.xlarge
-    - name: ionos-k8s
+    - name: ionos-k8s-1.25
       test_params: --parallel 1
       cluster_definition_overlay: |
         spec:
