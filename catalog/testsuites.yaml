@@ -749,7 +749,7 @@ operator_tests:
                 memoryMb: 16384
                 diskType: HDD
     nightly_test:
-      platform: "'random(ionos-k8s)'"
+      platform: "'random(ionos-k8s-1.25)'"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
