@@ -51,6 +51,14 @@ operator_tests:
               count: 5
               numberOfCores: 4
               memoryMb: 16384
+      - name: ionos-k8s-1.26
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 4
+              memoryMb: 16384
       - name: hcloud-k3s-centos-8
         test_params: --parallel 1
         cluster_definition_overlay: |
@@ -160,6 +168,14 @@ operator_tests:
               count: 5
               numberOfCores: 4
               memoryMb: 16384
+      - name: ionos-k8s-1.26
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 4
+              memoryMb: 16384
       - name: hcloud-k3s-centos-8
         test_params: --parallel 2
         cluster_definition_overlay: |
@@ -253,6 +269,14 @@ operator_tests:
               count: 5
               numberOfCores: 4
               memoryMb: 16384
+      - name: ionos-k8s-1.26
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 4
+              memoryMb: 16384
       - name: hcloud-k3s-centos-8
         test_params: --parallel 1
         cluster_definition_overlay: |
@@ -334,6 +358,8 @@ operator_tests:
               instanceType: t2.large
       - name: ionos-k8s-1.25
         test_params: --parallel 2
+      - name: ionos-k8s-1.26
+        test_params: --parallel 2
       - name: hcloud-k3s-centos-8
         test_params: --parallel 2
       - name: hcloud-k3s-centos-9
@@ -381,6 +407,14 @@ operator_tests:
               count: 5
               instanceType: t2.xlarge
       - name: ionos-k8s-1.25
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 8
+              memoryMb: 8192
+      - name: ionos-k8s-1.26
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
@@ -499,6 +533,14 @@ operator_tests:
               count: 6
               numberOfCores: 4
               memoryMb: 16384
+      - name: ionos-k8s-1.26
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 6
+              numberOfCores: 4
+              memoryMb: 16384
       - name: hcloud-k3s-centos-8
         test_params: --parallel 1
       - name: hcloud-k3s-centos-9
@@ -567,6 +609,8 @@ operator_tests:
               instanceType: t2.xlarge
       - name: ionos-k8s-1.25
         test_params: --parallel 1
+      - name: ionos-k8s-1.26
+        test_params: --parallel 1
       - name: hcloud-k3s-centos-8
         test_params: --parallel 1
       - name: hcloud-k3s-centos-9
@@ -614,6 +658,14 @@ operator_tests:
               count: 5
               instanceType: t2.xlarge
       - name: ionos-k8s-1.25
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.26
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
@@ -712,6 +764,15 @@ operator_tests:
               numberOfCores: 4
               memoryMb: 16384
               diskType: HDD
+      - name: ionos-k8s-1.26
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 8
+              numberOfCores: 4
+              memoryMb: 16384
+              diskType: HDD
       - name: hcloud-k3s-centos-8
         test_params: --parallel 1
       - name: hcloud-k3s-centos-9
@@ -784,6 +845,8 @@ operator_tests:
               instanceType: t2.xlarge
       - name: ionos-k8s-1.25
         test_params: --parallel 4
+      - name: ionos-k8s-1.26
+        test_params: --parallel 4
       - name: hcloud-k3s-centos-8
         test_params: --parallel 2
       - name: hcloud-k3s-centos-9
@@ -834,6 +897,13 @@ operator_tests:
             nodes:
               instanceType: t2.xlarge
       - name: ionos-k8s-1.25
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.26
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
@@ -920,6 +990,12 @@ operator_tests:
             nodes:
               count: 8
       - name: ionos-k8s-1.25
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 8
+      - name: ionos-k8s-1.26
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
