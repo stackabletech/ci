@@ -309,6 +309,99 @@ operator_tests:
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
+  - name: hello-world-operator
+    display_name: Hello World Operator
+    git_repo: hello-world-operator
+    cluster_definition_overlay: |
+      spec:
+        stackableVersions:
+          hello-world-operator: DEV
+    platforms:
+      - name: azure-aks
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              vmSize: Standard_D4s_v3
+      - name: gke
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              machineType: e2-standard-4
+      - name: aws-eks
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              instanceType: t2.xlarge
+      - name: ionos-k8s-1.25
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: hcloud-k3s-centos-8
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              main:
+                count: 8
+                serverType: cpx41
+      - name: hcloud-k3s-centos-9
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              main:
+                count: 8
+                serverType: cpx41
+      - name: hcloud-k3s-debian-10
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              main:
+                count: 8
+                serverType: cpx41
+      - name: ionos-k3s-rocky-8
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              main:
+                count: 5
+                numberOfCores: 4
+                memoryMb: 16384
+      - name: ionos-k3s-debian-10
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              main:
+                count: 5
+                numberOfCores: 4
+                memoryMb: 16384
+      - name: ionos-k3s-debian-11
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              main:
+                count: 5
+                numberOfCores: 4
+                memoryMb: 16384
+    nightly_test:
+      platform: "'random(azure-aks)'"
+      slack_channels: "#notifications-jenkins"
+    custom_test:
+      slack_channels: "#notifications-jenkins"
   - name: hdfs-operator
     display_name: HDFS Operator
     git_repo: hdfs-operator
