@@ -58,6 +58,7 @@
               --env TESTSUITE={{ testsuite.name }} \
               --env PLATFORM={{ testsuite.nightly_test.platform }} \
               --env GIT_BRANCH=main \
+              --env BEKU_SUITE=nightly \
               --env OPERATOR_VERSION=DEV \
               --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user="${BUILD_USER}" \
               --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-id=${BUILD_USER_ID} \

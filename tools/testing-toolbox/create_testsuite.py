@@ -10,6 +10,7 @@ platform_name = None
 k8s_version = None
 operator_version = None
 git_branch = None
+beku_suite = None
 metadata_annotations = {}
 
 catalog_platforms = None
@@ -44,6 +45,7 @@ def check_prerequisites():
         optional params:
         - K8S_VERSION
         - GIT_BRANCH
+        - BEKU_SUITE
         - OPERATOR_VERSION
         - METADATA_ANNOTATION_xyz
     """
@@ -52,6 +54,7 @@ def check_prerequisites():
     global k8s_version
     global operator_version
     global git_branch
+    global beku_suite
     global metadata_annotations
     if not 'TESTSUITE' in os.environ:
         print("Error: Please supply TESTSUITE as an environment variable.")
@@ -70,6 +73,8 @@ def check_prerequisites():
         operator_version = read_env_input("OPERATOR_VERSION")
     if 'GIT_BRANCH' in os.environ:
         git_branch = read_env_input("GIT_BRANCH")
+    if 'BEKU_SUITE' in os.environ:
+        beku_suite = read_env_input("BEKU_SUITE")
     metadata_annotations = read_metadata_annotations_from_env()
 
 def clean_target():
@@ -102,7 +107,7 @@ def write_cluster_definition(cluster_definition):
 
 def write_test_script(testsuite, test_params):
     with open ('/target/test.sh', 'w') as f:
-        f.write(test_script_template.render( { 'testsuite': testsuite, 'git_branch': git_branch, 'test_params': test_params }))
+        f.write(test_script_template.render( { 'testsuite': testsuite, 'git_branch': git_branch, 'beku_suite': beku_suite, 'test_params': test_params }))
         f.close()
 
 def yaml_to_string(yaml):
