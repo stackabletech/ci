@@ -108,7 +108,7 @@ operator_tests:
                 numberOfCores: 4
                 memoryMb: 16384
     nightly_test:
-      platform: "'random(ionos-k8s-1.23, ionos-k8s-1.24, ionos-k8s-1.25)'"
+      platform: "'random(ionos-k8s-1.24, ionos-k8s-1.25)'"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -226,7 +226,7 @@ operator_tests:
                 numberOfCores: 4
                 memoryMb: 16384
     nightly_test:
-      platform: "'random(ionos-k8s-1.23, ionos-k8s-1.24, ionos-k8s-1.25)'"
+      platform: "'random(ionos-k8s-1.24, ionos-k8s-1.25)'"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -668,7 +668,7 @@ operator_tests:
                 numberOfCores: 4
                 memoryMb: 16384
     nightly_test:
-      platform: "'random(ionos-k8s-1.23, ionos-k8s-1.24, ionos-k8s-1.25)'"
+      platform: "'random(ionos-k8s-1.24, ionos-k8s-1.25)'"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
