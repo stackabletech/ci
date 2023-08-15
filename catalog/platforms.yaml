@@ -95,7 +95,7 @@
 - name: ionos-k8s-1.24
   description: IONOS K8s 1.24
   k8s_versions:
-    - "1.24.13"
+    - "1.24.15"
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
@@ -105,7 +105,7 @@
     spec:
       template: ionos-k8s
       region: de/fra
-      k8sVersion: "1.24.13"
+      k8sVersion: "1.24.15"
       nodes:
         count: 3
         numberOfCores: 4
@@ -119,7 +119,7 @@
 - name: ionos-k8s-1.25
   description: IONOS K8s 1.25
   k8s_versions:
-    - "1.25.9"
+    - "1.25.11"
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
@@ -129,7 +129,7 @@
     spec:
       template: ionos-k8s
       region: de/fra
-      k8sVersion: "1.25.9"
+      k8sVersion: "1.25.11"
       nodes:
         count: 3
         numberOfCores: 4
@@ -143,7 +143,7 @@
 - name: ionos-k8s-1.26
   description: IONOS K8s 1.26
   k8s_versions:
-    - "1.26.4"
+    - "1.26.6"
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
@@ -153,7 +153,7 @@
     spec:
       template: ionos-k8s
       region: de/fra
-      k8sVersion: "1.26.4"
+      k8sVersion: "1.26.6"
       nodes:
         count: 3
         numberOfCores: 4
