@@ -27,22 +27,6 @@ operator_tests:
           spec:
             nodes:
               instanceType: t2.xlarge
-      - name: ionos-k8s-1.23
-        test_params: --parallel 1
-        cluster_definition_overlay: |
-          spec:
-            nodes:
-              count: 5
-              numberOfCores: 4
-              memoryMb: 16384
-      - name: ionos-k8s-1.24
-        test_params: --parallel 1
-        cluster_definition_overlay: |
-          spec:
-            nodes:
-              count: 5
-              numberOfCores: 4
-              memoryMb: 16384
       - name: ionos-k8s-1.25
         test_params: --parallel 1
         cluster_definition_overlay: |
@@ -52,6 +36,14 @@ operator_tests:
               numberOfCores: 4
               memoryMb: 16384
       - name: ionos-k8s-1.26
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.27
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
@@ -108,7 +100,7 @@ operator_tests:
                 numberOfCores: 4
                 memoryMb: 16384
     nightly_test:
-      platform: "'random(ionos-k8s-1.24, ionos-k8s-1.25)'"
+      platform: "'random(ionos-k8s-1.25, ionos-k8s-1.26, ionos-k8s-1.27)'"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -144,22 +136,6 @@ operator_tests:
             nodes:
               count: 5
               instanceType: t2.2xlarge
-      - name: ionos-k8s-1.23
-        test_params: --parallel 4
-        cluster_definition_overlay: |
-          spec:
-            nodes:
-              count: 5
-              numberOfCores: 4
-              memoryMb: 16384
-      - name: ionos-k8s-1.24
-        test_params: --parallel 4
-        cluster_definition_overlay: |
-          spec:
-            nodes:
-              count: 5
-              numberOfCores: 4
-              memoryMb: 16384
       - name: ionos-k8s-1.25
         test_params: --parallel 4
         cluster_definition_overlay: |
@@ -169,6 +145,14 @@ operator_tests:
               numberOfCores: 4
               memoryMb: 16384
       - name: ionos-k8s-1.26
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.27
         test_params: --parallel 4
         cluster_definition_overlay: |
           spec:
@@ -226,7 +210,7 @@ operator_tests:
                 numberOfCores: 4
                 memoryMb: 16384
     nightly_test:
-      platform: "'random(ionos-k8s-1.24, ionos-k8s-1.25)'"
+      platform: "'random(ionos-k8s-1.25, ionos-k8s-1.26, ionos-k8s-1.27)'"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -270,6 +254,14 @@ operator_tests:
               numberOfCores: 4
               memoryMb: 16384
       - name: ionos-k8s-1.26
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.27
         test_params: --parallel 4
         cluster_definition_overlay: |
           spec:
@@ -362,7 +354,7 @@ operator_tests:
             nodes:
               count: 3
               instanceType: t2.xlarge
-      - name: ionos-k8s-1.25
+      - name: ionos-k8s-1.27
         test_params: --parallel 4
         cluster_definition_overlay: |
           spec:
@@ -404,7 +396,7 @@ operator_tests:
             nodes:
               count: 3
               instanceType: t2.xlarge
-      - name: ionos-k8s-1.25
+      - name: ionos-k8s-1.27
         test_params: --parallel 4
         cluster_definition_overlay: |
           spec:
@@ -443,6 +435,8 @@ operator_tests:
       - name: ionos-k8s-1.25
         test_params: --parallel 2
       - name: ionos-k8s-1.26
+        test_params: --parallel 2
+      - name: ionos-k8s-1.27
         test_params: --parallel 2
       - name: hcloud-k3s-centos-8
         test_params: --parallel 2
@@ -499,6 +493,14 @@ operator_tests:
               numberOfCores: 8
               memoryMb: 8192
       - name: ionos-k8s-1.26
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 8
+              memoryMb: 8192
+      - name: ionos-k8s-1.27
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
@@ -593,22 +595,6 @@ operator_tests:
             nodes:
               count: 6
               instanceType: t2.xlarge
-      - name: ionos-k8s-1.23
-        test_params: --parallel 4
-        cluster_definition_overlay: |
-          spec:
-            nodes:
-              count: 6
-              numberOfCores: 4
-              memoryMb: 16384
-      - name: ionos-k8s-1.24
-        test_params: --parallel 4
-        cluster_definition_overlay: |
-          spec:
-            nodes:
-              count: 6
-              numberOfCores: 4
-              memoryMb: 16384
       - name: ionos-k8s-1.25
         test_params: --parallel 4
         cluster_definition_overlay: |
@@ -618,6 +604,14 @@ operator_tests:
               numberOfCores: 4
               memoryMb: 16384
       - name: ionos-k8s-1.26
+        test_params: --parallel 4
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 6
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.27
         test_params: --parallel 4
         cluster_definition_overlay: |
           spec:
@@ -659,7 +653,7 @@ operator_tests:
                 numberOfCores: 4
                 memoryMb: 16384
     nightly_test:
-      platform: "'random(ionos-k8s-1.24, ionos-k8s-1.25)'"
+      platform: "'random(ionos-k8s-1.25, ionos-k8s-1.26, ionos-k8s-1.27)'"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -694,6 +688,8 @@ operator_tests:
       - name: ionos-k8s-1.25
         test_params: --parallel 1
       - name: ionos-k8s-1.26
+        test_params: --parallel 1
+      - name: ionos-k8s-1.27
         test_params: --parallel 1
       - name: hcloud-k3s-centos-8
         test_params: --parallel 1
@@ -750,6 +746,14 @@ operator_tests:
               numberOfCores: 4
               memoryMb: 16384
       - name: ionos-k8s-1.26
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 5
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.27
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
@@ -839,7 +843,7 @@ operator_tests:
             nodes:
               count: 3
               instanceType: t2.xlarge
-      - name: ionos-k8s-1.25
+      - name: ionos-k8s-1.27
         test_params: --parallel 4
         cluster_definition_overlay: |
           spec:
@@ -899,6 +903,15 @@ operator_tests:
               numberOfCores: 4
               memoryMb: 16384
               diskType: HDD
+      - name: ionos-k8s-1.27
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 8
+              numberOfCores: 4
+              memoryMb: 16384
+              diskType: HDD
       - name: hcloud-k3s-centos-8
         test_params: --parallel 1
       - name: hcloud-k3s-centos-9
@@ -936,7 +949,7 @@ operator_tests:
                 memoryMb: 16384
                 diskType: HDD
     nightly_test:
-      platform: "'random(ionos-k8s-1.25)'"
+      platform: "'random(ionos-k8s-1.27)'"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -972,6 +985,8 @@ operator_tests:
       - name: ionos-k8s-1.25
         test_params: --parallel 4
       - name: ionos-k8s-1.26
+        test_params: --parallel 4
+      - name: ionos-k8s-1.27
         test_params: --parallel 4
       - name: hcloud-k3s-centos-8
         test_params: --parallel 2
@@ -1030,6 +1045,13 @@ operator_tests:
               numberOfCores: 4
               memoryMb: 16384
       - name: ionos-k8s-1.26
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              numberOfCores: 4
+              memoryMb: 16384
+      - name: ionos-k8s-1.27
         test_params: --parallel 1
         cluster_definition_overlay: |
           spec:
@@ -1127,6 +1149,12 @@ operator_tests:
           spec:
             nodes:
               count: 8
+      - name: ionos-k8s-1.27
+        test_params: --parallel 1
+        cluster_definition_overlay: |
+          spec:
+            nodes:
+              count: 8
       - name: hcloud-k3s-centos-8
         test_params: --parallel 1
         cluster_definition_overlay: |
@@ -1198,7 +1226,7 @@ main_documentation_test:
           nodes:
             count: 5
             instanceType: t2.xlarge
-    - name: ionos-k8s-1.25
+    - name: ionos-k8s-1.27
       test_params: --parallel 1
       cluster_definition_overlay: |
         spec:
