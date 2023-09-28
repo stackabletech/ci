@@ -15,13 +15,13 @@ git clone https://github.com/stackabletech/{{ testsuite.git_repo }}.git
 {% endfor %}
 
 
+export VECTOR_AGGREGATOR=vector-aggregator.t2-cluster-logging.svc.cluster.local:6000
+
 {% if beku_suite %}
 (cd {{ testsuite.git_repo }}/ && beku --suite {{ beku_suite }})
 {% else %}
 (cd {{ testsuite.git_repo }}/ && beku)
 {% endif %}
-
-export VECTOR_AGGREGATOR=vector-aggregator.t2-cluster-logging.svc.cluster.local:6000
 
 (cd {{ testsuite.git_repo }}/tests/_work && kubectl kuttl test {{ test_params }})
 exit_code=$?
