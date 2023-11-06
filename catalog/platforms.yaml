@@ -72,59 +72,11 @@
         secret-operator: DEV
         listener-operator: DEV
         commons-operator: DEV
-- name: ionos-k8s-1.25
-  description: IONOS K8s 1.25
+- name: ionos-k8s
+  description: IONOS K8s
   k8s_versions:
     - "1.25.12"
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata:
-      name: ionos-k8s
-      description: IONOS K8s
-    spec:
-      template: ionos-k8s
-      region: de/fra
-      k8sVersion: "1.25.12"
-      nodes:
-        count: 3
-        numberOfCores: 4
-        memoryMb: 4096
-        diskType: HDD
-        diskSizeGb: 100
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: DEV
-        listener-operator: DEV
-        commons-operator: DEV
-- name: ionos-k8s-1.26
-  description: IONOS K8s 1.26
-  k8s_versions:
     - "1.26.7"
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata:
-      name: ionos-k8s
-      description: IONOS K8s
-    spec:
-      template: ionos-k8s
-      region: de/fra
-      k8sVersion: "1.26.7"
-      nodes:
-        count: 3
-        numberOfCores: 4
-        memoryMb: 4096
-        diskType: HDD
-        diskSizeGb: 100
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: DEV
-        listener-operator: DEV
-        commons-operator: DEV
-- name: ionos-k8s-1.27
-  description: IONOS K8s 1.27
-  k8s_versions:
     - "1.27.4"
   cluster_definition:
     apiVersion: t2.stackable.tech/v2

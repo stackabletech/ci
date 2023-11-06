@@ -17,26 +17,54 @@ catalog_platforms = None
 catalog_testsuites = None
 test_script_template = None
 
-def read_env_input(env_var_name):
+def read_platform_and_k8s_version():
+    """
+        Reads platform and K8s version from input.
 
-    REGEX_RANDOM_SELECTION = re.compile('random\((.*)\)')
-    REGEX_LIST = re.compile('([^,\s]+)')
+        Example for platform expressions:
+        - "ionos-k8s" or "azure-aks"
+            ... means exactly that platform.
+          The K8S_VERSION is read from the env variable. If not present, the default from the platform definition is used.
+        - "ionos-k8s, azure-aks"
+            ... means a random choice of the given platforms, each with their default K8s version
+                The K8S_VERSION env variable is ignored
+        - "ionos-k8s(1.26.7|1.27.4), azure-aks"
+                Same as above, but for "ionos-k8s", the version is randomly chosen between 1.26.7 and 1.27.4
+        - "ionos-k8s(1.26.7|1.27.4), azure-aks(*))"
+                Same as above, but for "azure-aks", the version is randomly chosen from all existing versions
+    """
 
-    matcher_random_selection = REGEX_RANDOM_SELECTION.match(os.environ[env_var_name])
-    if(matcher_random_selection):
-        values = REGEX_LIST.findall(matcher_random_selection.group(1))
-        pick = random.choice(values)
-        print(f"Randomly picked {pick} from a list in {env_var_name}")
-        return pick
-    return os.environ[env_var_name]
+    k8s_version = None
+    if 'K8S_VERSION' in os.environ:
+        k8s_version = os.environ["K8S_VERSION"]
+
+    platform = ''.join(os.environ["PLATFORM"].split())
+
+    if "," in platform:
+        platform = random.choice(re.compile('([^,\s]+)').findall(platform))
+
+    matcher_wildcard_version = re.compile('(.*)\(\*\)').match(platform)
+    if(matcher_wildcard_version):
+        platform = matcher_wildcard_version.group(1)
+        k8s_version = random.choice(read_k8s_versions_from_catalog(platform))
+
+    matcher_version_list = re.compile('(.*)\((.*)\)').match(platform)
+    if(matcher_version_list):
+        platform = matcher_version_list.group(1)
+        k8s_version = matcher_version_list.group(2)
+        k8s_version = random.choice(re.compile('([^\|\s]+)').findall(k8s_version))
+
+    return platform, k8s_version
+
 
 def read_metadata_annotations_from_env():
     env_prefix = "METADATA_ANNOTATION_"
     return { k[len(env_prefix):] :v for k,v in os.environ.items() if k.startswith(env_prefix)}
 
-def check_prerequisites():
+
+def read_params():
     """ 
-        Checks the prerequisites of this module and fails if they are not satisfied.
+        Reads the params for this program. Fails if mandatory params are missing.
 
         mandatory params:
         - TESTSUITE
@@ -65,16 +93,14 @@ def check_prerequisites():
     if not os.path.isdir('/target/'):
         print("Error: Please supply /target folder as volume.")
         exit(1)
-    testsuite_name = read_env_input("TESTSUITE")
-    platform_name = read_env_input("PLATFORM")
-    if 'K8S_VERSION' in os.environ:
-        k8s_version = read_env_input("K8S_VERSION")
+    testsuite_name = os.environ["TESTSUITE"]
+    platform_name, k8s_version = read_platform_and_k8s_version()
     if 'OPERATOR_VERSION' in os.environ:
-        operator_version = read_env_input("OPERATOR_VERSION")
+        operator_version = os.environ["OPERATOR_VERSION"]
     if 'GIT_BRANCH' in os.environ:
-        git_branch = read_env_input("GIT_BRANCH")
+        git_branch = os.environ["GIT_BRANCH"]
     if 'BEKU_SUITE' in os.environ:
-        beku_suite = read_env_input("BEKU_SUITE")
+        beku_suite = os.environ["BEKU_SUITE"]
     metadata_annotations = read_metadata_annotations_from_env()
 
 def clean_target():
@@ -96,6 +122,9 @@ def read_testsuite_from_catalog(testsuite_name):
 
 def read_cluster_definition_from_catalog(platform_name):
     return next(filter(lambda x: x["name"]==platform_name, catalog_platforms), None)['cluster_definition']
+
+def read_k8s_versions_from_catalog(platform_name):
+    return next(filter(lambda x: x["name"]==platform_name, catalog_platforms), None)['k8s_versions']
 
 def read_platform_from_testsuite(testsuite, platform_name):
     return next(filter(lambda x: x["name"]==platform_name, testsuite['platforms']), None)
@@ -128,10 +157,10 @@ def create_testsuite():
     print()
     print("create testsuite")
     print()
-    check_prerequisites()
-    clean_target()
     read_catalogs()
     read_templates()
+    read_params()
+    clean_target()
 
     testsuite = read_testsuite_from_catalog(testsuite_name)
     if(not testsuite):
