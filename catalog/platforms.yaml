@@ -22,6 +22,7 @@
       stackableVersions:
         _-operator: NONE
         secret-operator: DEV
+        listener-operator: DEV
         commons-operator: DEV
 - name: gke
   description: Google GKE
@@ -45,6 +46,7 @@
       stackableVersions:
         _-operator: NONE
         secret-operator: DEV
+        listener-operator: DEV
         commons-operator: DEV
 - name: aws-eks
   description: AWS EKS
@@ -68,6 +70,7 @@
       stackableVersions:
         _-operator: NONE
         secret-operator: DEV
+        listener-operator: DEV
         commons-operator: DEV
 - name: ionos-k8s-1.25
   description: IONOS K8s 1.25
@@ -92,6 +95,7 @@
       stackableVersions:
         _-operator: NONE
         secret-operator: DEV
+        listener-operator: DEV
         commons-operator: DEV
 - name: ionos-k8s-1.26
   description: IONOS K8s 1.26
@@ -116,6 +120,7 @@
       stackableVersions:
         _-operator: NONE
         secret-operator: DEV
+        listener-operator: DEV
         commons-operator: DEV
 - name: ionos-k8s-1.27
   description: IONOS K8s 1.27
@@ -140,6 +145,7 @@
       stackableVersions:
         _-operator: NONE
         secret-operator: DEV
+        listener-operator: DEV
         commons-operator: DEV
 - name: hcloud-k3s-centos-8
   description: K3s HCloud CentOS 8
@@ -166,6 +172,7 @@
       stackableVersions:
         _-operator: NONE
         secret-operator: DEV
+        listener-operator: DEV
         commons-operator: DEV
 - name: hcloud-k3s-centos-9
   description: K3s HCloud CentOS 9
@@ -192,6 +199,7 @@
       stackableVersions:
         _-operator: NONE
         secret-operator: DEV
+        listener-operator: DEV
         commons-operator: DEV
 - name: hcloud-k3s-debian-10
   description: K3s HCloud Debian 10
@@ -218,6 +226,7 @@
       stackableVersions:
         _-operator: NONE
         secret-operator: DEV
+        listener-operator: DEV
         commons-operator: DEV
 - name: hcloud-k3s-debian-11
   description: K3s HCloud Debian 11
@@ -244,6 +253,7 @@
       stackableVersions:
         _-operator: NONE
         secret-operator: DEV
+        listener-operator: DEV
         commons-operator: DEV
 - name: ionos-k3s-rocky-8
   description: K3s IONOS RockyLinux 8
@@ -274,6 +284,7 @@
       stackableVersions:
         _-operator: NONE
         secret-operator: DEV
+        listener-operator: DEV
         commons-operator: DEV
 - name: ionos-k3s-debian-10
   description: K3s IONOS Debian 10
@@ -304,6 +315,7 @@
       stackableVersions:
         _-operator: NONE
         secret-operator: DEV
+        listener-operator: DEV
         commons-operator: DEV
 - name: ionos-k3s-debian-11
   description: K3s IONOS Debian 11
@@ -334,4 +346,5 @@
       stackableVersions:
         _-operator: NONE
         secret-operator: DEV
+        listener-operator: DEV
         commons-operator: DEV
