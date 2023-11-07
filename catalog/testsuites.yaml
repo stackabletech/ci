@@ -466,7 +466,7 @@ operator_tests:
       - name: ionos-k3s-debian-11
         test_params: --parallel 2
     nightly_test:
-      platform: "'random(ionos-k8s-1.25, ionos-k8s-1.26, ionos-k8s-1.27)'"
+      platform: "'random(azure-aks)'"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
