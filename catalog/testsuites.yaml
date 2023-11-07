@@ -315,7 +315,7 @@ operator_tests:
               numberOfCores: 4
               memoryMb: 16384
     nightly_test:
-      platform: "ionos-k8s(1.27.4)"
+      platform: "ionos-k8s(1.27)"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -357,7 +357,7 @@ operator_tests:
               numberOfCores: 4
               memoryMb: 16384
     nightly_test:
-      platform: "ionos-k8s(1.27.4)"
+      platform: "ionos-k8s(1.27)"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -759,7 +759,7 @@ operator_tests:
               numberOfCores: 4
               memoryMb: 16384
     nightly_test:
-      platform: "ionos-k8s(1.27.4)"
+      platform: "ionos-k8s(1.27)"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -838,7 +838,7 @@ operator_tests:
                 memoryMb: 16384
                 diskType: HDD
     nightly_test:
-      platform: "ionos-k8s(1.27.4)"
+      platform: "ionos-k8s(1.27)"
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"

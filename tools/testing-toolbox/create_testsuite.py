@@ -32,28 +32,38 @@ def read_platform_and_k8s_version():
                 Same as above, but for "ionos-k8s", the version is randomly chosen between 1.26.7 and 1.27.4
         - "ionos-k8s(1.26.7|1.27.4), azure-aks(*))"
                 Same as above, but for "azure-aks", the version is randomly chosen from all existing versions
+        - If the exact version is not found in the platform list but exactly one matching major/minor version
+          is found, it is selected. This is necessary because some cloud providers (namely IONOS currently) do
+          require the fix version, but we do not want to change our testsuites.yaml every now and then...
     """
 
     k8s_version = None
     if 'K8S_VERSION' in os.environ:
         k8s_version = os.environ["K8S_VERSION"]
 
-    platform = ''.join(os.environ["PLATFORM"].split())
+    platform_expression_list = ''.join(os.environ["PLATFORM"].split())
 
-    if "," in platform:
-        platform = random.choice(re.compile('([^,\s]+)').findall(platform))
+    if "," in platform_expression_list:
+        platform_expression = random.choice(re.compile('([^,\s]+)').findall(platform_expression_list))
+    else:
+        platform_expression = platform_expression_list
 
-    matcher_wildcard_version = re.compile('(.*)\(\*\)').match(platform)
+    matcher_wildcard_version = re.compile('(.*)\(\*\)').match(platform_expression)
     if(matcher_wildcard_version):
         platform = matcher_wildcard_version.group(1)
         k8s_version = random.choice(read_k8s_versions_from_catalog(platform))
+        return platform, k8s_version
 
-    matcher_version_list = re.compile('(.*)\((.*)\)').match(platform)
+    matcher_version_list = re.compile('(.*)\((.*)\)').match(platform_expression)
     if(matcher_version_list):
         platform = matcher_version_list.group(1)
-        k8s_version = matcher_version_list.group(2)
-        k8s_version = random.choice(re.compile('([^\|\s]+)').findall(k8s_version))
+        k8s_version_list = matcher_version_list.group(2)
+        k8s_versions_for_platform = read_k8s_versions_from_catalog(platform)
+        k8s_version_expression = random.choice(re.compile('([^\|\s]+)').findall(k8s_version_list))
+        k8s_version = next(filter(lambda v: v.startswith(k8s_version_expression), k8s_versions_for_platform), None)
+        return platform, k8s_version
 
+    platform = platform_expression
     return platform, k8s_version
 
 
@@ -103,8 +113,10 @@ def read_params():
         beku_suite = os.environ["BEKU_SUITE"]
     metadata_annotations = read_metadata_annotations_from_env()
 
+
 def clean_target():
     os.system('rm -rf /target/*')
+
 
 def read_catalogs():
     global catalog_platforms
@@ -112,19 +124,24 @@ def read_catalogs():
     catalog_platforms = hiyapyco.load("/catalog/platforms.yaml")
     catalog_testsuites = hiyapyco.load("/catalog/testsuites.yaml")
 
+
 def read_templates():
     global test_script_template
     with open ("/templates/test.sh.j2", "r") as f:
         test_script_template = Template(f.read())
 
+
 def read_testsuite_from_catalog(testsuite_name):
     return next(filter(lambda x: x["name"]==testsuite_name, catalog_testsuites['operator_tests']), None)
+
 
 def read_cluster_definition_from_catalog(platform_name):
     return next(filter(lambda x: x["name"]==platform_name, catalog_platforms), None)['cluster_definition']
 
+
 def read_k8s_versions_from_catalog(platform_name):
     return next(filter(lambda x: x["name"]==platform_name, catalog_platforms), None)['k8s_versions']
+
 
 def read_platform_from_testsuite(testsuite, platform_name):
     return next(filter(lambda x: x["name"]==platform_name, testsuite['platforms']), None)
@@ -134,13 +151,16 @@ def write_cluster_definition(cluster_definition):
         f.write(yaml_to_string(cluster_definition))
         f.close()
 
+
 def write_test_script(testsuite, test_params):
     with open ('/target/test.sh', 'w') as f:
         f.write(test_script_template.render( { 'testsuite': testsuite, 'git_branch': git_branch, 'beku_suite': beku_suite, 'test_params': test_params }))
         f.close()
 
+
 def yaml_to_string(yaml):
     return hiyapyco.dump(yaml, default_flow_style=False, width=1000)
+
 
 def merge_yaml(base_yaml, yaml_to_merge):
     """ 
@@ -149,6 +169,7 @@ def merge_yaml(base_yaml, yaml_to_merge):
         Returns merged YAML
     """
     return hiyapyco.load([base_yaml, yaml_to_merge], method=hiyapyco.METHOD_MERGE)
+
 
 def create_testsuite():
     """ 
