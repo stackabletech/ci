@@ -56,7 +56,7 @@
             docker run --rm \
               --volume "$HOST_WORKSPACE/testsuite/:/target/" \
               --env TESTSUITE={{ testsuite.name }} \
-              --env PLATFORM={{ testsuite.nightly_test.platform }} \
+              --env PLATFORM='{{ testsuite.nightly_test.platform }}' \
               --env GIT_BRANCH=main \
               --env BEKU_SUITE=nightly \
               --env OPERATOR_VERSION=DEV \
