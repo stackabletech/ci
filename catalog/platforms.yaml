@@ -86,7 +86,7 @@
       description: IONOS K8s
     spec:
       template: ionos-k8s
-      region: de/fra
+      region: fr/par
       k8sVersion: "1.27.4"
       nodes:
         count: 3
@@ -224,7 +224,7 @@
       description: K3s IONOS CentOS 8
     spec:
       template: ionos-rocky-8
-      region: de/fra
+      region: fr/par
       k8sVersion: latest
       nodes:
         main:
@@ -255,7 +255,7 @@
       description: K3s IONOS Debian 10
     spec:
       template: ionos-debian-10
-      region: de/fra
+      region: fr/par
       k8sVersion: latest
       nodes:
         main:
@@ -286,7 +286,7 @@
       description: K3s IONOS Debian 11
     spec:
       template: ionos-debian-11
-      region: de/fra
+      region: fr/par
       k8sVersion: latest
       nodes:
         main:
