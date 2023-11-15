@@ -208,7 +208,10 @@ def create_testsuite():
         cluster_definition['spec']['k8sVersion'] = k8s_version
 
     if(operator_version):
-        cluster_definition['spec']['stackableVersions'][testsuite_name] = operator_version
+        if(operator_version!='NONE'):
+            cluster_definition['spec']['stackableVersions'][testsuite_name] = operator_version
+        else:
+            cluster_definition['spec']['stackableVersions'] = { '_-operator': 'NONE' }
 
     if(not 'metadata' in cluster_definition):
         cluster_definition['metadata'] = {}
