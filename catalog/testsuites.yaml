@@ -85,6 +85,7 @@ operator_tests:
                 memoryMb: 16384
     nightly_test:
       platform: "ionos-k8s(*)"
+      hour: 0
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -179,6 +180,7 @@ operator_tests:
                 memoryMb: 16384
     nightly_test:
       platform: "azure-aks"
+      hour: 0
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -274,6 +276,7 @@ operator_tests:
                 memoryMb: 16384
     nightly_test:
       platform: "ionos-k8s(*)"
+      hour: 1
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -316,6 +319,7 @@ operator_tests:
               instanceType: t2.xlarge
     nightly_test:
       platform: "ionos-k8s(1.27)"
+      hour: 1
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -358,6 +362,7 @@ operator_tests:
               instanceType: t2.xlarge
     nightly_test:
       platform: "ionos-k8s(1.27)"
+      hour: 2
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -405,6 +410,7 @@ operator_tests:
         test_params: --parallel 2
     nightly_test:
       platform: "azure-aks"
+      hour: 2
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -498,6 +504,7 @@ operator_tests:
                 memoryMb: 8192
     nightly_test:
       platform: "ionos-k8s(*)"
+      hour: 3
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -575,6 +582,7 @@ operator_tests:
                 memoryMb: 16384
     nightly_test:
       platform: "ionos-k8s(*)"
+      hour: 3
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -628,6 +636,7 @@ operator_tests:
         test_params: --parallel 1
     nightly_test:
       platform: "ionos-k8s(*)"
+      hour: 4
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -718,6 +727,7 @@ operator_tests:
                 memoryMb: 16384
     nightly_test:
       platform: "ionos-k8s(*)"
+      hour: 4
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -760,6 +770,7 @@ operator_tests:
               instanceType: t2.xlarge
     nightly_test:
       platform: "ionos-k8s(1.27)"
+      hour: 5
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -839,6 +850,7 @@ operator_tests:
                 diskType: HDD
     nightly_test:
       platform: "ionos-k8s(1.27)"
+      hour: 5
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -893,6 +905,7 @@ operator_tests:
         test_params: --parallel 2
     nightly_test:
       platform: "ionos-k8s(*)"
+      hour: 6
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -985,6 +998,7 @@ operator_tests:
                 memoryMb: 16384
     nightly_test:
       platform: "ionos-k8s(*)"
+      hour: 6
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -1064,6 +1078,7 @@ operator_tests:
                 count: 8
     nightly_test:
       platform: "ionos-k8s(*)"
+      hour: 7
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
