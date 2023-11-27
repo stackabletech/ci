@@ -40,8 +40,8 @@
       description: Azure AKS
     spec:
       template: azure-aks
-      location: westeurope
-      k8sVersion: "1.27"
+      location: northeurope
+      k8sVersion: "1.28"
       nodes:
         count: 3
         vmSize: Standard_D2s_v3
