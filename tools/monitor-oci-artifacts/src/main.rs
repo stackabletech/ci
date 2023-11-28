@@ -1,4 +1,7 @@
-use std::process::{exit, Command, Stdio};
+use std::{
+    fmt::Formatter,
+    process::{exit, Command, Stdio},
+};
 
 use serde::Deserialize;
 use urlencoding::encode;
@@ -9,12 +12,42 @@ struct Repository {
 }
 
 #[derive(Deserialize, Debug)]
-struct Tag {}
+struct Tag {
+    name: String,
+}
+
+#[derive(Deserialize, Debug)]
+struct TagList(Vec<Tag>);
+
+impl std::fmt::Display for TagList {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let mut first = true;
+        for tag in &self.0 {
+            if first {
+                first = false;
+            } else {
+                write!(f, ", ")?;
+            }
+            write!(f, "{}", tag.name)?;
+        }
+        Ok(())
+    }
+}
+
+impl std::ops::Deref for TagList {
+    type Target = Vec<Tag>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
 
 #[derive(Deserialize, Debug)]
 struct Artifact {
     digest: String,
-    tags: Option<Vec<Tag>>,
+    manifest_media_type: String,
+    media_type: String,
+    tags: Option<TagList>,
 }
 
 #[tokio::main]
@@ -53,6 +86,32 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 {
                     continue;
                 }
+
+                if project_name == "stackable" && repository_name.starts_with("images/") {
+                    if artifact.manifest_media_type
+                        != "application/vnd.docker.distribution.manifest.v2+json"
+                    {
+                        println!(
+                            "unexpected manifest media type: {} for {}{} ({})",
+                            artifact.manifest_media_type,
+                            repository_name,
+                            artifact.digest,
+                            artifact.tags.as_ref().unwrap()
+                        );
+                        exit(2);
+                    }
+                    if artifact.media_type != "application/vnd.docker.container.image.v1+json" {
+                        println!(
+                            "unexpected media type: {} for {}{} ({})",
+                            artifact.media_type,
+                            repository_name,
+                            artifact.digest,
+                            artifact.tags.as_ref().unwrap()
+                        );
+                        exit(3);
+                    }
+                }
+
                 let artifact_uri = format!(
                     "{}/{}/{}@{}",
                     registry_hostname, project_name, repository_name, artifact.digest
