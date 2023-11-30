@@ -23,6 +23,7 @@
           name: T2_INSTANCE
           choices:
             - T2_PROD
+            - T2_TEST
             - T2_DEV
           description: Which T2 instance should create the test cluster?
       - string:
@@ -34,6 +35,9 @@
           - text:
               credential-id: T2_TOKEN
               variable: T2_PROD_TOKEN
+          - text:
+              credential-id: T2_TOKEN_TEST
+              variable: T2_TEST_TOKEN
           - text:
               credential-id: T2_TOKEN_DEV
               variable: T2_DEV_TOKEN
@@ -86,6 +90,10 @@
               export T2_TOKEN=$T2_DEV_TOKEN
               export T2_URL="https://api.t2-dev.stackable.tech"
               export OPENSEARCH_DASHBOARDS_URL="https://logs.t2-dev.stackable.tech"
+            elif [ "$T2_INSTANCE" = "T2_TEST" ]; then
+              export T2_TOKEN=$T2_TEST_TOKEN
+              export T2_URL="https://api.t2-test.stackable.tech"
+              export OPENSEARCH_DASHBOARDS_URL="https://logs.t2-test.stackable.tech"
             else
               echo "unknown T2 instance"
               exit 1
