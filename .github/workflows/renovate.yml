@@ -4,6 +4,9 @@ name: Run Renovate against all Repositories
 on:
   workflow_dispatch:
 
+env:
+  RENOVATE_DRY_RUN: full
+
 jobs:
   renovate:
     runs-on: ubuntu-latest
@@ -16,4 +19,3 @@ jobs:
           configurationFile: renovate/config.js
           renovate-version: 37.81.0
           token: ${{ secrets.STACKY_MC_STACKFACE_TOKEN }}
-          RENOVATE_DRY_RUN: full
