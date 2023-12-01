@@ -3,11 +3,16 @@ name: Run Renovate against all Repositories
 
 on:
   workflow_dispatch:
-
-inputs:
-    dry-run:
-      type: boolean
-      description: Perform a dry run and just log changes, but don't open any pull requests
+    inputs:
+      dry-run:
+        type: choice
+        description: What type of run to perform?
+        required: true
+        options:
+          - null
+          - extract
+          - lookup
+          - full
 
 env:
   # Look at https://hub.docker.com/r/renovate/renovate/tags and identify new versions if an
@@ -21,4 +26,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.6.0
       - name: Self-hosted Renovate
-        run: docker run --rm --volume "renovate/config.js:/usr/src/app/config.js" --env RENOVATE_TOKEN="${{ secrets.STACKY_MC_STACKFACE_TOKEN }}" --env LOG_LEVEL=debug --env RENOVATE_DRY_RUN=full renovate/renovate@$RENOVATE_VERSION
+        run: docker run --rm --volume "renovate/config.js:/usr/src/app/config.js" --env RENOVATE_TOKEN="${{ secrets.STACKY_MC_STACKFACE_TOKEN }}" --env LOG_LEVEL=debug --env RENOVATE_DRY_RUN=${{ github.event.inputs.dry-run }} renovate/renovate@$RENOVATE_VERSION
