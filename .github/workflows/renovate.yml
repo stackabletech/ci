@@ -27,4 +27,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.6.0
       - name: Self-hosted Renovate
-        run: docker run --rm --volume "${{ github.workspace }}/renovate/config.js:/usr/src/app/config.js" --env RENOVATE_TOKEN="${{ secrets.gh_access_token }}" --env LOG_LEVEL=debug --env RENOVATE_DRY_RUN=${{ github.event.inputs.dry-run }} renovate/renovate@$RENOVATE_VERSION
+        run: docker run --rm --volume "${{ github.workspace }}/renovate/config.js:/usr/src/app/config.js" --env RENOVATE_TOKEN="${{ secrets.GITHUB_TOKEN }}" --env LOG_LEVEL=debug --env RENOVATE_DRY_RUN=${{ github.event.inputs.dry-run }} renovate/renovate@$RENOVATE_VERSION
