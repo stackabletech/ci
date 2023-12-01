@@ -4,8 +4,15 @@ name: Run Renovate against all Repositories
 on:
   workflow_dispatch:
 
+inputs:
+    dry-run:
+      type: boolean
+      description: Perform a dry run and just log changes, but don't open any pull requests
+
 env:
-  RENOVATE_DRY_RUN: full
+  # Look at https://hub.docker.com/r/renovate/renovate/tags and identify new versions if an
+  # update is required
+  RENOVATE_VERSION: sha256:3e59ae8e4251678f7a0ef5c0abc4e0abf643b5b10bcbbb36fc51c4427533f4d4
 
 jobs:
   renovate:
@@ -14,8 +21,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.6.0
       - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v39.1.4
-        with:
-          configurationFile: renovate/config.js
-          renovate-version: 37.81.0
-          token: ${{ secrets.STACKY_MC_STACKFACE_TOKEN }}
+        run: docker run --rm --volume "renovate/config.js:/usr/src/app/config.js" --env RENOVATE_TOKEN="${{ secrets.STACKY_MC_STACKFACE_TOKEN }}" --env LOG_LEVEL=debug --env RENOVATE_DRY_RUN=full renovate/renovate@$RENOVATE_VERSION
