@@ -1,0 +1,19 @@
+---
+name: Stackable Build Pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.6.0
+      - name: Self-hosted Renovate
+        uses: renovatebot/github-action@v39.1.4
+        with:
+          configurationFile: renovate/config.js
+          renovate-version: 37.81.0
+          token: ${{ secrets.STACKY_MC_STACKFACE_TOKEN }}
+          RENOVATE_DRY_RUN: full
