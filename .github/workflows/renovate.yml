@@ -8,6 +8,7 @@ on:
         type: choice
         description: What type of run to perform?
         required: true
+        default: full
         options:
           - "null"
           - extract
