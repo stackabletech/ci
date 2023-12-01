@@ -1,5 +1,5 @@
 ---
-name: Stackable Build Pipeline
+name: Run Renovate against all Repositories
 
 on:
   workflow_dispatch:
