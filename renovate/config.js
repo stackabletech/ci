@@ -7,7 +7,7 @@ module.exports = {
         "stackabletech/docker-images",
         "stackabletech/documentation",
         "stackabletech/documentation-ui",
-        "stackabletech/druid-opa-authorizter",
+        "stackabletech/druid-opa-authorizer",
         "stackabletech/druid-operator",
         "stackabletech/edc-operator",
         "stackabletech/hbase-normalizer",
