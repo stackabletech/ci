@@ -5,7 +5,7 @@
     project-type: freestyle
     defaults: global
     description: ''
-    disabled: false
+    disabled: {{ testsuite.nightly_test.disabled }}
     display-name: '{{ testsuite.display_name }} nightly test'
     concurrent: false
     quiet-period: 5
