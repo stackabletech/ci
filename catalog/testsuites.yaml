@@ -279,7 +279,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 1
-      disabled: true
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -323,7 +323,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(1.27)"
       hour: 1
-      disabled: true
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
