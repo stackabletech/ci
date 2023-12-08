@@ -9,7 +9,7 @@ operator_tests:
           airflow-operator: DEV
     platforms:
       - name: ionos-k8s
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
@@ -17,47 +17,47 @@ operator_tests:
               numberOfCores: 4
               memoryMb: 16384
       - name: azure-aks
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
               vmSize: Standard_D4s_v3
       - name: gke
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
               count: 5
               machineType: e2-standard-4
       - name: aws-eks
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
               instanceType: t2.xlarge
       - name: hcloud-k3s-centos-8
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
               main:
                 serverType: cpx41
       - name: hcloud-k3s-centos-9
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
               main:
                 serverType: cpx41
       - name: hcloud-k3s-debian-10
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
               main:
                 serverType: cpx41
       - name: ionos-k3s-rocky-8
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
@@ -66,7 +66,7 @@ operator_tests:
                 numberOfCores: 4
                 memoryMb: 16384
       - name: ionos-k3s-debian-10
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
@@ -75,7 +75,7 @@ operator_tests:
                 numberOfCores: 4
                 memoryMb: 16384
       - name: ionos-k3s-debian-11
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
