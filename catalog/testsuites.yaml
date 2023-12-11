@@ -367,7 +367,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(1.27)"
       hour: 2
-      disabled: true
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -511,7 +511,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 3
-      disabled: true
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -590,7 +590,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 3
-      disabled: true
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -645,7 +645,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 4
-      disabled: true
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -737,7 +737,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 4
-      disabled: true
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -781,7 +781,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(1.27)"
       hour: 5
-      disabled: true
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -862,7 +862,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(1.27)"
       hour: 5
-      disabled: true
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -918,7 +918,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 6
-      disabled: true
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -1012,7 +1012,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 6
-      disabled: true
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -1093,7 +1093,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 7
-      disabled: true
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
