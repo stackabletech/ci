@@ -9,7 +9,7 @@ operator_tests:
           airflow-operator: DEV
     platforms:
       - name: ionos-k8s
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
@@ -17,47 +17,47 @@ operator_tests:
               numberOfCores: 4
               memoryMb: 16384
       - name: azure-aks
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
               vmSize: Standard_D4s_v3
       - name: gke
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
               count: 5
               machineType: e2-standard-4
       - name: aws-eks
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
               instanceType: t2.xlarge
       - name: hcloud-k3s-centos-8
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
               main:
                 serverType: cpx41
       - name: hcloud-k3s-centos-9
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
               main:
                 serverType: cpx41
       - name: hcloud-k3s-debian-10
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
               main:
                 serverType: cpx41
       - name: ionos-k3s-rocky-8
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
@@ -66,7 +66,7 @@ operator_tests:
                 numberOfCores: 4
                 memoryMb: 16384
       - name: ionos-k3s-debian-10
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
@@ -75,7 +75,7 @@ operator_tests:
                 numberOfCores: 4
                 memoryMb: 16384
       - name: ionos-k3s-debian-11
-        test_params: --parallel 1
+        test_params: --parallel 2
         cluster_definition_overlay: |
           spec:
             nodes:
@@ -86,6 +86,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 0
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -181,6 +182,7 @@ operator_tests:
     nightly_test:
       platform: "azure-aks"
       hour: 0
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -277,6 +279,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 1
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -320,6 +323,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(1.27)"
       hour: 1
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -363,6 +367,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(1.27)"
       hour: 2
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -411,6 +416,7 @@ operator_tests:
     nightly_test:
       platform: "azure-aks"
       hour: 2
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -505,6 +511,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 3
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -583,6 +590,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 3
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -637,6 +645,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 4
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -728,6 +737,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 4
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -771,6 +781,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(1.27)"
       hour: 5
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -851,6 +862,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(1.27)"
       hour: 5
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -906,6 +918,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 6
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -999,6 +1012,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 6
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
@@ -1079,6 +1093,7 @@ operator_tests:
     nightly_test:
       platform: "ionos-k8s(*)"
       hour: 7
+      disabled: false
       slack_channels: "#notifications-jenkins"
     custom_test:
       slack_channels: "#notifications-jenkins"
