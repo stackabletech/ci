@@ -87,7 +87,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     continue;
                 }
 
-                if project_name == "stackable" && repository_name.starts_with("images/") {
+                if project_name == "sdp" {
                     if artifact.manifest_media_type
                         != "application/vnd.docker.distribution.manifest.v2+json"
                     {
