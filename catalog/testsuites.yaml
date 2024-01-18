@@ -427,6 +427,8 @@ operator_tests:
       spec:
         stackableVersions:
           hive-operator: DEV
+          hdfs-operator: DEV
+          zookeeper-operator: DEV
     platforms:
       - name: ionos-k8s
         test_params: --parallel 1
