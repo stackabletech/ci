@@ -3,6 +3,7 @@ use std::{
     process::{exit, Command, Stdio},
 };
 
+use regex::Regex;
 use serde::Deserialize;
 use urlencoding::encode;
 
@@ -56,6 +57,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let base_url = format!("https://{}/api/v2.0", registry_hostname);
     let page_size = 10;
     let mut page = 1;
+    let attestation_tag_regex = Regex::new(r"^sha256-[0-9a-f]{64}.att$").unwrap();
 
     loop {
         let url = format!(
@@ -88,6 +90,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 }
 
                 if project_name == "sdp" {
+                    if artifact.manifest_media_type == "application/vnd.oci.image.manifest.v1+json"
+                        && artifact.media_type == "application/vnd.oci.image.config.v1+json"
+                    {
+                        // might be an attestation
+                        if let Some(tags) = artifact.tags.as_ref() {
+                            if attestation_tag_regex.is_match(&tags[0].name) {
+                                // it is an attestation!
+                                // attestations artifacts themselves are not signed
+                                continue;
+                            }
+                        }
+                    }
                     if artifact.manifest_media_type
                         != "application/vnd.docker.distribution.manifest.v2+json"
                     {
