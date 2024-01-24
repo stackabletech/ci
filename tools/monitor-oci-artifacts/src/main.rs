@@ -89,19 +89,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     continue;
                 }
 
+                if artifact.manifest_media_type == "application/vnd.oci.image.manifest.v1+json"
+                    && artifact.media_type == "application/vnd.oci.image.config.v1+json"
+                    && attestation_tag_regex.is_match(&artifact.tags.as_ref().unwrap()[0].name)
+                // we can .unwrap() here because we checked that tags are present and not empty at the beginning of the for loop
+                {
+                    // it's an attestation, attestations artifacts themselves are not signed
+                    println!(
+                        "skipping attestation {}{} ({})",
+                        repository_name,
+                        artifact.digest,
+                        artifact.tags.as_ref().unwrap()
+                    );
+                    continue;
+                }
+
                 if project_name == "sdp" {
-                    if artifact.manifest_media_type == "application/vnd.oci.image.manifest.v1+json"
-                        && artifact.media_type == "application/vnd.oci.image.config.v1+json"
-                    {
-                        // might be an attestation
-                        if let Some(tags) = artifact.tags.as_ref() {
-                            if attestation_tag_regex.is_match(&tags[0].name) {
-                                // it is an attestation!
-                                // attestations artifacts themselves are not signed
-                                continue;
-                            }
-                        }
-                    }
                     if artifact.manifest_media_type
                         != "application/vnd.docker.distribution.manifest.v2+json"
                     {
@@ -132,21 +135,25 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 );
                 println!("trying to verify {}", artifact_uri);
 
-                let status = Command::new("cosign")
+                let cmd_output = Command::new("cosign")
                     .arg("verify")
                     .arg("--certificate-identity-regexp")
                     .arg("^https://github.com/stackabletech/.+")
                     .arg("--certificate-oidc-issuer")
                     .arg("https://token.actions.githubusercontent.com")
-                    .arg(artifact_uri)
+                    .arg(&artifact_uri)
                     .stdout(Stdio::inherit())
                     .stderr(Stdio::inherit())
                     .output()
-                    .expect("failed to execute cosign")
-                    .status;
+                    .expect("failed to execute cosign");
 
-                if !status.success() {
-                    exit(status.code().unwrap_or(1));
+                if !cmd_output.status.success() {
+                    println!("failed to verify {}", artifact_uri);
+                    println!(
+                        "cosign reported: {}",
+                        String::from_utf8_lossy(&cmd_output.stdout)
+                    );
+                    exit(cmd_output.status.code().unwrap_or(1));
                 }
             }
         }
