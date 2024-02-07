@@ -13,7 +13,7 @@
       description: IONOS K8s
     spec:
       template: ionos-k8s
-      region: fr/par
+      region: de/txl
       k8sVersion: "1.27.4"
       nodes:
         count: 3
