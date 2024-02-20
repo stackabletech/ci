@@ -379,6 +379,7 @@ operator_tests:
         stackableVersions:
           hdfs-operator: DEV
           zookeeper-operator: DEV
+          opa-operator: DEV
     platforms:
       - name: ionos-k8s
         test_params: --parallel 2
