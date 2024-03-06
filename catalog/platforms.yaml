@@ -2,9 +2,9 @@
 - name: ionos-k8s
   description: IONOS K8s
   k8s_versions:
-    - "1.28.6"
-    - "1.27.10"
-    - "1.26.13"
+    - "1.28.7"
+    - "1.27.11"
+    - "1.26.14"
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
