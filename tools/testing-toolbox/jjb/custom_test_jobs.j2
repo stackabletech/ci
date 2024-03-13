@@ -35,13 +35,6 @@
           choices:{% for platform in platforms[testsuite.name] %}
             - {{ platform.display_name }}, {{ platform.version }} <{{ platform.id }}|{{ platform.version }}>{% endfor %}
           description: On which platform should the test run?
-      - extended-choice:
-          name: OPERATOR_VERSION
-          description: Version of the operator (binary) this test should use
-          property-file: /var/jenkins_home/workspace/Available Versions/versions.properties
-          property-key: {{ testsuite.name }}
-          quote-value: false
-          visible-items: 10
       - string:
           name: BEKU_SUITE
           description: Testsuite which is used (beku feature)
@@ -87,7 +80,7 @@
               --env K8S_VERSION=$K8S_VERSION \
               --env GIT_BRANCH=$GIT_BRANCH \
               --env BEKU_SUITE=$BEKU_SUITE \
-              --env OPERATOR_VERSION=$OPERATOR_VERSION \
+              --env OPERATOR_VERSION=NONE \
               --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user="${BUILD_USER}" \
               --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-id=${BUILD_USER_ID} \
               --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-email=${BUILD_USER_EMAIL} \
@@ -127,7 +120,6 @@
           custom-message: |
             *platform:* $TEST_PLATFORM
             *branch or tag:* `$GIT_BRANCH_OR_TAG`
-            *operator version:* `$OPERATOR_VERSION`
             (<$BUILD_URL|Open in classic Jenkins UI>)
             (<${BUILD_URL}artifact/testsuite/target/logs.html|Open logs overview>)
       - description-setter:
