@@ -70,6 +70,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         for repository in &repositories {
             let (project_name, repository_name) = repository.name.split_once('/').unwrap();
+            if project_name == "sandbox" {
+                continue;
+            }
             let artifacts: Vec<Artifact> = reqwest::get(format!(
                 "{}/projects/{}/repositories/{}/artifacts",
                 base_url,
