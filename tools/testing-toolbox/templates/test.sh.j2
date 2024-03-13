@@ -5,6 +5,11 @@ sleep 60
 # Install tool for test suite expansion
 pip install beku-stackabletech
 
+# Install stackablectl
+curl -L https://github.com/stackabletech/stackable-cockpit/releases/latest/download/stackablectl-x86_64-unknown-linux-gnu --output /usr/local/bin/stackablectl 
+chmod a+x /usr/local/bin/stackablectl 
+
+# Clone repo of system under test
 {% if git_branch %}
 git clone -b {{ git_branch }} https://github.com/stackabletech/{{ testsuite.git_repo }}.git
 {% else %}
@@ -15,15 +20,15 @@ git clone https://github.com/stackabletech/{{ testsuite.git_repo }}.git
 {% endfor %}
 
 
+# Tests want to know where to pipe their logs to
 export VECTOR_AGGREGATOR=vector-aggregator.t2-cluster-logging.svc.cluster.local:6000
 
 {% if beku_suite %}
-(cd {{ testsuite.git_repo }}/ && beku --suite {{ beku_suite }})
+(cd {{ testsuite.git_repo }}/ && ./scripts/run_tests.sh --test-suite {{ beku_suite }} {{ test_params }})
 {% else %}
-(cd {{ testsuite.git_repo }}/ && beku)
+(cd {{ testsuite.git_repo }}/ && ./scripts/run_tests.sh {{ test_params }})
 {% endif %}
 
-(cd {{ testsuite.git_repo }}/tests/_work && kubectl kuttl test {{ test_params }})
 exit_code=$?
 
 # cleanup of the test resources might take a while, so we wait another minute
