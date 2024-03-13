@@ -49,6 +49,7 @@ lazy_static! {
 pub async fn render_as_html(
     State(cached_rendered_artifact_tree): State<CachedObject<Html<String>>>,
 ) -> Result<Html<String>, ArtifactTreeError> {
+
     // if the artifact tree is already cached, return it
     if let Some(html) = cached_rendered_artifact_tree.get() {
         return Ok(html);
@@ -57,7 +58,67 @@ pub async fn render_as_html(
     let artifact_tree = build_artifact_tree().await?;
 
     let mut html = String::with_capacity(64 * 1024); // reserve 64KB to avoid reallocations
-    html.push_str("<html><body><ul id='tree'>");
+    html.push_str(
+        r#"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stackable :: SBOM Browser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            font-size: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            cursor: pointer;
+        }
+        li {
+            margin: 6px 0;
+            padding-left: 25px;
+            position: relative;
+            flex-direction: column;
+            justify-content: center;
+            display: none;
+        }
+        li::before {
+            content: "";
+            position: absolute;
+            top: 4px;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid #000;
+            border-right: 2px solid #000;
+            transform: rotate(45deg);
+        }
+        li.open > ul > li, ul#tree > li {
+            display: flex;
+        }
+        li.open::before {
+            transform: rotate(135deg);
+            top: 2px;
+            left: 4px;
+        }
+        li.artifact::before {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div align="center">
+    <a href="https://stackable.tech/">Stackable Data Platform</a> |
+    <a href="https://docs.stackable.tech/">Documentation</a> |
+    <a href="https://github.com/orgs/stackabletech/discussions">Discussions</a> |
+    <a href="https://discord.gg/7kZ3BNnCAF">Discord</a>
+</div>
+    <ul id='tree'>"#,
+    );
+
     for (release_version, repositories) in artifact_tree {
         html.push_str(&format!("<li>Release {}<ul>", release_version));
         for (repository, artifacts) in repositories {
@@ -72,68 +133,24 @@ pub async fn render_as_html(
         }
         html.push_str("</ul></li>");
     }
+
     html.push_str(
         r#"</ul>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                padding: 20px;
-                font-size: 20px;
+    <script>
+        const tree = document.getElementById("tree");
+        tree.addEventListener("click", (event) => {
+            const target = event.target;
+            if (target.tagName === "LI") {
+                target.classList.toggle("open");
             }
-            ul {
-                list-style-type: none;
-                padding: 0;
-                cursor: pointer;
-            }
-
-            li {
-                margin: 6px 0px;
-                padding-left: 25px;
-                position: relative;
-                flex-direction: column;
-                justify-content: center;
-                display: none;
-            }
-
-            li::before {
-                content: "";
-                display: block;
-                position: absolute;
-                top: 4px;
-                left: 0;
-                width: 10px;
-                height: 10px;
-                border-top: 2px solid #000;
-                border-right: 2px solid #000;
-                transform: rotate(45deg);
-            }
-            li.open > ul > li, ul#tree > li {
-                display: flex;
-            }
-            li.open::before {
-                transform: rotate(135deg);
-                top: 2px;
-                left: 4px;
-            }
-            li.artifact::before {
-                display: none;
-            }
-        </style>
-        <script>
-            const tree = document.getElementById("tree");
-            tree.addEventListener("click", (event) => {
-                const target = event.target;
-                if (target.tagName === "LI") {
-                    target.classList.toggle("open");
-                }
-            });
-        </script>
-        </body></html>
-    "#,
+        });
+    </script>
+</body>
+</html>
+"#,
     );
 
     let html = Html(html);
-    // cache the rendered artifact tree
     cached_rendered_artifact_tree.set_to(html.clone());
     Ok(html)
 }
