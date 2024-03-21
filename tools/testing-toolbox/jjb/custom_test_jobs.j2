@@ -35,6 +35,13 @@
           choices:{% for platform in platforms[testsuite.name] %}
             - {{ platform.display_name }}, {{ platform.version }} <{{ platform.id }}|{{ platform.version }}>{% endfor %}
           description: On which platform should the test run?
+      - extended-choice:
+          name: OPERATOR_VERSION
+          description: Version of the operator (binary) this test should use
+          property-file: /var/jenkins_home/workspace/Available Versions/versions.properties
+          property-key: {{ testsuite.name }}
+          quote-value: false
+          visible-items: 10
       - string:
           name: BEKU_SUITE
           description: Testsuite which is used (beku feature)
@@ -57,6 +64,7 @@
             export PLATFORM_ID=`echo $TEST_PLATFORM | cut -d '<' -f 2 | cut -d '|' -f 1`
             export K8S_VERSION=`echo $TEST_PLATFORM | cut -d '<' -f 2 | cut -d '|' -f 2 | cut -d '>' -f 1`
             export GIT_BRANCH=`echo $GIT_BRANCH_OR_TAG | sed s#origin/##g`
+            export TEST_SCRIPT_PARAM_OPERATOR_NAME=`echo {{ testsuite.name }} | sed s#-operator##g`
 
             # We're using Docker from within a Docker container, so we have to make sure to provide
             # the Docker daemon with the proper absolute path for volume mounts.
@@ -81,6 +89,7 @@
               --env GIT_BRANCH=$GIT_BRANCH \
               --env BEKU_SUITE=$BEKU_SUITE \
               --env OPERATOR_VERSION=NONE \
+              --env TEST_SCRIPT_PARAMS="--operator ${TEST_SCRIPT_PARAM_OPERATOR_NAME}=${OPERATOR_VERSION}" \
               --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user="${BUILD_USER}" \
               --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-id=${BUILD_USER_ID} \
               --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-email=${BUILD_USER_EMAIL} \
