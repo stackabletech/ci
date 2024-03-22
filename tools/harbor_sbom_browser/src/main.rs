@@ -3,6 +3,8 @@ use structs::CachedObject;
 
 pub mod handlers;
 pub mod structs;
+mod utils;
+
 use crate::handlers::*;
 
 #[tokio::main]

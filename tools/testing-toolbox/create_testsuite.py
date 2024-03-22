@@ -9,6 +9,7 @@ testsuite_name = None
 platform_name = None
 k8s_version = None
 operator_version = None
+test_script_params = None
 git_branch = None
 beku_suite = None
 metadata_annotations = {}
@@ -85,12 +86,14 @@ def read_params():
         - GIT_BRANCH
         - BEKU_SUITE
         - OPERATOR_VERSION
+        - TEST_SCRIPT_PARAMS
         - METADATA_ANNOTATION_xyz
     """
     global testsuite_name
     global platform_name
     global k8s_version
     global operator_version
+    global test_script_params
     global git_branch
     global beku_suite
     global metadata_annotations
@@ -107,6 +110,8 @@ def read_params():
     platform_name, k8s_version = read_platform_and_k8s_version()
     if 'OPERATOR_VERSION' in os.environ:
         operator_version = os.environ["OPERATOR_VERSION"]
+    if 'TEST_SCRIPT_PARAMS' in os.environ:
+        test_script_params = os.environ["TEST_SCRIPT_PARAMS"]
     if 'GIT_BRANCH' in os.environ:
         git_branch = os.environ["GIT_BRANCH"]
     if 'BEKU_SUITE' in os.environ:
@@ -219,6 +224,11 @@ def create_testsuite():
         cluster_definition['metadata']['annotations'] = {}
     for key,value in metadata_annotations.items():
         cluster_definition['metadata']['annotations'][key] = value
-
     write_cluster_definition(cluster_definition)
-    write_test_script(testsuite, testsuite_platform_definition['test_params'] if 'test_params' in testsuite_platform_definition else '')
+
+    test_script_params_array = []
+    if 'test_params' in testsuite_platform_definition: 
+        test_script_params_array.append(testsuite_platform_definition['test_params'])
+    if test_script_params:
+        test_script_params_array.append(test_script_params)
+    write_test_script(testsuite, ' '.join(test_script_params_array))

@@ -49,7 +49,6 @@ lazy_static! {
 pub async fn render_as_html(
     State(cached_rendered_artifact_tree): State<CachedObject<Html<String>>>,
 ) -> Result<Html<String>, ArtifactTreeError> {
-
     // if the artifact tree is already cached, return it
     if let Some(html) = cached_rendered_artifact_tree.get() {
         return Ok(html);

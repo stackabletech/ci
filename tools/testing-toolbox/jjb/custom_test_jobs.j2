@@ -64,6 +64,7 @@
             export PLATFORM_ID=`echo $TEST_PLATFORM | cut -d '<' -f 2 | cut -d '|' -f 1`
             export K8S_VERSION=`echo $TEST_PLATFORM | cut -d '<' -f 2 | cut -d '|' -f 2 | cut -d '>' -f 1`
             export GIT_BRANCH=`echo $GIT_BRANCH_OR_TAG | sed s#origin/##g`
+            export TEST_SCRIPT_PARAM_OPERATOR_NAME=`echo {{ testsuite.name }} | sed s#-operator##g`
 
             # We're using Docker from within a Docker container, so we have to make sure to provide
             # the Docker daemon with the proper absolute path for volume mounts.
@@ -87,7 +88,8 @@
               --env K8S_VERSION=$K8S_VERSION \
               --env GIT_BRANCH=$GIT_BRANCH \
               --env BEKU_SUITE=$BEKU_SUITE \
-              --env OPERATOR_VERSION=$OPERATOR_VERSION \
+              --env OPERATOR_VERSION=NONE \
+              --env TEST_SCRIPT_PARAMS="--operator ${TEST_SCRIPT_PARAM_OPERATOR_NAME}=${OPERATOR_VERSION}" \
               --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user="${BUILD_USER}" \
               --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-id=${BUILD_USER_ID} \
               --env METADATA_ANNOTATION_t2.stackable.tech/jenkins-user-email=${BUILD_USER_EMAIL} \
@@ -127,7 +129,6 @@
           custom-message: |
             *platform:* $TEST_PLATFORM
             *branch or tag:* `$GIT_BRANCH_OR_TAG`
-            *operator version:* `$OPERATOR_VERSION`
             (<$BUILD_URL|Open in classic Jenkins UI>)
             (<${BUILD_URL}artifact/testsuite/target/logs.html|Open logs overview>)
       - description-setter:
