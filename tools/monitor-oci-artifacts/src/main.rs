@@ -107,7 +107,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     continue;
                 }
 
-                if project_name == "sdp" && repository_name != "git-sync" {
+                if project_name == "sdp" && (repository_name != "git-sync" && repository_name != "ubi8-rust-builder") {
                     if artifact.manifest_media_type
                         != "application/vnd.docker.distribution.manifest.v2+json"
                     {
