@@ -15,6 +15,7 @@
       template: ionos-k8s
       region: de/txl
       k8sVersion: "1.27.4"
+      waitAfterTerraform: 10
       nodes:
         count: 3
         cpuFamily: INTEL_ICELAKE
