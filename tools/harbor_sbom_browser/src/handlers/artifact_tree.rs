@@ -43,7 +43,7 @@ impl IntoResponse for ArtifactTreeError {
 
 lazy_static! {
     static ref RELEASE_TAG_REGEX: Regex =
-        Regex::new(r"^(?P<prefix>.+\-stackable)?(?P<release>\d+\.\d+\.\d+(\-dev?))$").unwrap();
+        Regex::new(r"^(?P<prefix>.+\-stackable)?(?P<release>\d+\.\d+\.\d+(\-dev)?)$").unwrap();
 }
 
 pub async fn render_as_html(
@@ -189,17 +189,31 @@ pub async fn process_artifacts(
     repository_name: &str,
     artifact_tree: Arc<Mutex<ArtifactTree>>,
 ) -> Result<(), ArtifactTreeError> {
-    let artifacts: Vec<Artifact> = reqwest::get(format!(
-        "{}/projects/{}/repositories/{}/artifacts",
-        base_url,
-        encode(project_name),
-        encode(repository_name)
-    ))
-    .await
-    .context(GetArtifactsSnafu)?
-    .json()
-    .await
-    .context(ParseArtifactsSnafu)?;
+    let mut artifacts: Vec<Artifact> = Vec::with_capacity(64);
+    let mut page = 1;
+    let page_size = 20;
+    loop {
+        let artifacts_page: Vec<Artifact> = reqwest::get(format!(
+            "{}/projects/{}/repositories/{}/artifacts?page_size={}&page={}",
+            base_url,
+            encode(project_name),
+            encode(repository_name),
+            page_size,
+            page
+        ))
+        .await
+        .context(GetArtifactsSnafu)?
+        .json()
+        .await
+        .context(ParseArtifactsSnafu)?;
+
+        let number_of_returned_artifacts = artifacts_page.len();
+        artifacts.extend(artifacts_page);
+        if number_of_returned_artifacts < page_size {
+            break;
+        }
+        page += 1;
+    }
 
     for artifact in &artifacts {
         let has_release_tag = artifact.tags.as_ref().and_then(|tags| {
