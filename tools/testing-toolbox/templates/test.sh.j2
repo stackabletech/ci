@@ -24,9 +24,9 @@ git clone https://github.com/stackabletech/{{ testsuite.git_repo }}.git
 export VECTOR_AGGREGATOR=vector-aggregator.t2-cluster-logging.svc.cluster.local:6000
 
 {% if beku_suite %}
-(cd {{ testsuite.git_repo }}/ && python ./scripts/run-tests --test-suite {{ beku_suite }} {{ test_params }})
+(cd {{ testsuite.git_repo }}/ && python ./scripts/run-tests --log-level debug --test-suite {{ beku_suite }} {{ test_params }})
 {% else %}
-(cd {{ testsuite.git_repo }}/ && python ./scripts/run-tests {{ test_params }})
+(cd {{ testsuite.git_repo }}/ && python ./scripts/run-tests --log-level debug {{ test_params }})
 {% endif %}
 
 exit_code=$?
