@@ -8,8 +8,8 @@ ARG RELEASE="1"
 # Update image
 RUN microdnf install -y yum \
     && yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical \
-    && curl -L -O https://github.com/sigstore/cosign/releases/download/v2.1.1/cosign-2.1.1.x86_64.rpm \
-    && rpm -ivh cosign-2.1.1.x86_64.rpm \
+    && curl -L -O https://github.com/sigstore/cosign/releases/download/v2.2.3/cosign-2.2.3-1.x86_64.rpm \
+    && rpm -ivh cosign-2.2.3-1.x86_64.rpm \
     && yum clean all \
     && microdnf clean all
 
