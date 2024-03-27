@@ -1,5 +1,5 @@
 [package]
-name = "harbor_sbom_browser"
+name = "harbor-sbom-browser"
 version = "0.1.0"
 edition = "2021"
 

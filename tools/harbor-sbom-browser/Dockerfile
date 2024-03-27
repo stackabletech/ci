@@ -13,6 +13,6 @@ RUN microdnf install -y yum \
     && yum clean all \
     && microdnf clean all
 
-COPY --from=builder /app/harbor_sbom_browser  /
+COPY --from=builder /app/harbor-sbom-browser  /
 
-ENTRYPOINT ["/harbor_sbom_browser"]
+ENTRYPOINT ["/harbor-sbom-browser"]
