@@ -1,10 +1,9 @@
+use regex::Regex;
+use serde::Deserialize;
 use std::{
     fmt::Formatter,
     process::{exit, Command, Stdio},
 };
-
-use regex::Regex;
-use serde::Deserialize;
 use urlencoding::encode;
 
 #[derive(Deserialize, Debug)]
@@ -44,16 +43,11 @@ impl std::ops::Deref for TagList {
 }
 
 #[derive(Deserialize, Debug)]
-struct ArtifactReference {
-    child_digest: String,
-}
-#[derive(Deserialize, Debug)]
 struct Artifact {
     digest: String,
     manifest_media_type: String,
     media_type: String,
     tags: Option<TagList>,
-    references: Option<Vec<ArtifactReference>>,
 }
 
 #[tokio::main]
@@ -75,16 +69,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         for repository in &repositories {
             let (project_name, repository_name) = repository.name.split_once('/').unwrap();
+
             if project_name == "sandbox" {
                 continue;
             }
 
-            let mut attestations: Vec<String> = Vec::with_capacity(32);
-            let mut potentially_attested_artifacts: Vec<&str> = Vec::with_capacity(32);
             let mut artifacts: Vec<Artifact> = Vec::with_capacity(64);
             let mut page = 1;
             let page_size = 20;
+
             loop {
+                // Loop over pages to get all artifacts
                 let artifacts_page: Vec<Artifact> = reqwest::get(format!(
                     "{}/projects/{}/repositories/{}/artifacts?page_size={}&page={}",
                     base_url,
@@ -115,22 +110,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     continue;
                 }
 
-                if artifact.manifest_media_type == "application/vnd.oci.image.manifest.v1+json"
-                    && artifact.media_type == "application/vnd.oci.image.config.v1+json"
-                    && attestation_tag_regex.is_match(&artifact.tags.as_ref().unwrap()[0].name)
-                // we can .unwrap() here because we checked that tags are present and not empty at the beginning of the for loop
+                if attestation_tag_regex.is_match(&artifact.tags.as_ref().unwrap()[0].name)
+                // .unwrap() can be used here because it's checked that tags are present and not empty at the beginning of the for loop
                 {
-                    // it's an attestation, attestations artifacts themselves are not signed
+                    // It's an attestation, attestations artifacts themselves are not signed
                     println!(
                         "skipping attestation {} {} ({})",
                         repository_name,
                         artifact.digest,
                         artifact.tags.as_ref().unwrap()
                     );
-                    attestations.push(artifact.tags.as_ref().unwrap()[0].name.clone());
                     continue;
-                } else {
-                    potentially_attested_artifacts.push(&artifact.digest[7..71]);
                 }
 
                 if project_name == "sdp"
@@ -187,78 +177,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     exit(cmd_output.status.code().unwrap_or(1));
                 }
             }
-
-            // remove dangling attestations
-            for attestation in attestations {
-                if !potentially_attested_artifacts.contains(&&attestation[7..71]) {
-                    println!("removing dangling attestation {}", attestation);
-                    reqwest::Client::new()
-                        .delete(format!(
-                            "{}/projects/{}/repositories/{}/artifacts/{}",
-                            base_url,
-                            encode(project_name),
-                            encode(repository_name),
-                            attestation
-                        ))
-                        .basic_auth("robot$stackable-cleanup", Some("XX"))
-                        .send()
-                        .await?;
-                }
-            }
         }
 
         if repositories.len() < page_size {
-            // no more pages
+            // No more pages
             break;
         }
         page += 1;
     }
 
-    let latest_rust_builder_artifact: Artifact = reqwest::Client::new()
-        .get(format!(
-            "{}/projects/sdp/repositories/ubi8-rust-builder/artifacts/latest",
-            base_url,
-        ))
-        .send()
-        .await?
-        .json()
-        .await?;
-
-    let referenced_digests = latest_rust_builder_artifact
-        .references
-        .unwrap()
-        .into_iter()
-        .map(|reference| reference.child_digest)
-        .collect::<Vec<String>>();
-
-    let rust_builder_artifacts: Vec<Artifact> = reqwest::get(format!(
-        "{}/projects/sdp/repositories/ubi8-rust-builder/artifacts?page_size=100",
-        base_url
-    ))
-    .await?
-    .json()
-    .await?;
-
-    // keep "latest" and its referenced artifacts
-    for artifact in rust_builder_artifacts {
-        if artifact.digest != latest_rust_builder_artifact.digest
-            && !referenced_digests.contains(&artifact.digest)
-        {
-            println!(
-                "removing dangling rust builder artifact {}",
-                artifact.digest
-            );
-            reqwest::Client::new()
-                .delete(format!(
-                    "{}/projects/sdp/repositories/ubi8-rust-builder/artifacts/{}",
-                    base_url, artifact.digest
-                ))
-                .basic_auth("robot$stackable-cleanup", Some("XX"))
-                .send()
-                .await?;
-        }
-    }
-
     Ok(())
 }
-// cachebust

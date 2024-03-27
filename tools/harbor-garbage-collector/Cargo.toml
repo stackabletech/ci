@@ -1,6 +1,6 @@
 [package]
-name = "monitor-oci-artifacts"
-description = "A tool to monitor Stackable's OCI artifacts. Currently it just checks whether a valid signature is present for each artifact."
+name = "harbor-garbage-collector"
+description = "This tool removes all the unused stuff from our Harbor instance that is not picked up by Harbor's own garbage collection."
 version = "0.0.0-dev"
 authors = ["Stackable GmbH <info@stackable.tech>"]
 license = "OSL-3.0"

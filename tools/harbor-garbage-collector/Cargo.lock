@@ -202,6 +202,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "harbor-garbage-collector"
+version = "0.0.0-dev"
+dependencies = [
+ "regex",
+ "reqwest",
+ "serde",
+ "tokio",
+ "urlencoding",
+]
+
+[[package]]
 name = "hashbrown"
 version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -368,17 +379,6 @@ dependencies = [
  "libc",
  "wasi",
  "windows-sys 0.48.0",
-]
-
-[[package]]
-name = "monitor-oci-artifacts"
-version = "0.0.0-dev"
-dependencies = [
- "regex",
- "reqwest",
- "serde",
- "tokio",
- "urlencoding",
 ]
 
 [[package]]
