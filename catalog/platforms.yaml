@@ -31,7 +31,7 @@
 - name: azure-aks
   description: Azure AKS
   k8s_versions:
-    - "1.29.0"
+    - "1.29"
     - "1.28"
     - "1.27"
   cluster_definition:
@@ -55,10 +55,9 @@
 - name: gke
   description: Google GKE
   k8s_versions:
+    - "1.30"
     - "1.29"
     - "1.28"
-    - "1.27"
-    - "1.26"
   cluster_definition:
     apiVersion: t2.stackable.tech/v2
     kind: StackableT2Cluster
