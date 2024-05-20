@@ -1,6 +1,7 @@
 ---
 platforms:
   openshift:
+    title: Openshift
     distribution: openshift
     instance-type: r1.medium
     disk-size: 50
@@ -10,6 +11,7 @@ platforms:
       - 4.14.0-okd
       - 4.13.0-okd
   google:
+    title: Google GKE
     distribution: gke
     instance-type: e2-standard-2
     disk-size: 100
@@ -19,6 +21,7 @@ platforms:
       - "1.28"
       - "1.27"
   azure:
+    title: Azure AKS
     distribution: aks
     instance-type: Standard_DS2_v2
     disk-size: 100
@@ -28,6 +31,7 @@ platforms:
       - "1.28"
       - "1.27"
   aws:
+    title: AWS EKS
     distribution: eks
     instance-type: m6i.large
     disk-size: 100

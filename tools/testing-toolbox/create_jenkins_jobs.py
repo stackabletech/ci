@@ -6,11 +6,13 @@ from jinja2 import Template
 catalog_platforms = None
 catalog_platforms_with_versions = None
 catalog_testsuites = None
+catalog_replicated = None
 custom_test_jobs_template = None
 docs_test_jobs_template = None
 nightly_test_jobs_template = None
 nightly_test_jobs_summary_template = None
 self_service_test_jobs_template = None
+replicated_jobs_template = None
 jjb_conf_template = None
 
 def check_prerequisites():
@@ -31,9 +33,11 @@ def read_catalogs():
     global catalog_platforms
     global catalog_testsuites
     global catalog_platforms_with_versions
+    global catalog_replicated
     catalog_platforms = hiyapyco.load("/catalog/platforms.yaml")
     catalog_testsuites = hiyapyco.load("/catalog/testsuites.yaml")
     catalog_platforms_with_versions = { p['name']: [ { 'display_name' : p['description'], 'id': p['name'], 'version': v } for v in p['k8s_versions'] ] for p in catalog_platforms }
+    catalog_replicated = hiyapyco.load("/catalog/replicated.yaml")
 
 def read_templates():
     global custom_test_jobs_template
@@ -41,6 +45,7 @@ def read_templates():
     global nightly_test_jobs_template
     global nightly_test_jobs_summary_template
     global self_service_test_jobs_template
+    global replicated_jobs_template
     global jjb_conf_template
     with open ("/jjb/custom_test_jobs.j2", "r") as f:
         custom_test_jobs_template = Template(f.read())
@@ -52,6 +57,8 @@ def read_templates():
         nightly_test_jobs_summary_template = Template(f.read())
     with open ("/jjb/self_service_test_jobs.j2", "r") as f:
         self_service_test_jobs_template = Template(f.read())
+    with open ("/jjb/replicated_test_jobs.j2", "r") as f:
+        replicated_jobs_template = Template(f.read())
     with open ("/jjb/jjb.conf.j2", "r") as f:
         jjb_conf_template = Template(f.read())
 
@@ -89,6 +96,11 @@ def generate_self_service_jobs_definitions():
         f.write(self_service_test_jobs_template.render( { 'testsuites': catalog_testsuites['operator_tests'], 'platforms': platforms_by_testsuite } ))
         f.close()
 
+def generate_replicated_tests_jobs_definitions():
+    with open ("/jjb/replicated_tests.yaml", 'w') as f:
+       f.write(replicated_jobs_template.render(catalog_replicated))
+       f.close()
+
 def execute_jjb():
     """
         Executes the Jenkins Job Builder
@@ -100,6 +112,8 @@ def execute_jjb():
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/self_service_tests.yaml")
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/delete_cluster_self_service.yaml")
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/update_deletable_self_service_clusters.yaml")
+    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/replicated_tests.yaml")
+    
 
 def create_jenkins_jobs():
     """ 
@@ -117,4 +131,5 @@ def create_jenkins_jobs():
     generate_nightly_test_jobs_definitions()
     generate_nightly_test_jobs_summary_definitions()
     generate_self_service_jobs_definitions()
+    generate_replicated_tests_jobs_definitions()
     execute_jjb()
