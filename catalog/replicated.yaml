@@ -44,18 +44,24 @@ testsuites:
   airflow-operator:
     title: Airflow Operator
     platforms:
-      openshift:
-        instance-type: r1.xlarge
-        node-count: 5
-      google:
-        instance-type: e2-standard-4
-        node-count: 5
-      azure:
-        instance-type: Standard_DS4_v2
-        node-count: 5
-      aws:
-        instance-type: m6i.xlarge
-        node-count: 5
+      openshift: {}
+      google: {}
+      azure: {}
+      aws: {}
+  druid-operator:
+    title: Druid Operator
+    platforms:
+      openshift: {}
+      google: {}
+      azure: {}
+      aws: {}
+  hbase-operator:
+    title: HBase Operator
+    platforms:
+      openshift: {}
+      google: {}
+      azure: {}
+      aws: {}
   hello-world-operator:
     title: Hello World Operator
     platforms:
@@ -78,3 +84,73 @@ testsuites:
         node-count: 1
       aws:
         node-count: 1
+  hdfs-operator:
+    title: HDFS Operator
+    platforms:
+      openshift: {}
+      google: {}
+      azure: {}
+      aws: {}
+  hive-operator:
+    title: Hive Operator
+    platforms:
+      openshift: {}
+      google: {}
+      azure: {}
+      aws: {}
+  kafka-operator:
+    title: Kafka Operator
+    platforms:
+      openshift: {}
+      google: {}
+      azure: {}
+      aws: {}
+  nifi-operator:
+    title: NiFi Operator
+    platforms:
+      openshift: {}
+      google: {}
+      azure: {}
+      aws: {}
+  opa-operator:
+    title: OPA Operator
+    platforms:
+      openshift: {}
+      google: {}
+      azure: {}
+      aws: {}
+  secret-operator:
+    title: Secret Operator
+    platforms:
+      openshift: {}
+      google: {}
+      azure: {}
+      aws: {}
+  spark-operator:
+    title: Spark Operator
+    platforms:
+      openshift: {}
+      google: {}
+      azure: {}
+      aws: {}
+  superset-operator:
+    title: Superset Operator
+    platforms:
+      openshift: {}
+      google: {}
+      azure: {}
+      aws: {}
+  trino-operator:
+    title: Trino Operator
+    platforms:
+      openshift: {}
+      google: {}
+      azure: {}
+      aws: {}
+  zookeeper-operator:
+    title: ZooKeeper Operator
+    platforms:
+      openshift: {}
+      google: {}
+      azure: {}
+      aws: {}
