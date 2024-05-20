@@ -125,7 +125,7 @@ testsuites:
       openshift: {}
       google: {}
       azure:
-        instance-type: Standard_D4s_v3
+        instance-type: Standard_DS4_v3
       aws: {}
   spark-operator:
     title: Spark Operator
