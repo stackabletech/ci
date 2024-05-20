@@ -2,18 +2,17 @@ import os
 import uuid
 import sys
 import re
+import hiyapyco
 from subprocess import PIPE, TimeoutExpired, Popen
 from time import sleep
 from datetime import datetime, timedelta
 
 uid_gid_output = '0:0'
-replicated_distribution = None
-replicated_instance_type = None
-replicated_version = None
-replicated_disk = None
-replicated_nodes = None
-operator_under_test = None
+testsuite = None
+platform = None
+platform_version = None
 
+catalog = None
 
 TARGET_FOLDER = "/target/"
 
@@ -27,47 +26,31 @@ EXIT_CODE_CLUSTER_FAILED = 255
 def init():
 
     global uid_gid_output
-    global replicated_distribution 
-    global replicated_instance_type
-    global replicated_version
-    global replicated_disk
-    global replicated_nodes
-    global operator_under_test
+    global testsuite
+    global platform
+    global platform_version
+    global catalog
 
     if not 'REPLICATED_API_TOKEN' in os.environ:
         print("Error: Please supply REPLICATED_API_TOKEN as an environment variable.")
         return False
 
-    if not 'REPLICATED_DISTRIBUTION' in os.environ:
-        print("Error: Please supply REPLICATED_DISTRIBUTION as an environment variable.")
+    if not 'TESTSUITE' in os.environ:
+        print("Error: Please supply TESTSUITE as an environment variable.")
         return False
 
-    if not 'REPLICATED_INSTANCE_TYPE' in os.environ:
-        print("Error: Please supply REPLICATED_INSTANCE_TYPE as an environment variable.")
+    if not 'PLATFORM' in os.environ:
+        print("Error: Please supply PLATFORM as an environment variable.")
         return False
 
-    if not 'REPLICATED_VERSION' in os.environ:
-        print("Error: Please supply REPLICATED_VERSION as an environment variable.")
+    if not 'PLATFORM_VERSION' in os.environ:
+        print("Error: Please supply VERSION as an environment variable.")
         return False
 
-    if not 'REPLICATED_DISK_SIZE' in os.environ:
-        print("Error: Please supply REPLICATED_DISK_SIZE as an environment variable.")
-        return False
 
-    if not 'REPLICATED_NODE_COUNT' in os.environ:
-        print("Error: Please supply REPLICATED_NODE_COUNT as an environment variable.")
-        return False
-
-    if not 'OPERATOR_UNDER_TEST' in os.environ:
-        print("Error: Please supply OPERATOR_UNDER_TEST as an environment variable.")
-        return False
-
-    replicated_distribution = os.environ['REPLICATED_DISTRIBUTION']
-    replicated_instance_type = os.environ['REPLICATED_INSTANCE_TYPE']
-    replicated_version = os.environ['REPLICATED_VERSION']
-    replicated_disk = os.environ['REPLICATED_DISK_SIZE']
-    replicated_nodes = os.environ['REPLICATED_NODE_COUNT']
-    operator_under_test = os.environ['OPERATOR_UNDER_TEST']
+    testsuite = os.environ['TESTSUITE']
+    platform = os.environ['PLATFORM']
+    platform_version = os.environ['PLATFORM_VERSION']
 
     if not os.path.isdir(TARGET_FOLDER):
         print(f"Error: A target folder volume has to be supplied as {TARGET_FOLDER}. ")
@@ -75,6 +58,8 @@ def init():
 
     if 'UID_GID' in os.environ:
         uid_gid_output = os.environ['UID_GID']
+
+    catalog = hiyapyco.load("/replicated.yaml")
 
     return True
 
@@ -123,7 +108,23 @@ def run_command(command, description, timeout=60):
 
 def create_cluster(cluster_name):
     log(f"Creating a cluster named '{cluster_name}'")
-    command = f"replicated cluster create --name {cluster_name} --distribution {replicated_distribution} --instance-type {replicated_instance_type} --version {replicated_version} --disk {replicated_disk} --nodes {replicated_nodes} --ttl 4h"
+    distribution = catalog['platforms'][platform]['distribution']
+    instance_type = None
+    if("instance-type" in catalog['testsuites'][testsuite]['platforms'][platform]):
+        instance_type = catalog['testsuites'][testsuite]['platforms'][platform]['instance-type']
+    else: 
+        instance_type = catalog['platforms'][platform]['instance-type']
+    disk_size = None
+    if("disk-size" in catalog['testsuites'][testsuite]['platforms'][platform]):
+        disk_size = catalog['testsuites'][testsuite]['platforms'][platform]['disk-size']
+    else: 
+        disk_size = catalog['platforms'][platform]['disk-size']
+    node_count = None
+    if("node-count" in catalog['testsuites'][testsuite]['platforms'][platform]):
+        node_count = catalog['testsuites'][testsuite]['platforms'][platform]['node-count']
+    else: 
+        node_count = catalog['platforms'][platform]['node-count']
+    command = f"replicated cluster create --name {cluster_name} --distribution {distribution} --instance-type {instance_type} --version {platform_version} --disk {disk_size} --nodes {node_count} --ttl 4h"
     exit_code, output = run_command(command, 'replicated cluster create')
     if exit_code != 0:
         log(f"Creating a cluster named '{cluster_name}' failed with exit code {exit_code} and message '{one_line(output)}'")
@@ -173,8 +174,8 @@ def update_kubeconfig(cluster):
     return True
 
 
-def clone_git_repo(operator):
-    exit_code, output = run_command(f"git clone https://github.com/stackabletech/{operator}-operator.git", 'git clone')
+def clone_git_repo(repo):
+    exit_code, output = run_command(f"git clone https://github.com/stackabletech/{repo}.git", 'git clone')
     if exit_code != 0:
         for line in output:
             log(line)
@@ -183,7 +184,7 @@ def clone_git_repo(operator):
 
 
 def run_tests(operator):
-    os.system(f"(cd {operator}-operator/ && python ./scripts/run-tests --log-level debug --test-suite nightly --parallel 4 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}")
+    os.system(f"(cd {operator}/ && python ./scripts/run-tests --log-level debug --test-suite nightly --parallel 4 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}")
     sleep(15)
     with open ("/test_exit_code", "r") as f:
         return int(f.read().strip())
@@ -220,8 +221,21 @@ if __name__ == "__main__":
 
     set_target_folder_owner()
 
-    cluster_name = uuid.uuid4().hex
+    if(not testsuite in catalog['testsuites']):
+        log(f"The testsuite '{testsuite}' does not exist.")
+        exit(EXIT_CODE_CLUSTER_FAILED)
+    log(f"Selected testsuite: {testsuite}")
 
+    if(not platform in catalog['platforms']):
+        log(f"The platform '{platform}' does not exist.")
+        exit(EXIT_CODE_CLUSTER_FAILED)
+    if(not platform_version in catalog['platforms'][platform]['versions']):
+        log(f"The platform '{platform}' does not have a version {platform_version}.")
+        exit(EXIT_CODE_CLUSTER_FAILED)
+    log(f"Selected platform: {platform}, version {platform_version}")
+
+
+    cluster_name = uuid.uuid4().hex
     log(f"Creating cluster {cluster_name}...")
     if not create_cluster(cluster_name):
         log("Error creating cluster.")
@@ -248,11 +262,11 @@ if __name__ == "__main__":
     log()
 
     log("Cloning git repo...")
-    clone_git_repo(operator_under_test)
+    clone_git_repo(testsuite)
     log()
 
     log("Running tests...")
-    test_exit_code = run_tests(operator_under_test)
+    test_exit_code = run_tests(testsuite)
     log(f"Test exited with code {test_exit_code}")
     log()
 

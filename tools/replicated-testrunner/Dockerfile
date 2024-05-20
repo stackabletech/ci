@@ -30,4 +30,7 @@ RUN rm /tmp/kubectl-kuttl
 # copy main Python script
 COPY *.py /
 
+# copy config file
+COPY replicated.yaml /
+
 ENTRYPOINT [ "python", "/replicated-testrunner.py" ]

@@ -1,0 +1,76 @@
+---
+platforms:
+  openshift:
+    distribution: openshift
+    instance-type: r1.medium
+    disk-size: 50
+    node-count: 3
+    versions:
+      - 4.15.0-okd
+      - 4.14.0-okd
+      - 4.13.0-okd
+  google:
+    distribution: gke
+    instance-type: e2-standard-2
+    disk-size: 100
+    node-count: 3
+    versions:
+      - "1.29"
+      - "1.28"
+      - "1.27"
+  azure:
+    distribution: aks
+    instance-type: Standard_DS2_v2
+    disk-size: 100
+    node-count: 3
+    versions:
+      - "1.29"
+      - "1.28"
+      - "1.27"
+  aws:
+    distribution: eks
+    instance-type: m6i.large
+    disk-size: 100
+    node-count: 3
+    versions:
+      - "1.29"
+      - "1.28"
+      - "1.27"
+testsuites:
+  airflow-operator:
+    title: Airflow Operator
+    platforms:
+      openshift:
+        instance-type: r1.xlarge
+        node-count: 5
+      google:
+        instance-type: e2-standard-4
+        node-count: 5
+      azure:
+        instance-type: Standard_DS4_v2
+        node-count: 5
+      aws:
+        instance-type: m6i.xlarge
+        node-count: 5
+  hello-world-operator:
+    title: Hello World Operator
+    platforms:
+      openshift:
+        node-count: 1
+      google:
+        node-count: 1
+      azure:
+        node-count: 1
+      aws:
+        node-count: 1
+  listener-operator:
+    title: Listener Operator
+    platforms:
+      openshift:
+        node-count: 1
+      google:
+        node-count: 1
+      azure:
+        node-count: 1
+      aws:
+        node-count: 1
