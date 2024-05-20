@@ -11,6 +11,7 @@ uid_gid_output = '0:0'
 testsuite = None
 platform = None
 platform_version = None
+git_branch = None
 
 catalog = None
 
@@ -29,6 +30,7 @@ def init():
     global testsuite
     global platform
     global platform_version
+    global git_branch
     global catalog
 
     if not 'REPLICATED_API_TOKEN' in os.environ:
@@ -58,6 +60,9 @@ def init():
 
     if 'UID_GID' in os.environ:
         uid_gid_output = os.environ['UID_GID']
+
+    if 'GIT_BRANCH' in os.environ:
+        git_branch = os.environ['GIT_BRANCH']
 
     catalog = hiyapyco.load("/replicated.yaml")
 
@@ -175,7 +180,8 @@ def update_kubeconfig(cluster):
 
 
 def clone_git_repo(repo):
-    exit_code, output = run_command(f"git clone https://github.com/stackabletech/{repo}.git", 'git clone')
+    git_branch_option = f"-b { git_branch }" if git_branch else ""
+    exit_code, output = run_command(f"git clone {git_branch_option} https://github.com/stackabletech/{repo}.git", 'git clone')
     if exit_code != 0:
         for line in output:
             log(line)
