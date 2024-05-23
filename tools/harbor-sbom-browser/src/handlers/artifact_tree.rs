@@ -43,7 +43,7 @@ impl IntoResponse for ArtifactTreeError {
 
 lazy_static! {
     static ref RELEASE_TAG_REGEX: Regex =
-        Regex::new(r"^(?P<prefix>.+\-stackable)?(?P<release>\d+\.\d+\.\d+(\-dev)?)$").unwrap();
+        Regex::new(r"^(?P<prefix>.+\-stackable)?(?P<release>\d+\.\d+\.\d+(\-dev)?(\-(?P<architecture>arm64|amd64))?)$").unwrap();
 }
 
 pub async fn render_as_html(
@@ -220,14 +220,22 @@ pub async fn process_artifacts(
             tags.iter()
                 .filter_map(|tag| {
                     RELEASE_TAG_REGEX.captures(&tag.name).map(|captures| {
-                        (tag, captures.name("release").unwrap().as_str().to_string())
+                        (tag, captures.name("release").unwrap().as_str().to_string(), captures.name("architecture"))
                     })
                 })
                 .next()
         });
 
         if let Some(release_artifact) = has_release_tag {
-            let release_version = &release_artifact.1;
+            let mut release_version = release_artifact.1.clone();
+            let matches_architecture_regex = &release_artifact.2.is_some();
+
+            let is_multi_arch = release_version.contains("-dev") && !repository_name.contains("-operator");
+            if is_multi_arch && !matches_architecture_regex {
+                continue;
+            }
+            release_version = release_version.replace("-arm64", "").replace("-amd64", "");
+
             artifact_tree
                 .lock()
                 .unwrap()
