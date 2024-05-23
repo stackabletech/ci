@@ -1,0 +1,15 @@
+[package]
+name = "nexus-garbage-collector"
+description = "This tool removes all the unused stuff from our Nexus instance, like old signatures and SBOMs"
+version = "0.0.0-dev"
+authors = ["Stackable GmbH <info@stackable.tech>"]
+license = "OSL-3.0"
+edition = "2021"
+
+[dependencies]
+env_logger = "0.11.3"
+log = "0.4.21"
+regex = "1.10.3"
+reqwest = { version = "0.11.24", features = ["json", "rustls", "rustls-tls"], default-features = false }
+serde = { version = "1.0.188", features = ["derive"] }
+tokio = { version = "1.32.0", features = ["macros", "rt-multi-thread"] }
