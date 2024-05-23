@@ -15,6 +15,13 @@ RUN wget -O /tmp/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.
 RUN install -o root -g root -m 0755 /tmp/kubectl /usr/local/bin/kubectl
 RUN rm /tmp/kubectl
 
+# install Helm and the Stackable Helm repos
+RUN curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash -s -
+RUN helm repo add stackable-dev https://repo.stackable.tech/repository/helm-dev/
+RUN helm repo add stackable-stable https://repo.stackable.tech/repository/helm-stable/
+RUN helm repo add stackable-test https://repo.stackable.tech/repository/helm-test/
+RUN helm repo update
+
 # install beku
 RUN pip install beku-stackabletech
 

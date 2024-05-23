@@ -189,8 +189,8 @@ def clone_git_repo(repo):
     return True
 
 
-def run_tests(operator):
-    os.system(f"(cd {operator}/ && python ./scripts/run-tests --log-level debug --test-suite nightly --parallel 4 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}")
+def run_tests(operator, beku_suite):
+    os.system(f"(cd {operator}/ && python ./scripts/run-tests --log-level debug --test-suite {beku_suite} --parallel 4 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}")
     sleep(15)
     with open ("/test_exit_code", "r") as f:
         return int(f.read().strip())
@@ -272,7 +272,8 @@ if __name__ == "__main__":
     log()
 
     log("Running tests...")
-    test_exit_code = run_tests(testsuite)
+    beku_suite = catalog['testsuites'][testsuite]['platforms'][platform]['test-suite'] if 'test-suite' in catalog['testsuites'][testsuite]['platforms'][platform] else 'nightly'
+    test_exit_code = run_tests(testsuite, beku_suite)
     log(f"Test exited with code {test_exit_code}")
     log()
 
