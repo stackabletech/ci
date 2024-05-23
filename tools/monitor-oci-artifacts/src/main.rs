@@ -123,33 +123,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     continue;
                 }
 
-                if project_name == "sdp"
-                    && (repository_name != "git-sync" && repository_name != "ubi8-rust-builder")
-                {
-                    if artifact.manifest_media_type
-                        != "application/vnd.docker.distribution.manifest.v2+json"
-                    {
-                        println!(
-                            "unexpected manifest media type: {} for {} {} ({})",
-                            artifact.manifest_media_type,
-                            repository_name,
-                            artifact.digest,
-                            artifact.tags.as_ref().unwrap()
-                        );
-                        exit(2);
-                    }
-                    if artifact.media_type != "application/vnd.docker.container.image.v1+json" {
-                        println!(
-                            "unexpected media type: {} for {} {} ({})",
-                            artifact.media_type,
-                            repository_name,
-                            artifact.digest,
-                            artifact.tags.as_ref().unwrap()
-                        );
-                        exit(3);
-                    }
-                }
-
                 let artifact_uri = format!(
                     "{}/{}/{}@{}",
                     registry_hostname, project_name, repository_name, artifact.digest
