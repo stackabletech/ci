@@ -44,21 +44,27 @@ testsuites:
   airflow-operator:
     title: Airflow Operator
     platforms:
-      openshift: {}
+      openshift:
+        node-count: 3
+        instance-type: r1.xlarge
+        disk-size: 200
+        test-suite: openshift
       google: {}
       azure: {}
       aws: {}
   druid-operator:
     title: Druid Operator
     platforms:
-      openshift: {}
+      openshift:
+        test-suite: openshift
       google: {}
       azure: {}
       aws: {}
   hbase-operator:
     title: HBase Operator
     platforms:
-      openshift: {}
+      openshift:
+        test-suite: openshift
       google: {}
       azure: {}
       aws: {}
@@ -67,6 +73,7 @@ testsuites:
     platforms:
       openshift:
         node-count: 1
+        test-suite: openshift
       google:
         node-count: 1
       azure:
@@ -78,6 +85,7 @@ testsuites:
     platforms:
       openshift:
         node-count: 1
+        test-suite: openshift
       google:
         node-count: 1
       azure:
@@ -87,71 +95,81 @@ testsuites:
   hdfs-operator:
     title: HDFS Operator
     platforms:
-      openshift: {}
+      openshift:
+        test-suite: openshift
       google: {}
       azure: {}
       aws: {}
   hive-operator:
     title: Hive Operator
     platforms:
-      openshift: {}
+      openshift:
+        test-suite: openshift
       google: {}
       azure: {}
       aws: {}
   kafka-operator:
     title: Kafka Operator
     platforms:
-      openshift: {}
+      openshift:
+        test-suite: openshift
       google: {}
       azure: {}
       aws: {}
   nifi-operator:
     title: NiFi Operator
     platforms:
-      openshift: {}
+      openshift:
+        test-suite: openshift
       google: {}
       azure: {}
       aws: {}
   opa-operator:
     title: OPA Operator
     platforms:
-      openshift: {}
+      openshift:
+        test-suite: openshift
       google: {}
       azure: {}
       aws: {}
   secret-operator:
     title: Secret Operator
     platforms:
-      openshift: {}
+      openshift:
+        test-suite: openshift
       google: {}
       azure:
         instance-type: Standard_DS4_v2
       aws: {}
-  spark-operator:
+  spark-k8s-operator:
     title: Spark Operator
     platforms:
-      openshift: {}
+      openshift:
+        test-suite: openshift
       google: {}
       azure: {}
       aws: {}
   superset-operator:
     title: Superset Operator
     platforms:
-      openshift: {}
+      openshift:
+        test-suite: openshift
       google: {}
       azure: {}
       aws: {}
   trino-operator:
     title: Trino Operator
     platforms:
-      openshift: {}
+      openshift:
+        test-suite: openshift
       google: {}
       azure: {}
       aws: {}
   zookeeper-operator:
     title: ZooKeeper Operator
     platforms:
-      openshift: {}
+      openshift:
+        test-suite: openshift
       google: {}
       azure: {}
       aws: {}
