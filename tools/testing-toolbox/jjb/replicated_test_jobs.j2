@@ -78,6 +78,9 @@
             export PLATFORM_VERSION=`echo $TEST_PLATFORM | cut -d '<' -f 2 | cut -d '|' -f 2 | cut -d '>' -f 1`
             export GIT_BRANCH=`echo $GIT_BRANCH_OR_TAG | sed s#origin/##g`
 
+            # This string can be parsed by the description-setter publisher
+            echo "build_run_label::#${PLATFORM} | ${PLATFORM_VERSION} | ${BUILD_USER}#"
+
             # Run testdriver
             mkdir -p target/
             docker run --rm \
@@ -96,5 +99,9 @@
       - archive:
           artifacts: 'target/*'
           allow-empty: true
+      - description-setter:
+          regexp: ".*build_run_label::#(.*)#.*"
+          regexp-for-failed: ".*build_run_label::#(.*)#.*"
+          set-for-matrix: false
 {% endfor %}
 
