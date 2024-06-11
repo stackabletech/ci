@@ -44,6 +44,7 @@ testsuites:
   airflow-operator:
     title: Airflow Operator
     operator-name: airflow
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -57,6 +58,7 @@ testsuites:
   druid-operator:
     title: Druid Operator
     operator-name: druid
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -67,6 +69,7 @@ testsuites:
   hbase-operator:
     title: HBase Operator
     operator-name: hbase
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -77,6 +80,7 @@ testsuites:
   hello-world-operator:
     title: Hello World Operator
     operator-name: hello-world
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -91,6 +95,7 @@ testsuites:
   listener-operator:
     title: Listener Operator
     operator-name: listener
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -105,6 +110,7 @@ testsuites:
   hdfs-operator:
     title: HDFS Operator
     operator-name: hdfs
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -115,6 +121,7 @@ testsuites:
   hive-operator:
     title: Hive Operator
     operator-name: hive
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -125,6 +132,7 @@ testsuites:
   kafka-operator:
     title: Kafka Operator
     operator-name: kafka
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -135,6 +143,7 @@ testsuites:
   nifi-operator:
     title: NiFi Operator
     operator-name: nifi
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -145,6 +154,7 @@ testsuites:
   opa-operator:
     title: OPA Operator
     operator-name: opa
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -155,6 +165,7 @@ testsuites:
   secret-operator:
     title: Secret Operator
     operator-name: secret
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -166,6 +177,7 @@ testsuites:
   spark-k8s-operator:
     title: Spark Operator
     operator-name: spark
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -176,6 +188,7 @@ testsuites:
   superset-operator:
     title: Superset Operator
     operator-name: superset
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -186,6 +199,7 @@ testsuites:
   trino-operator:
     title: Trino Operator
     operator-name: trino
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
@@ -196,6 +210,7 @@ testsuites:
   zookeeper-operator:
     title: ZooKeeper Operator
     operator-name: zookeeper
+    slack-channels: "#notifications-jenkins"
     test-params: --parallel 4
     platforms:
       openshift:
