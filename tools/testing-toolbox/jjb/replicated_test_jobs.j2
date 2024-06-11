@@ -107,10 +107,9 @@
           notify-back-to-normal: True
           include-custom-message: True
           custom-message: |
-            *platform:* `$PLATFORM`
+            *platform:* $TEST_PLATFORM
             *branch or tag:* `$GIT_BRANCH_OR_TAG`
-            *version:* `$OPERATOR_VERSION`
-            *beku test suite:* `$BEKU_SUITE`
+            *operator version:* `$OPERATOR_VERSION`
             (<$BUILD_URL|Open in classic Jenkins UI>)
             (<${BUILD_URL}artifact/testsuite/target/logs.html|Open logs overview>)
       - description-setter:
