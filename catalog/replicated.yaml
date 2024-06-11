@@ -1,0 +1,175 @@
+---
+platforms:
+  openshift:
+    title: Openshift
+    distribution: openshift
+    instance-type: r1.medium
+    disk-size: 50
+    node-count: 3
+    versions:
+      - 4.15.0-okd
+      - 4.14.0-okd
+      - 4.13.0-okd
+  google:
+    title: Google GKE
+    distribution: gke
+    instance-type: e2-standard-2
+    disk-size: 100
+    node-count: 3
+    versions:
+      - "1.29"
+      - "1.28"
+      - "1.27"
+  azure:
+    title: Azure AKS
+    distribution: aks
+    instance-type: Standard_DS2_v2
+    disk-size: 100
+    node-count: 3
+    versions:
+      - "1.29"
+      - "1.28"
+      - "1.27"
+  aws:
+    title: AWS EKS
+    distribution: eks
+    instance-type: m6i.large
+    disk-size: 100
+    node-count: 3
+    versions:
+      - "1.29"
+      - "1.28"
+      - "1.27"
+testsuites:
+  airflow-operator:
+    title: Airflow Operator
+    platforms:
+      openshift:
+        node-count: 3
+        instance-type: r1.xlarge
+        disk-size: 200
+        test-suite: openshift
+      google: {}
+      azure: {}
+      aws: {}
+  druid-operator:
+    title: Druid Operator
+    platforms:
+      openshift:
+        test-suite: openshift
+      google: {}
+      azure: {}
+      aws: {}
+  hbase-operator:
+    title: HBase Operator
+    platforms:
+      openshift:
+        test-suite: openshift
+      google: {}
+      azure: {}
+      aws: {}
+  hello-world-operator:
+    title: Hello World Operator
+    platforms:
+      openshift:
+        node-count: 1
+        test-suite: openshift
+      google:
+        node-count: 1
+      azure:
+        node-count: 1
+      aws:
+        node-count: 1
+  listener-operator:
+    title: Listener Operator
+    platforms:
+      openshift:
+        node-count: 1
+        test-suite: openshift
+      google:
+        node-count: 1
+      azure:
+        node-count: 1
+      aws:
+        node-count: 1
+  hdfs-operator:
+    title: HDFS Operator
+    platforms:
+      openshift:
+        test-suite: openshift
+      google: {}
+      azure: {}
+      aws: {}
+  hive-operator:
+    title: Hive Operator
+    platforms:
+      openshift:
+        test-suite: openshift
+      google: {}
+      azure: {}
+      aws: {}
+  kafka-operator:
+    title: Kafka Operator
+    platforms:
+      openshift:
+        test-suite: openshift
+      google: {}
+      azure: {}
+      aws: {}
+  nifi-operator:
+    title: NiFi Operator
+    platforms:
+      openshift:
+        test-suite: openshift
+      google: {}
+      azure: {}
+      aws: {}
+  opa-operator:
+    title: OPA Operator
+    platforms:
+      openshift:
+        test-suite: openshift
+      google: {}
+      azure: {}
+      aws: {}
+  secret-operator:
+    title: Secret Operator
+    platforms:
+      openshift:
+        test-suite: openshift
+      google: {}
+      azure:
+        instance-type: Standard_DS4_v2
+      aws: {}
+  spark-k8s-operator:
+    title: Spark Operator
+    platforms:
+      openshift:
+        test-suite: openshift
+      google: {}
+      azure: {}
+      aws: {}
+  superset-operator:
+    title: Superset Operator
+    platforms:
+      openshift:
+        test-suite: openshift
+      google: {}
+      azure: {}
+      aws: {}
+  trino-operator:
+    title: Trino Operator
+    platforms:
+      openshift:
+        test-suite: openshift
+      google: {}
+      azure: {}
+      aws: {}
+  zookeeper-operator:
+    title: ZooKeeper Operator
+    platforms:
+      openshift:
+        test-suite: openshift
+      google: {}
+      azure: {}
+      aws: {}
