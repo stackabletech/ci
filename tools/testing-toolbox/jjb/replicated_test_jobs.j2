@@ -35,6 +35,13 @@
           selectedValue: NONE
           sortMode: ASCENDING_SMART
           defaultValue: origin/main
+      - extended-choice:
+          name: OPERATOR_VERSION
+          description: Version of the operator (binary) this test should use
+          property-file: /var/jenkins_home/workspace/Available Versions/versions.properties
+          property-key: {{ testsuite.name }}
+          quote-value: false
+          visible-items: 10
       - string:
           name: BEKU_SUITE
           description: Testsuite which is used (beku feature)
@@ -82,6 +89,8 @@
                 --env PLATFORM=$PLATFORM \
                 --env PLATFORM_VERSION=$PLATFORM_VERSION \
                 --env GIT_BRANCH=$GIT_BRANCH \
+                --env OPERATOR_VERSION=${OPERATOR_VERSION}" \
+                --env BEKU_TEST_SUITE=$BEKU_SUITE \
                 docker.stackable.tech/replicated-testrunner
 
     publishers:
