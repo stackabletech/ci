@@ -12,6 +12,8 @@ testsuite = None
 platform = None
 platform_version = None
 git_branch = None
+beku_test_suite = None
+
 
 catalog = None
 
@@ -32,6 +34,7 @@ def init():
     global platform_version
     global git_branch
     global catalog
+    global beku_test_suite
 
     if not 'REPLICATED_API_TOKEN' in os.environ:
         print("Error: Please supply REPLICATED_API_TOKEN as an environment variable.")
@@ -63,6 +66,9 @@ def init():
 
     if 'GIT_BRANCH' in os.environ:
         git_branch = os.environ['GIT_BRANCH']
+
+    if 'BEKU_TEST_SUITE' in os.environ:
+        beku_test_suite = os.environ['BEKU_TEST_SUITE']
 
     catalog = hiyapyco.load("/replicated.yaml")
 
@@ -189,8 +195,8 @@ def clone_git_repo(repo):
     return True
 
 
-def run_tests(operator, beku_suite):
-    os.system(f"(cd {operator}/ && python ./scripts/run-tests --log-level debug --test-suite {beku_suite} --parallel 4 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}")
+def run_tests(operator, beku_test_suite):
+    os.system(f"(cd {operator}/ && python ./scripts/run-tests --log-level debug --test-suite {beku_test_suite} --parallel 4 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}")
     sleep(15)
     with open ("/test_exit_code", "r") as f:
         return int(f.read().strip())
@@ -272,8 +278,9 @@ if __name__ == "__main__":
     log()
 
     log("Running tests...")
-    beku_suite = catalog['testsuites'][testsuite]['platforms'][platform]['test-suite'] if 'test-suite' in catalog['testsuites'][testsuite]['platforms'][platform] else 'nightly'
-    test_exit_code = run_tests(testsuite, beku_suite)
+    if(not beku_test_suite):
+        beku_test_suite = catalog['testsuites'][testsuite]['platforms'][platform]['beku-test-suite'] if 'beku-test-suite' in catalog['testsuites'][testsuite]['platforms'][platform] else 'nightly'
+    test_exit_code = run_tests(testsuite, beku_test_suite)
     log(f"Test exited with code {test_exit_code}")
     log()
 
