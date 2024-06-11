@@ -100,7 +100,7 @@
           artifacts: 'target/*'
           allow-empty: true
       - slack: 
-          room: '{{ testsuites[testsuite].slack-channels }}'
+          room: '{{ testsuites[testsuite].slackchannels }}'
           notify-success: True
           notify-unstable: True
           notify-every-failure: True
