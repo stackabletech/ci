@@ -12,6 +12,8 @@ testsuite = None
 platform = None
 platform_version = None
 git_branch = None
+beku_test_suite = None
+operator_version = None
 
 catalog = None
 
@@ -32,6 +34,8 @@ def init():
     global platform_version
     global git_branch
     global catalog
+    global beku_test_suite
+    global operator_version
 
     if not 'REPLICATED_API_TOKEN' in os.environ:
         print("Error: Please supply REPLICATED_API_TOKEN as an environment variable.")
@@ -46,13 +50,18 @@ def init():
         return False
 
     if not 'PLATFORM_VERSION' in os.environ:
-        print("Error: Please supply VERSION as an environment variable.")
+        print("Error: Please supply PLATFORM_VERSION as an environment variable.")
+        return False
+
+    if not 'OPERATOR_VERSION' in os.environ:
+        print("Error: Please supply OPERATOR_VERSION as an environment variable.")
         return False
 
 
     testsuite = os.environ['TESTSUITE']
     platform = os.environ['PLATFORM']
     platform_version = os.environ['PLATFORM_VERSION']
+    operator_version = os.environ['OPERATOR_VERSION']
 
     if not os.path.isdir(TARGET_FOLDER):
         print(f"Error: A target folder volume has to be supplied as {TARGET_FOLDER}. ")
@@ -63,6 +72,9 @@ def init():
 
     if 'GIT_BRANCH' in os.environ:
         git_branch = os.environ['GIT_BRANCH']
+
+    if 'BEKU_TEST_SUITE' in os.environ:
+        beku_test_suite = os.environ['BEKU_TEST_SUITE']
 
     catalog = hiyapyco.load("/replicated.yaml")
 
@@ -189,8 +201,11 @@ def clone_git_repo(repo):
     return True
 
 
-def run_tests(operator, beku_suite):
-    os.system(f"(cd {operator}/ && python ./scripts/run-tests --log-level debug --test-suite {beku_suite} --parallel 4 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}")
+def run_tests(operator, beku_test_suite, operator_name, operator_version, test_params):
+    command = f"(cd {operator}/ && python ./scripts/run-tests --log-level debug --test-suite {beku_test_suite} --operator {operator_name}={operator_version} {test_params} 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}"
+    log("Running the following test command:")
+    log(command)
+    os.system(command)
     sleep(15)
     with open ("/test_exit_code", "r") as f:
         return int(f.read().strip())
@@ -272,8 +287,11 @@ if __name__ == "__main__":
     log()
 
     log("Running tests...")
-    beku_suite = catalog['testsuites'][testsuite]['platforms'][platform]['test-suite'] if 'test-suite' in catalog['testsuites'][testsuite]['platforms'][platform] else 'nightly'
-    test_exit_code = run_tests(testsuite, beku_suite)
+    if(not beku_test_suite):
+        beku_test_suite = catalog['testsuites'][testsuite]['platforms'][platform]['beku-test-suite'] if 'beku-test-suite' in catalog['testsuites'][testsuite]['platforms'][platform] else 'nightly'
+    operator_name = catalog['testsuites'][testsuite]['operator-name']
+    test_params = catalog['testsuites'][testsuite]['test-params'] if 'test-params' in catalog['testsuites'][testsuite] else ''
+    test_exit_code = run_tests(testsuite, beku_test_suite, operator_name, operator_version, test_params)
     log(f"Test exited with code {test_exit_code}")
     log()
 

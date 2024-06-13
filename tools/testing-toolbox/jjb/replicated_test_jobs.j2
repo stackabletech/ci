@@ -35,6 +35,17 @@
           selectedValue: NONE
           sortMode: ASCENDING_SMART
           defaultValue: origin/main
+      - extended-choice:
+          name: OPERATOR_VERSION
+          description: Version of the operator (binary) this test should use
+          property-file: /var/jenkins_home/workspace/Available Versions/versions.properties
+          property-key: {{ testsuite }}
+          quote-value: false
+          visible-items: 10
+      - string:
+          name: BEKU_SUITE
+          description: Beku testsuite (optional, overrides default if set, default depends on platform)
+          trim: true
     wrappers:
       - credentials-binding:
           - text:
@@ -67,6 +78,9 @@
             export PLATFORM_VERSION=`echo $TEST_PLATFORM | cut -d '<' -f 2 | cut -d '|' -f 2 | cut -d '>' -f 1`
             export GIT_BRANCH=`echo $GIT_BRANCH_OR_TAG | sed s#origin/##g`
 
+            # This string can be parsed by the description-setter publisher
+            echo "build_run_label::#${PLATFORM} | ${PLATFORM_VERSION} | ${BUILD_USER}#"
+
             # Run testdriver
             mkdir -p target/
             docker run --rm \
@@ -77,11 +91,30 @@
                 --env PLATFORM=$PLATFORM \
                 --env PLATFORM_VERSION=$PLATFORM_VERSION \
                 --env GIT_BRANCH=$GIT_BRANCH \
+                --env OPERATOR_VERSION=${OPERATOR_VERSION} \
+                --env BEKU_TEST_SUITE=$BEKU_SUITE \
                 docker.stackable.tech/replicated-testrunner
 
     publishers:
       - archive:
           artifacts: 'target/*'
           allow-empty: true
+      - slack: 
+          room: '{{ testsuites[testsuite].slackchannels }}'
+          notify-success: True
+          notify-unstable: True
+          notify-every-failure: True
+          notify-back-to-normal: True
+          include-custom-message: True
+          custom-message: |
+            *platform:* $TEST_PLATFORM
+            *branch or tag:* `$GIT_BRANCH_OR_TAG`
+            *operator version:* `$OPERATOR_VERSION`
+            (<$BUILD_URL|Open in classic Jenkins UI>)
+            (<${BUILD_URL}artifact/testsuite/target/logs.html|Open logs overview>)
+      - description-setter:
+          regexp: ".*build_run_label::#(.*)#.*"
+          regexp-for-failed: ".*build_run_label::#(.*)#.*"
+          set-for-matrix: false
 {% endfor %}
 
