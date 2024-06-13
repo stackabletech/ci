@@ -3,8 +3,8 @@ platforms:
   openshift:
     title: Openshift
     distribution: openshift
-    instance-type: r1.medium
-    disk-size: 50
+    instance-type: r1.large
+    disk-size: 100
     node-count: 3
     versions:
       - 4.15.0-okd
@@ -23,7 +23,7 @@ platforms:
   azure:
     title: Azure AKS
     distribution: aks
-    instance-type: Standard_DS2_v2
+    instance-type: Standard_DS3_v2
     disk-size: 100
     node-count: 3
     versions:
