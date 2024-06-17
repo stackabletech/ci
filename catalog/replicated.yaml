@@ -70,7 +70,7 @@ testsuites:
     title: HBase Operator
     operator-name: hbase
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    test-params: --parallel 2
     platforms:
       openshift:
         beku-test-suite: openshift
