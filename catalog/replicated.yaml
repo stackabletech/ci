@@ -75,7 +75,9 @@ testsuites:
       openshift:
         beku-test-suite: openshift
       google: {}
-      azure: {}
+      azure:
+        node-count: 5
+        beku-test-suite: nightly
       aws: {}
   hello-world-operator:
     title: Hello World Operator
