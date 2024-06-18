@@ -1,6 +1,6 @@
 #!/bin/bash
 # wait a minute for cluster to be REALLY ready
-sleep 60
+sleep 120
 
 {% if git_branch %}
 git clone -b {{ git_branch }} https://github.com/stackabletech/{{ testsuite.git_repo }}.git
