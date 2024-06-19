@@ -118,7 +118,9 @@ testsuites:
       openshift:
         beku-test-suite: openshift
       google: {}
-      azure: {}
+      azure:
+        node-count: 5
+        beku-test-suite: nightly
       aws: {}
   hive-operator:
     title: Hive Operator
