@@ -286,6 +286,9 @@ if __name__ == "__main__":
     clone_git_repo(testsuite)
     log()
 
+    log("Waiting 1 minute for the Cluster to become ready...")
+    sleep(60)
+
     log("Running tests...")
     if(not beku_test_suite):
         beku_test_suite = catalog['testsuites'][testsuite]['platforms'][platform]['beku-test-suite'] if 'beku-test-suite' in catalog['testsuites'][testsuite]['platforms'][platform] else 'nightly'

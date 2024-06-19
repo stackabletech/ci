@@ -70,7 +70,7 @@ testsuites:
     title: HBase Operator
     operator-name: hbase
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 2
+    test-params: --parallel 1
     platforms:
       openshift:
         beku-test-suite: openshift
@@ -83,11 +83,11 @@ testsuites:
     title: Hello World Operator
     operator-name: hello-world
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    test-params: --parallel 1
     platforms:
       openshift:
-        node-count: 1
         beku-test-suite: openshift
+        node-count: 1
       google:
         node-count: 1
       azure:
