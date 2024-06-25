@@ -24,11 +24,8 @@ git clone https://github.com/stackabletech/{{ testsuite.git_repo }}.git
 cd {{ testsuite.git_repo }}
 
 # Install the Stackable Data Platform release
-# TODO Implement a proper solution instead of calling a non-existent test, if this fixes the following error:
-# helm FFI library call failed (failed to install CRD crds/crds.yaml: 1 error occurred:
-#   * Post "https://cp-bcfbddf8-4dc4-4165-99c4-859a04ddb0ba.cluster.ionos.com:13592/apis/apiextensions.k8s.io/v1/customresourcedefinitions?fieldManager=stackablectl": unexpected EOF
 retry --delay=60 --times=10 \
-    python scripts/run-tests --test install-release-only {{ test_params }} \
+    python scripts/run-tests --skip-tests {{ test_params }} \
     || exit 1
 
 # Tests want to know where to pipe their logs to
