@@ -44,8 +44,8 @@
           visible-items: 10
           defaultValue: 0.0.0-dev
       - string:
-          name: BEKU_SUITE
-          description: Beku testsuite (optional, overrides default if set, default depends on platform)
+          name: OVERRIDE_BEKU_PARAMS
+          description: Use this string to specify a list of params/options (test-suite, operator, ...)
           trim: true
     wrappers:
       - credentials-binding:
@@ -93,7 +93,7 @@
                 --env PLATFORM_VERSION=$PLATFORM_VERSION \
                 --env GIT_BRANCH=$GIT_BRANCH \
                 --env OPERATOR_VERSION=${OPERATOR_VERSION} \
-                --env BEKU_TEST_SUITE=$BEKU_SUITE \
+                --env OVERRIDE_BEKU_PARAMS=$OVERRIDE_BEKU_PARAMS \
                 docker.stackable.tech/replicated-testrunner
 
     publishers:
