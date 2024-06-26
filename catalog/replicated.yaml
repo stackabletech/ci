@@ -59,12 +59,15 @@ testsuites:
     title: Druid Operator
     operator-name: druid
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    test-params: --parallel 2
     platforms:
       openshift:
+        node-count: 4
         beku-test-suite: openshift
       google: {}
-      azure: {}
+      azure:
+        node-count: 5
+        beku-test-suite: nightly
       aws: {}
   hbase-operator:
     title: HBase Operator
