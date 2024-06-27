@@ -44,7 +44,7 @@ def generate_jjb_config():
 
 def generate_replicated_tests_jobs_definitions(operator_versions):
     with open ("/jjb/replicated_tests.yaml", 'w') as f:
-       f.write(replicated_jobs_template.render({ 'testsuites': catalog_replicated['testsuites'], 'operator_versions': operator_versions }))
+       f.write(replicated_jobs_template.render({ 'testsuites': catalog_replicated['testsuites'], 'platforms': catalog_replicated['platforms'], 'operator_versions': operator_versions }))
        f.close()
 
 
