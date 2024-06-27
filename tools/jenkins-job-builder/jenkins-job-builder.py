@@ -52,7 +52,7 @@ def execute_jjb():
     """
         Executes the Jenkins Job Builder
     """
-    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/replicated_tests.yaml")
+    os.system(f"GIT_BRANCH_OR_TAGS=hurz jenkins-jobs --conf /jjb/jjb.conf update /jjb/replicated_tests.yaml")
 
 
 if __name__ == "__main__":
