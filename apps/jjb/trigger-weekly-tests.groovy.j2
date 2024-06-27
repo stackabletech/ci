@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+    options {
+        ansiColor('xterm')
+        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
+    }
+    stages {
+{% for testsuite in testsuites %}
+        stage('trigger-{{ testsuite.id }}-weekly-test') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                    build job: "{{ testsuite.id }}-it-weekly", wait: true
+                }
+            }
+        }
+{% endfor %}
+    }  
+}

@@ -109,7 +109,7 @@ def one_line(string_array):
 def run_command(command, description, timeout=60):
     """
         Execute command.
-        Returns tuple (exit_code, output as multi-line)
+        Returns tuple (exit_code, output as array of lines)
     """
     proc = Popen(['/bin/bash', '-c', command], stdout=PIPE, stderr=PIPE)
     try:

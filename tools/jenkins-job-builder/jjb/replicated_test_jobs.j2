@@ -1,0 +1,80 @@
+---
+{% for testsuite in testsuites %}
+- job:
+    name: {{ testsuite }}-it-replicated
+    project-type: freestyle
+    defaults: global
+    description: ''
+    disabled: false
+    display-name: '{{ testsuites[testsuite].title }} custom integration test on replicated.com' 
+    concurrent: true
+    quiet-period: 5
+    logrotate:
+      daysToKeep: -1
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    scm:
+      - git:
+          url: https://github.com/stackabletech/{{ testsuite }}.git
+          branches:
+            - $GIT_BRANCH_OR_TAG
+          browser: githubweb
+          browser-url: https://github.com/stackabletech/{{ testsuite }}.git
+          timeout: 20
+    parameters:
+      - choice:
+          name: TEST_PLATFORM
+          choices:{% for platform in platforms %}{% for version in platforms[platform].versions %}
+            - {{ platforms[platform].title }}, {{ version }} <{{ platform }}|{{ version }}>{% endfor %}{% endfor %}
+          description: On which platform should the test run?
+      - git-parameter:
+          name: GIT_BRANCH_OR_TAG
+          description: The Git branch or tag where your Operator integration tests are, defaults to 'main'.
+          type: PT_BRANCH_TAG
+          selectedValue: NONE
+          sortMode: ASCENDING_SMART
+          defaultValue: origin/main
+      - choice:
+          name: OPERATOR_VERSION
+          description: Version of the operator (binary) this test should use
+          choices:{% for version in operator_versions[testsuite] %}
+            - {{ version }}{% endfor %}
+      - string:
+          name: TEST_SCRIPT_PARAMS
+          description: Use this string to specify a list of params/options for the test script.
+          trim: true
+    wrappers:
+      - credentials-binding:
+          - text:
+              credential-id: REPLICATED_API_TOKEN
+              variable: REPLICATED_API_TOKEN
+      - build-user-vars
+    builders:
+      - shell: 
+          unstable-return: 255
+          command:
+            !include-raw-verbatim:
+              - replicated_test_job.sh
+    publishers:
+      - archive:
+          artifacts: 'target/*'
+          allow-empty: true
+      - slack: 
+          room: '{{ testsuites[testsuite].slackchannels }}'
+          notify-success: True
+          notify-unstable: True
+          notify-every-failure: True
+          notify-back-to-normal: True
+          include-custom-message: True
+          custom-message: |
+            *platform:* $TEST_PLATFORM
+            *branch or tag:* `$GIT_BRANCH_OR_TAG`
+            *operator version:* `$OPERATOR_VERSION`
+            *test script params:* `$TEST_SCRIPT_PARAMS`
+      - description-setter:
+          regexp: ".*build_run_label::#(.*)#.*"
+          regexp-for-failed: ".*build_run_label::#(.*)#.*"
+          set-for-matrix: false
+{% endfor %}
+

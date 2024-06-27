@@ -1,0 +1,21 @@
+---
+- job:
+    name: maintenance-docker-system-prune
+    project-type: freestyle
+    defaults: global
+    description: ''
+    disabled: false
+    display-name: 'Docker system prune (nightly)' 
+    concurrent: true
+    quiet-period: 5
+    logrotate:
+      daysToKeep: -1
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    triggers:
+      - timed: "H 23 * * *"
+    builders:
+      - shell: 
+          command: |
+            docker system prune -f

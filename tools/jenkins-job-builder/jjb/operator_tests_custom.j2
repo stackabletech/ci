@@ -1,0 +1,70 @@
+---
+{% for testsuite in testsuites %}
+- job:
+    name: {{ testsuite.id }}-it-custom
+    project-type: freestyle
+    defaults: global
+    description: ''
+    disabled: false
+    display-name: '{{ testsuite.display_name }} custom test' 
+    concurrent: true
+    quiet-period: 5
+    logrotate:
+      daysToKeep: -1
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    scm:
+      - git:
+          url: https://github.com/stackabletech/{{ testsuite.git_repo }}.git
+          branches:
+            - $GIT_BRANCH_OR_TAG
+          browser: githubweb
+          browser-url: https://github.com/stackabletech/{{ testsuite.git_repo }}.git
+          timeout: 20
+    parameters:
+      - choice:
+          name: TEST_PLATFORM
+          choices:{% for platform in testsuite.platforms %}{% for version in platforms[platform.id].versions %}
+            - platforms[platform.id].name ({{ version }}){% endfor %}{% endfor %}
+          description: On which platform should the test run?
+      - git-parameter:
+          name: GIT_BRANCH_OR_TAG
+          description: The Git branch or tag where your Operator integration tests are, defaults to 'main'.
+          type: PT_BRANCH_TAG
+          selectedValue: NONE
+          sortMode: ASCENDING_SMART
+          defaultValue: origin/main
+      - choice:
+          name: OPERATOR_VERSION
+          description: Version of the operator (binary) this test should use
+          choices:{% for version in operator_versions[testsuite.id] %}
+            - {{ version }}{% endfor %}
+      - string:
+          name: TEST_SCRIPT_PARAMS
+          description: Use this string to specify a list of params/options for the test script.
+          trim: true
+    wrappers:
+      - credentials-binding:
+          - text:
+              credential-id: REPLICATED_API_TOKEN
+              variable: REPLICATED_API_TOKEN
+          - username-password-separated:
+              credential-id: IONOS_API
+              username: IONOS_USERNAME
+              password: IONOS_PASSWORD
+      - build-user-vars
+    builders:
+      - shell: 
+          unstable-return: 255
+          command: |
+            # Read the keys of the selection parameters
+            export PLATFORM_NAME=`echo $TEST_PLATFORM | cut -d '' -f 2 | cut -d '|' -f 1`
+            export K8S_VERSION=`echo $TEST_PLATFORM | cut -d '<' -f 2 | cut -d '|' -f 2 | cut -d '>' -f 1`
+            export GIT_BRANCH=`echo $GIT_BRANCH_OR_TAG | sed s#origin/##g`
+    publishers:
+      - archive:
+          artifacts: 'target/*'
+          allow-empty: true
+{% endfor %}
+

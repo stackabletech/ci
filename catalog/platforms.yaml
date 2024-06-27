@@ -1,302 +1,69 @@
 ---
-- name: ionos-k8s
-  description: IONOS K8s
-  k8s_versions:
-    - "1.29.5"
-    - "1.28.10"
-    - "1.27.14"
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata:
-      name: ionos-k8s
-      description: IONOS K8s
+providers:
+  - id: replicated
+    name: "replicated.com"
+  - id: ionos
+    name: "IONOS"
+platforms:
+  - id: replicated-azure
+    name: "Azure AKS on replicated.com"
+    provider: replicated
+    versions:
+      - "1.29"
+      - "1.28"
+      - "1.27"
     spec:
-      template: ionos-k8s
-      region: de/txl
-      k8sVersion: "1.27.4"
-      waitAfterTerraform: 10
-      nodes:
-        count: 3
-        cpuFamily: INTEL_ICELAKE
-        numberOfCores: 4
-        memoryMb: 4096
-        diskType: HDD
-        diskSizeGb: 100
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: DEV
-        listener-operator: DEV
-        commons-operator: DEV
-- name: azure-aks
-  description: Azure AKS
-  k8s_versions:
-    - "1.29"
-    - "1.28"
-    - "1.27"
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata:
-      name: azure-aks
-      description: Azure AKS
+      distribution: aks
+      instance-type: Standard_DS3_v2
+      disk-size: 100
+      node-count: 3
+  - id: replicated-aws
+    name: "Amazon AWS EKS on replicated.com"
+    provider: replicated
+    versions:
+      - "1.29"
+      - "1.28"
+      - "1.27"
     spec:
-      template: azure-aks
-      location: northeurope
-      k8sVersion: "1.28"
-      nodes:
-        count: 3
-        vmSize: Standard_D2s_v3
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: DEV
-        listener-operator: DEV
-        commons-operator: DEV
-- name: gke
-  description: Google GKE
-  k8s_versions:
-    - "1.30"
-    - "1.29"
-    - "1.28"
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata:
-      name: gke
-      description: Google GKE
+      distribution: eks
+      instance-type: m6i.large
+      disk-size: 100
+      node-count: 3
+  - id: replicated-gke
+    name: "Google GKE on replicated.com"
+    provider: replicated
+    versions:
+      - "1.29"
+      - "1.28"
+      - "1.27"
     spec:
-      template: gke
-      region: europe-central2
-      k8sVersion: "1.28"
-      nodes:
-        count: 3
-        machineType: e2-standard-2
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: DEV
-        listener-operator: DEV
-        commons-operator: DEV
-- name: aws-eks
-  description: AWS EKS
-  k8s_versions:
-    - "1.30"
-    - "1.29"
-    - "1.28"
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata:
-      name: aws-eks
-      description: AWS EKS
+      distribution: gke
+      instance-type: e2-standard-2
+      disk-size: 100
+      node-count: 3
+  - id: replicated-openshift
+    name: "Openshift on replicated.com"
+    provider: replicated
+    versions:
+      - 4.15.0-okd
+      - 4.14.0-okd
+      - 4.13.0-okd
     spec:
-      template: aws-eks
-      k8sVersion: "1.28"
-      nodes:
-        count: 3
-        instanceType: t2.large
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: DEV
-        listener-operator: DEV
-        commons-operator: DEV
-- name: hcloud-k3s-centos-8
-  description: K3s HCloud CentOS 8
-  k8s_versions:
-    - latest
-    - stable
-    - testing
-    - v1.27
-    - v1.26
-    - v1.25
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata:
-      name: hcloud-k3s-centos-8
-      description: K3s HCloud CentOS 8
+      distribution: openshift
+      instance-type: r1.large
+      disk-size: 100
+      node-count: 3
+  - id: ionos-k8s
+    name: "IONOS managed K8s"
+    provider: ionos
+    versions:
+      - "1.29.5"
+      - "1.28.10"
+      - "1.27.14"
     spec:
-      template: hcloud-centos-8
-      k8sVersion: latest
-      nodes:
-        main:
-          count: 3
-          serverType: cpx21
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: DEV
-        listener-operator: DEV
-        commons-operator: DEV
-- name: hcloud-k3s-centos-9
-  description: K3s HCloud CentOS 9
-  k8s_versions:
-    - latest
-    - stable
-    - testing
-    - v1.27
-    - v1.26
-    - v1.25
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata:
-      name: hcloud-k3s-centos-stream-9
-      description: K3s HCloud CentOS 9
-    spec:
-      template: hcloud-centos-stream-9
-      k8sVersion: latest
-      nodes:
-        main:
-          count: 3
-          serverType: cpx21
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: DEV
-        listener-operator: DEV
-        commons-operator: DEV
-- name: hcloud-k3s-debian-10
-  description: K3s HCloud Debian 10
-  k8s_versions:
-    - latest
-    - stable
-    - testing
-    - v1.27
-    - v1.26
-    - v1.25
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata:
-      name: hcloud-k3s-debian-10
-      description: K3s HCloud Debian 10
-    spec:
-      template: hcloud-debian-10
-      k8sVersion: latest
-      nodes:
-        main:
-          count: 3
-          serverType: cpx21
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: DEV
-        listener-operator: DEV
-        commons-operator: DEV
-- name: hcloud-k3s-debian-11
-  description: K3s HCloud Debian 11
-  k8s_versions:
-    - latest
-    - stable
-    - testing
-    - v1.27
-    - v1.26
-    - v1.25
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata:
-      name: hcloud-k3s-debian-11
-      description: K3s HCloud Debian 11
-    spec:
-      template: hcloud-debian-11
-      k8sVersion: latest
-      nodes:
-        main:
-          count: 3
-          serverType: cpx21
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: DEV
-        listener-operator: DEV
-        commons-operator: DEV
-- name: ionos-k3s-rocky-8
-  description: K3s IONOS RockyLinux 8
-  k8s_versions:
-    - latest
-    - stable
-    - testing
-    - v1.27
-    - v1.26
-    - v1.25
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata:
-      name: ionos-k3s-rockylinux-8
-      description: K3s IONOS CentOS 8
-    spec:
-      template: ionos-rocky-8
-      region: fr/par
-      k8sVersion: latest
-      nodes:
-        main:
-          count: 3
-          numberOfCores: 4
-          memoryMb: 4096
-          diskType: SSD
-          diskSizeGb: 100
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: DEV
-        listener-operator: DEV
-        commons-operator: DEV
-- name: ionos-k3s-debian-10
-  description: K3s IONOS Debian 10
-  k8s_versions:
-    - latest
-    - stable
-    - testing
-    - v1.27
-    - v1.26
-    - v1.25
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata:
-      name: ionos-k3s-debian-10
-      description: K3s IONOS Debian 10
-    spec:
-      template: ionos-debian-10
-      region: fr/par
-      k8sVersion: latest
-      nodes:
-        main:
-          count: 3
-          numberOfCores: 4
-          memoryMb: 4096
-          diskType: SSD
-          diskSizeGb: 100
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: DEV
-        listener-operator: DEV
-        commons-operator: DEV
-- name: ionos-k3s-debian-11
-  description: K3s IONOS Debian 11
-  k8s_versions:
-    - latest
-    - stable
-    - testing
-    - v1.27
-    - v1.26
-    - v1.25
-  cluster_definition:
-    apiVersion: t2.stackable.tech/v2
-    kind: StackableT2Cluster
-    metadata:
-      name: ionos-k3s-debian-11
-      description: K3s IONOS Debian 11
-    spec:
-      template: ionos-debian-11
-      region: fr/par
-      k8sVersion: latest
-      nodes:
-        main:
-          count: 3
-          numberOfCores: 4
-          memoryMb: 4096
-          diskType: SSD
-          diskSizeGb: 100
-      stackableVersions:
-        _-operator: NONE
-        secret-operator: DEV
-        listener-operator: DEV
-        commons-operator: DEV
+      node-count: 3
+      ram: 8192
+      cores: 4
+      location: de/txl
+      disk-type: HDD
+      disk-size: 100

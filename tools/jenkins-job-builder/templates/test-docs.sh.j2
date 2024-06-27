@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Wait for the cluster to be REALLY ready
+kubectl wait --for=condition=Ready nodes --all --timeout=10m
+kubectl wait --for=condition=Ready pods --namespace kube-system --all --timeout=10m
+
+{% if git_branch %}
+git clone -b {{ git_branch }} https://github.com/stackabletech/{{ testsuite.git_repo }}.git
+{% else %}
+git clone https://github.com/stackabletech/{{ testsuite.git_repo }}.git
+{% endif %}
+
+export VECTOR_AGGREGATOR=vector-aggregator.t2-cluster-logging.svc.cluster.local:6000
+
+# install stackablectl
+curl -L -o /usr/local/bin/stackablectl https://github.com/stackabletech/stackablectl/releases/latest/download/stackablectl-x86_64-unknown-linux-gnu
+chmod 755 /usr/local/bin/stackablectl
+
+# call test script
+(cd {{ testsuite.git_repo }}/ && ./{{ test_script }} {{ test_params }})
+exit_code=$?
+
+# cleanup of the test resources might take a while, so we wait another minute
+sleep 60
+
+exit $exit_code

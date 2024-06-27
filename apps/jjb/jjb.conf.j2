@@ -1,0 +1,15 @@
+[job_builder]
+ignore_cache=True
+keep_descriptions=False
+include_path=.:scripts:~/git/
+recursive=False
+exclude=.*:manual:./development
+allow_duplicates=False
+allow_empty_variables=True
+update=all
+
+[jenkins]
+user={{ JENKINS_USERNAME }}
+password={{ JENKINS_PASSWORD }}
+url={{ JENKINS_URL }}
+query_plugins_info=False
