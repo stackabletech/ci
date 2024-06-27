@@ -43,9 +43,8 @@ platforms:
 testsuites:
   airflow-operator:
     title: Airflow Operator
-    operator-name: airflow
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    parallel: 4
     platforms:
       openshift:
         node-count: 3
@@ -57,9 +56,8 @@ testsuites:
       aws: {}
   druid-operator:
     title: Druid Operator
-    operator-name: druid
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 2
+    parallel: 2
     platforms:
       openshift:
         node-count: 4
@@ -71,9 +69,8 @@ testsuites:
       aws: {}
   hbase-operator:
     title: HBase Operator
-    operator-name: hbase
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 1
+    parallel: 1
     platforms:
       openshift:
         beku-test-suite: openshift
@@ -84,28 +81,12 @@ testsuites:
       aws: {}
   hello-world-operator:
     title: Hello World Operator
-    operator-name: hello-world
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 1
+    parallel: 1
     platforms:
       openshift:
         beku-test-suite: openshift
         node-count: 1
-      google:
-        node-count: 1
-      azure:
-        node-count: 1
-      aws:
-        node-count: 1
-  listener-operator:
-    title: Listener Operator
-    operator-name: listener
-    slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
-    platforms:
-      openshift:
-        node-count: 1
-        beku-test-suite: openshift
       google:
         node-count: 1
       azure:
@@ -114,9 +95,8 @@ testsuites:
         node-count: 1
   hdfs-operator:
     title: HDFS Operator
-    operator-name: hdfs
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    parallel: 4
     platforms:
       openshift:
         beku-test-suite: openshift
@@ -127,9 +107,8 @@ testsuites:
       aws: {}
   hive-operator:
     title: Hive Operator
-    operator-name: hive
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    parallel: 4
     platforms:
       openshift:
         beku-test-suite: openshift
@@ -138,20 +117,32 @@ testsuites:
       aws: {}
   kafka-operator:
     title: Kafka Operator
-    operator-name: kafka
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    parallel: 4
     platforms:
       openshift:
         beku-test-suite: openshift
       google: {}
       azure: {}
       aws: {}
+  listener-operator:
+    title: Listener Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 4
+    platforms:
+      openshift:
+        node-count: 1
+        beku-test-suite: openshift
+      google:
+        node-count: 1
+      azure:
+        node-count: 1
+      aws:
+        node-count: 1
   nifi-operator:
     title: NiFi Operator
-    operator-name: nifi
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    parallel: 4
     platforms:
       openshift:
         beku-test-suite: openshift
@@ -160,9 +151,8 @@ testsuites:
       aws: {}
   opa-operator:
     title: OPA Operator
-    operator-name: opa
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    parallel: 4
     platforms:
       openshift:
         beku-test-suite: openshift
@@ -171,9 +161,8 @@ testsuites:
       aws: {}
   secret-operator:
     title: Secret Operator
-    operator-name: secret
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    parallel: 4
     platforms:
       openshift:
         beku-test-suite: openshift
@@ -183,9 +172,8 @@ testsuites:
       aws: {}
   spark-k8s-operator:
     title: Spark Operator
-    operator-name: spark
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    parallel: 4
     platforms:
       openshift:
         beku-test-suite: openshift
@@ -194,9 +182,8 @@ testsuites:
       aws: {}
   superset-operator:
     title: Superset Operator
-    operator-name: superset
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    parallel: 4
     platforms:
       openshift:
         beku-test-suite: openshift
@@ -205,9 +192,8 @@ testsuites:
       aws: {}
   trino-operator:
     title: Trino Operator
-    operator-name: trino
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    parallel: 4
     platforms:
       openshift:
         beku-test-suite: openshift
@@ -216,9 +202,8 @@ testsuites:
       aws: {}
   zookeeper-operator:
     title: ZooKeeper Operator
-    operator-name: zookeeper
     slackchannels: "#notifications-jenkins"
-    test-params: --parallel 4
+    parallel: 4
     platforms:
       openshift:
         beku-test-suite: openshift

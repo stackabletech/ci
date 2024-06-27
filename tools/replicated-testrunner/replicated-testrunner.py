@@ -12,8 +12,8 @@ testsuite = None
 platform = None
 platform_version = None
 git_branch = None
-beku_test_suite = None
 operator_version = None
+override_beku_params = ''
 
 catalog = None
 
@@ -36,6 +36,7 @@ def init():
     global catalog
     global beku_test_suite
     global operator_version
+    global override_beku_params
 
     if not 'REPLICATED_API_TOKEN' in os.environ:
         print("Error: Please supply REPLICATED_API_TOKEN as an environment variable.")
@@ -73,8 +74,8 @@ def init():
     if 'GIT_BRANCH' in os.environ:
         git_branch = os.environ['GIT_BRANCH']
 
-    if 'BEKU_TEST_SUITE' in os.environ:
-        beku_test_suite = os.environ['BEKU_TEST_SUITE']
+    if 'OVERRIDE_BEKU_PARAMS' in os.environ:
+        override_beku_params = os.environ['OVERRIDE_BEKU_PARAMS']
 
     catalog = hiyapyco.load("/replicated.yaml")
 
@@ -200,9 +201,25 @@ def clone_git_repo(repo):
         return False
     return True
 
+def run_tests(operator, beku_test_suite, operator_version, parallel, override_params):
+    """ 
+    Runs the tests using the test script in the operator repo.
 
-def run_tests(operator, beku_test_suite, operator_name, operator_version, test_params):
-    command = f"(cd {operator}/ && python ./scripts/run-tests --log-level debug --test-suite {beku_test_suite} --operator {operator_name}={operator_version} {test_params} 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}"
+    operator:           name of the operator-repo (usually with suffix '-operator')
+    beku_test_suite:    Beku test-suite to be run
+    operator_version:   Version of the operator to be tested
+    parallel:           How many parallel tests should be run
+    override_params:    additional (overriding) params
+                        Every option included in this string replaces the option value
+
+    """ 
+    params = ""
+    params += " --log-level debug" if "--log-level" not in override_params else ""
+    params += f" --test-suite {beku_test_suite}" if "--test-suite" not in override_params else ""
+    params += f" --operator {operator.replace('-operator','')}={operator_version}" if "--operator" not in override_params else ""
+    params += f" --parallel {parallel}" if "--parallel" not in override_params else ""
+
+    command = f"(cd {operator}/ && python ./scripts/run-tests {params} {override_params} 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}"
     log("Running the following test command:")
     log(command)
     os.system(command)
@@ -290,11 +307,9 @@ if __name__ == "__main__":
     sleep(60)
 
     log("Running tests...")
-    if(not beku_test_suite):
-        beku_test_suite = catalog['testsuites'][testsuite]['platforms'][platform]['beku-test-suite'] if 'beku-test-suite' in catalog['testsuites'][testsuite]['platforms'][platform] else 'nightly'
-    operator_name = catalog['testsuites'][testsuite]['operator-name']
-    test_params = catalog['testsuites'][testsuite]['test-params'] if 'test-params' in catalog['testsuites'][testsuite] else ''
-    test_exit_code = run_tests(testsuite, beku_test_suite, operator_name, operator_version, test_params)
+    beku_test_suite = catalog['testsuites'][testsuite]['platforms'][platform]['beku-test-suite'] if 'beku-test-suite' in catalog['testsuites'][testsuite]['platforms'][platform] else 'nightly'
+    parallel = catalog['testsuites'][testsuite]['parallel'] if 'parallel' in catalog['testsuites'][testsuite] else ''
+    test_exit_code = run_tests(testsuite, beku_test_suite, operator_version, parallel, override_beku_params)
     log(f"Test exited with code {test_exit_code}")
     log()
 
@@ -310,4 +325,3 @@ if __name__ == "__main__":
 
     # The test's exit code is the container's exit code
     exit(test_exit_code)
-
