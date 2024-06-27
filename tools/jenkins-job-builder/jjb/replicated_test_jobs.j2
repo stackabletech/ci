@@ -48,10 +48,6 @@
           description: Use this string to specify a list of params/options for the test script.
           trim: true
     wrappers:
-      - credentials-binding:
-          - text:
-              credential-id: REPLICATED_API_TOKEN
-              variable: REPLICATED_API_TOKEN
       - build-user-vars
     builders:
       - shell: 
