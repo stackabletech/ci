@@ -35,19 +35,21 @@
           selectedValue: NONE
           sortMode: ASCENDING_SMART
           defaultValue: origin/main
-      - extended-choice:
+      - choice:
           name: OPERATOR_VERSION
           description: Version of the operator (binary) this test should use
-          property-file: /var/jenkins_home/workspace/Available Versions/versions.properties
-          property-key: {{ testsuite }}
-          quote-value: false
-          visible-items: 10
-          defaultValue: 0.0.0-dev
+          choices:
+            - eins
+            - zwei
       - string:
           name: TEST_SCRIPT_PARAMS
           description: Use this string to specify a list of params/options for the test script.
           trim: true
     wrappers:
+      - credentials-binding:
+          - text:
+              credential-id: REPLICATED_API_TOKEN
+              variable: REPLICATED_API_TOKEN
       - build-user-vars
     builders:
       - shell: 
