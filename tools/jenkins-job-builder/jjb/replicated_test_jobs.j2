@@ -18,7 +18,7 @@
       - git:
           url: https://github.com/stackabletech/{{ testsuite }}.git
           branches:
-            - ${GIT_BRANCH_OR_TAG}
+            - ${GIT_BRANCH_OR_TAG|GIT_BRANCH_OR_TAG}
           browser: githubweb
           browser-url: https://github.com/stackabletech/{{ testsuite }}.git
           timeout: 20
