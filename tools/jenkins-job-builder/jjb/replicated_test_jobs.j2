@@ -55,8 +55,10 @@
       - build-user-vars
     builders:
       - shell: 
-          !include-raw-verbatim:
-            - replicated_test_job.sh
+          unstable-return: 255
+          command:
+            !include-raw-verbatim:
+              - replicated_test_job.sh
     publishers:
       - archive:
           artifacts: 'target/*'
