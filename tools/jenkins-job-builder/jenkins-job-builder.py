@@ -69,4 +69,4 @@ if __name__ == "__main__":
     with open("/jjb/replicated_tests.yaml", 'r') as f:
         print(f.read())
         f.close()
-#    execute_jjb()
+    execute_jjb()
