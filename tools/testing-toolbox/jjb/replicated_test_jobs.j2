@@ -44,8 +44,8 @@
           visible-items: 10
           defaultValue: 0.0.0-dev
       - string:
-          name: OVERRIDE_BEKU_PARAMS
-          description: Use this string to specify a list of params/options (test-suite, operator, ...)
+          name: TEST_SCRIPT_PARAMS
+          description: Use this string to specify a list of params/options for the test script.
           trim: true
     wrappers:
       - credentials-binding:
@@ -93,7 +93,7 @@
                 --env PLATFORM_VERSION=$PLATFORM_VERSION \
                 --env GIT_BRANCH=$GIT_BRANCH \
                 --env OPERATOR_VERSION=${OPERATOR_VERSION} \
-                --env OVERRIDE_BEKU_PARAMS=$OVERRIDE_BEKU_PARAMS \
+                --env TEST_SCRIPT_PARAMS=$TEST_SCRIPT_PARAMS \
                 docker.stackable.tech/replicated-testrunner
 
     publishers:

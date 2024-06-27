@@ -50,7 +50,6 @@ testsuites:
         node-count: 3
         instance-type: r1.xlarge
         disk-size: 200
-        beku-test-suite: openshift
       google: {}
       azure: {}
       aws: {}
@@ -61,23 +60,19 @@ testsuites:
     platforms:
       openshift:
         node-count: 4
-        beku-test-suite: openshift
       google: {}
       azure:
         node-count: 5
-        beku-test-suite: nightly
       aws: {}
   hbase-operator:
     title: HBase Operator
     slackchannels: "#notifications-jenkins"
     parallel: 1
     platforms:
-      openshift:
-        beku-test-suite: openshift
+      openshift: {}
       google: {}
       azure:
         node-count: 5
-        beku-test-suite: nightly
       aws: {}
   hello-world-operator:
     title: Hello World Operator
@@ -85,7 +80,6 @@ testsuites:
     parallel: 1
     platforms:
       openshift:
-        beku-test-suite: openshift
         node-count: 1
       google:
         node-count: 1
@@ -98,20 +92,17 @@ testsuites:
     slackchannels: "#notifications-jenkins"
     parallel: 4
     platforms:
-      openshift:
-        beku-test-suite: openshift
+      openshift: {}
       google: {}
       azure:
         node-count: 5
-        beku-test-suite: nightly
       aws: {}
   hive-operator:
     title: Hive Operator
     slackchannels: "#notifications-jenkins"
     parallel: 4
     platforms:
-      openshift:
-        beku-test-suite: openshift
+      openshift: {}
       google: {}
       azure: {}
       aws: {}
@@ -120,8 +111,7 @@ testsuites:
     slackchannels: "#notifications-jenkins"
     parallel: 4
     platforms:
-      openshift:
-        beku-test-suite: openshift
+      openshift: {}
       google: {}
       azure: {}
       aws: {}
@@ -132,7 +122,6 @@ testsuites:
     platforms:
       openshift:
         node-count: 1
-        beku-test-suite: openshift
       google:
         node-count: 1
       azure:
@@ -144,8 +133,7 @@ testsuites:
     slackchannels: "#notifications-jenkins"
     parallel: 4
     platforms:
-      openshift:
-        beku-test-suite: openshift
+      openshift: {}
       google: {}
       azure: {}
       aws: {}
@@ -154,8 +142,7 @@ testsuites:
     slackchannels: "#notifications-jenkins"
     parallel: 4
     platforms:
-      openshift:
-        beku-test-suite: openshift
+      openshift: {}
       google: {}
       azure: {}
       aws: {}
@@ -164,8 +151,7 @@ testsuites:
     slackchannels: "#notifications-jenkins"
     parallel: 4
     platforms:
-      openshift:
-        beku-test-suite: openshift
+      openshift: {}
       google: {}
       azure:
         instance-type: Standard_DS4_v2
@@ -175,8 +161,7 @@ testsuites:
     slackchannels: "#notifications-jenkins"
     parallel: 4
     platforms:
-      openshift:
-        beku-test-suite: openshift
+      openshift: {}
       google: {}
       azure: {}
       aws: {}
@@ -185,8 +170,7 @@ testsuites:
     slackchannels: "#notifications-jenkins"
     parallel: 4
     platforms:
-      openshift:
-        beku-test-suite: openshift
+      openshift: {}
       google: {}
       azure: {}
       aws: {}
@@ -195,8 +179,7 @@ testsuites:
     slackchannels: "#notifications-jenkins"
     parallel: 4
     platforms:
-      openshift:
-        beku-test-suite: openshift
+      openshift: {}
       google: {}
       azure: {}
       aws: {}
@@ -205,8 +188,7 @@ testsuites:
     slackchannels: "#notifications-jenkins"
     parallel: 4
     platforms:
-      openshift:
-        beku-test-suite: openshift
+      openshift: {}
       google: {}
       azure: {}
       aws: {}
