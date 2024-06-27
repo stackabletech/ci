@@ -20,7 +20,22 @@ export PLATFORM=`echo $TEST_PLATFORM | cut -d '<' -f 2 | cut -d '|' -f 1`
 export PLATFORM_VERSION=`echo $TEST_PLATFORM | cut -d '<' -f 2 | cut -d '|' -f 2 | cut -d '>' -f 1`
 export GIT_BRANCH=`echo $GIT_BRANCH_OR_TAG | sed s#origin/##g`
 
+# Read the name of the operator from the Jenkins job name
+export OPERATOR_NAME=`echo $JOB_NAME | sed s#-it-replicated##`
+
 # This string can be parsed by the description-setter publisher
 echo "build_run_label::#${PLATFORM} | ${PLATFORM_VERSION} | ${BUILD_USER}#"
 
-env
+# Run testdriver
+mkdir -p target/
+docker run --rm \
+    --volume "$HOST_WORKSPACE/target/:/target/" \
+    --env UID_GID=1000:1000 \
+    --env REPLICATED_API_TOKEN=$REPLICATED_API_TOKEN \
+    --env TESTSUITE=$OPERATOR_NAME \
+    --env PLATFORM=$PLATFORM \
+    --env PLATFORM_VERSION=$PLATFORM_VERSION \
+    --env GIT_BRANCH=$GIT_BRANCH \
+    --env OPERATOR_VERSION=$OPERATOR_VERSION \
+    --env TEST_SCRIPT_PARAMS="$TEST_SCRIPT_PARAMS" \
+    docker.stackable.tech/replicated-testrunner
