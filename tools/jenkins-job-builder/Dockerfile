@@ -22,4 +22,6 @@ COPY catalog/ /catalog/
 # copy main Python script
 COPY *.py /
 
+ENV GIT_BRANCH_OR_TAG=hurz
+
 ENTRYPOINT [ "python", "/jenkins-job-builder.py" ]
