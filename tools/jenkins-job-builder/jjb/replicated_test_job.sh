@@ -34,5 +34,5 @@ docker run --rm \
     --env PLATFORM_VERSION=$PLATFORM_VERSION \
     --env GIT_BRANCH=$GIT_BRANCH \
     --env OPERATOR_VERSION=${OPERATOR_VERSION} \
-    --env TEST_SCRIPT_PARAMS=$TEST_SCRIPT_PARAMS \
+    --env TEST_SCRIPT_PARAMS="$TEST_SCRIPT_PARAMS" \
     docker.stackable.tech/replicated-testrunner

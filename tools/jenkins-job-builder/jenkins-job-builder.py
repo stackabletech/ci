@@ -65,8 +65,4 @@ if __name__ == "__main__":
     read_templates()
     generate_jjb_config()
     generate_replicated_tests_jobs_definitions(operator_versions)
-######################### output wegmachen    
-    with open("/jjb/replicated_tests.yaml", 'r') as f:
-        print(f.read())
-        f.close()
     execute_jjb()
