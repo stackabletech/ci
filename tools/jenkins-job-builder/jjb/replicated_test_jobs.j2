@@ -38,9 +38,8 @@
       - choice:
           name: OPERATOR_VERSION
           description: Version of the operator (binary) this test should use
-          choices:
-            - eins
-            - zwei
+          choices:{% for version in operator_versions[testsuite] %}
+            - {{ version }}{% endfor %}
       - string:
           name: TEST_SCRIPT_PARAMS
           description: Use this string to specify a list of params/options for the test script.

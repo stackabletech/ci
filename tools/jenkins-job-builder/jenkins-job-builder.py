@@ -42,9 +42,9 @@ def generate_jjb_config():
         f.close()
 
 
-def generate_replicated_tests_jobs_definitions():
+def generate_replicated_tests_jobs_definitions(operator_versions):
     with open ("/jjb/replicated_tests.yaml", 'w') as f:
-       f.write(replicated_jobs_template.render(catalog_replicated))
+       f.write(replicated_jobs_template.render({ 'testsuites': catalog_replicated['testsuites'], 'operator_versions': operator_versions }))
        f.close()
 
 
@@ -64,8 +64,9 @@ if __name__ == "__main__":
     read_catalogs()
     read_templates()
     generate_jjb_config()
-    generate_replicated_tests_jobs_definitions()
+    generate_replicated_tests_jobs_definitions(operator_versions)
+######################### output wegmachen    
     with open("/jjb/replicated_tests.yaml", 'r') as f:
         print(f.read())
         f.close()
-    execute_jjb()
+#    execute_jjb()
