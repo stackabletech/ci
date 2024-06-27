@@ -23,3 +23,4 @@ export GIT_BRANCH=`echo $GIT_BRANCH_OR_TAG | sed s#origin/##g`
 # This string can be parsed by the description-setter publisher
 echo "build_run_label::#${PLATFORM} | ${PLATFORM_VERSION} | ${BUILD_USER}#"
 
+env
