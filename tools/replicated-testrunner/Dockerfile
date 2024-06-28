@@ -34,6 +34,21 @@ RUN wget -O /tmp/kubectl-kuttl https://github.com/kudobuilder/kuttl/releases/dow
 RUN install -o root -g root -m 0755 /tmp/kubectl-kuttl /usr/local/bin/kubectl-kuttl
 RUN rm /tmp/kubectl-kuttl
 
+# Install tools used by tests
+
+# Mike Farah's yq
+RUN curl --fail -L https://github.com/mikefarah/yq/releases/download/v4.44.2/yq_linux_amd64.tar.gz | tar -C /tmp -xzf - && \
+  mv /tmp/yq_linux_amd64 /usr/local/bin/yq && \
+  chmod +x /usr/local/bin/yq
+
+# - gettext-base provides envsubst
+RUN apt update && \
+    apt install -y \
+       jq \
+       gettext-base && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # copy main Python script
 COPY *.py /
 
