@@ -43,7 +43,7 @@ platforms:
 testsuites:
   airflow-operator:
     title: Airflow Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 4
     platforms:
       openshift:
@@ -55,7 +55,7 @@ testsuites:
       aws: {}
   druid-operator:
     title: Druid Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 2
     platforms:
       openshift:
@@ -66,7 +66,7 @@ testsuites:
       aws: {}
   hbase-operator:
     title: HBase Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 1
     platforms:
       openshift: {}
@@ -76,7 +76,7 @@ testsuites:
       aws: {}
   hello-world-operator:
     title: Hello World Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 1
     platforms:
       openshift:
@@ -89,7 +89,7 @@ testsuites:
         node-count: 1
   hdfs-operator:
     title: HDFS Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 4
     platforms:
       openshift: {}
@@ -99,7 +99,7 @@ testsuites:
       aws: {}
   hive-operator:
     title: Hive Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 4
     platforms:
       openshift: {}
@@ -108,7 +108,7 @@ testsuites:
       aws: {}
   kafka-operator:
     title: Kafka Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 4
     platforms:
       openshift: {}
@@ -117,7 +117,7 @@ testsuites:
       aws: {}
   listener-operator:
     title: Listener Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 4
     platforms:
       openshift:
@@ -130,7 +130,7 @@ testsuites:
         node-count: 1
   nifi-operator:
     title: NiFi Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 4
     platforms:
       openshift: {}
@@ -139,7 +139,7 @@ testsuites:
       aws: {}
   opa-operator:
     title: OPA Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 4
     platforms:
       openshift: {}
@@ -148,7 +148,7 @@ testsuites:
       aws: {}
   secret-operator:
     title: Secret Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 4
     platforms:
       openshift: {}
@@ -158,7 +158,7 @@ testsuites:
       aws: {}
   spark-k8s-operator:
     title: Spark Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 4
     platforms:
       openshift: {}
@@ -167,7 +167,7 @@ testsuites:
       aws: {}
   superset-operator:
     title: Superset Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 4
     platforms:
       openshift: {}
@@ -176,7 +176,7 @@ testsuites:
       aws: {}
   trino-operator:
     title: Trino Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 4
     platforms:
       openshift: {}
@@ -185,7 +185,7 @@ testsuites:
       aws: {}
   zookeeper-operator:
     title: ZooKeeper Operator
-    slackchannels: "#notifications-jenkins"
+    slackchannels: "U02G2BBMZHR"
     parallel: 4
     platforms:
       openshift: {}
