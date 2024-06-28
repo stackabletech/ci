@@ -9,7 +9,7 @@ pipeline {
 
         stage('Log variables') {
             steps {
-                withCredentials([usernamePassword(credentialsId: '0823eb96-a01c-4e41-931d-c825d9065989', passwordVariable: 'JENKINS_BOT_PASSWORD', usernameVariable: 'JENKINS_BOT_USERNAME')]) {
+                withCredentials([usernamePassword(credentialsId: 'JENKINS_BOT_CREDENTIALS', passwordVariable: 'JENKINS_BOT_PASSWORD', usernameVariable: 'JENKINS_BOT_USERNAME')]) {
                     sh '''
                         mkdir -p tools/jenkins-job-builder/catalog/
                         cp catalog/*.yaml tools/jenkins-job-builder/catalog/
