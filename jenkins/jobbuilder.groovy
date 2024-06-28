@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    triggers {
+        cron('H/5 * * * *')
+    }
     options {
         ansiColor('xterm')
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
