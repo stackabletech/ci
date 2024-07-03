@@ -1,0 +1,126 @@
+---
+k8s_versions:
+  - "1.29.5"
+  - "1.28.10"
+  - "1.27.14"
+testsuites:
+  airflow-operator:
+    title: Airflow Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 4
+    location: de/txl
+    cores: 4
+    node-count: 5
+    ram: 16384
+  druid-operator:
+    title: Druid Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 2
+    location: de/txl
+    cores: 4
+    node-count: 5
+    ram: 16384
+  hbase-operator:
+    title: HBase Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 1
+    location: de/txl
+    cores: 4
+    node-count: 3
+    ram: 32768
+  hello-world-operator:
+    title: Hello World Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 1
+    location: de/txl
+    cores: 4
+    node-count: 1
+    ram: 8192
+  hdfs-operator:
+    title: HDFS Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 4
+    location: de/txl
+    cores: 4
+    node-count: 3
+    ram: 32768
+  hive-operator:
+    title: Hive Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 4
+    location: de/txl
+    cores: 4
+    node-count: 5
+    ram: 8192
+  kafka-operator:
+    title: Kafka Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 4
+    location: de/txl
+    cores: 4
+    node-count: 6
+    ram: 16384
+  listener-operator:
+    title: Listener Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 4
+    location: de/txl
+    cores: 4
+    node-count: 3
+    ram: 16384
+  nifi-operator:
+    title: NiFi Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 4
+    location: de/txl
+    cores: 4
+    node-count: 5
+    ram: 16384
+  opa-operator:
+    title: OPA Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 4
+    location: de/txl
+    cores: 4
+    node-count: 5
+    ram: 16384
+  secret-operator:
+    title: Secret Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 4
+    location: de/txl
+    cores: 4
+    node-count: 3
+    ram: 16384
+  spark-k8s-operator:
+    title: Spark Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 4
+    location: de/txl
+    cores: 4
+    node-count: 8
+    ram: 16384
+  superset-operator:
+    title: Superset Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 4
+    location: de/txl
+    cores: 4
+    node-count: 5
+    ram: 16384
+  trino-operator:
+    title: Trino Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 4
+    location: de/txl
+    cores: 4
+    node-count: 3
+    ram: 16384
+  zookeeper-operator:
+    title: ZooKeeper Operator
+    slackchannels: "#notifications-jenkins"
+    parallel: 4
+    location: de/txl
+    cores: 4
+    node-count: 8
+    ram: 8192
