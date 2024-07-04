@@ -20,7 +20,7 @@ pipeline {
                         docker build tools/jenkins-job-builder/ -t docker.stackable.tech/jenkins-job-builder:latest
 
                         docker run --rm \
-                            --env JENKINS_URL=https://ci-dev.stackable.tech \
+                            --env JENKINS_URL=https://testing.stackable.tech \
                             --env JENKINS_USERNAME=$JENKINS_BOT_USERNAME \
                             --env JENKINS_PASSWORD=$JENKINS_BOT_PASSWORD \
                             docker.stackable.tech/jenkins-job-builder:latest
