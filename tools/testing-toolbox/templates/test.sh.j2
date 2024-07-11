@@ -1,6 +1,8 @@
 #!/bin/bash
-# wait a minute for cluster to be REALLY ready
-sleep 60
+
+# Wait for the cluster to be ready
+kubectl wait --for=condition=Ready nodes --all --timeout=10m
+kubectl wait --for=condition=Ready pods --namespace kube-system --all --timeout=10m
 
 # Install tool for test suite expansion
 pip install beku-stackabletech
@@ -19,14 +21,26 @@ git clone https://github.com/stackabletech/{{ testsuite.git_repo }}.git
 {% for helm_repo in testsuite.helm_repos %}helm repo add {{ helm_repo.id }} {{ helm_repo.url }}
 {% endfor %}
 
+cd {{ testsuite.git_repo }}
+
+# Install the Stackable Data Platform release
+retry --delay=60 --times=10 \
+    /bin/bash -c "printf '[%(%F %T)T] Trying to install the operators ...\n'; python scripts/run-tests --skip-tests {{ test_params }}"
+exit_code=$?
+if [ $exit_code -ne 0 ]; then
+    printf '[%(%F %T)T] Installation of the operators failed.\n'
+    exit 1
+else
+    printf '[%(%F %T)T] Operators successfully installed.\n'
+fi
 
 # Tests want to know where to pipe their logs to
 export VECTOR_AGGREGATOR=vector-aggregator.t2-cluster-logging.svc.cluster.local:6000
 
 {% if beku_suite %}
-(cd {{ testsuite.git_repo }}/ && python ./scripts/run-tests --log-level debug --test-suite {{ beku_suite }} {{ test_params }})
+python scripts/run-tests --log-level debug --skip-release --test-suite {{ beku_suite }} {{ test_params }}
 {% else %}
-(cd {{ testsuite.git_repo }}/ && python ./scripts/run-tests --log-level debug {{ test_params }})
+python scripts/run-tests --log-level debug --skip-release {{ test_params }}
 {% endif %}
 
 exit_code=$?

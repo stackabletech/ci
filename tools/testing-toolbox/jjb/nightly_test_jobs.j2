@@ -29,7 +29,7 @@
               variable: T2_TOKEN
       - build-user-vars
     triggers:
-      - timed: "H {{ testsuite.nightly_test.hour }} * * 2-6"
+      - timed: "H {{ testsuite.nightly_test.hour }} * * 0"
     builders:
       - shell: 
           unstable-return: 255
