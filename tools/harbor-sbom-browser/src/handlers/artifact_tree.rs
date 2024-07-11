@@ -230,7 +230,7 @@ pub async fn process_artifacts(
             let mut release_version = release_artifact.1.clone();
             let matches_architecture_regex = &release_artifact.2.is_some();
 
-            let is_multi_arch = release_version.contains("-dev") && !repository_name.contains("-operator");
+            let is_multi_arch = release_version != "24.3.0";
             if is_multi_arch && !matches_architecture_regex {
                 continue;
             }
