@@ -124,7 +124,7 @@ pub async fn render_as_html(
             html.push_str(&format!("<li>{}<ul>", repository));
             for artifact in artifacts {
                 html.push_str(&format!(
-                    "<li class='artifact'><a href='/sbom/{}/{}'>{}</a></li>",
+                    "<li class='artifact'><a rel='nofollow' href='/sbom/{}/{}'>{}</a></li>",
                     repository, artifact.digest, artifact.name
                 ));
             }
