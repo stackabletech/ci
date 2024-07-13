@@ -106,12 +106,12 @@ def execute_jjb():
         Executes the Jenkins Job Builder
     """
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/custom_tests.yaml")
-    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/docs_tests.yaml")
+    # os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/docs_tests.yaml")
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/nightly_tests.yaml")
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/nightly_tests_summary.yaml")
-    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/self_service_tests.yaml")
-    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/delete_cluster_self_service.yaml")
-    os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/update_deletable_self_service_clusters.yaml")
+    # os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/self_service_tests.yaml")
+    # os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/delete_cluster_self_service.yaml")
+    # os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/update_deletable_self_service_clusters.yaml")
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/replicated_tests.yaml")
     
 
