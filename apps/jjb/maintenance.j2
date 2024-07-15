@@ -6,7 +6,7 @@
     description: ''
     disabled: false
     display-name: 'Docker system prune (nightly)' 
-    concurrent: true
+    concurrent: false
     quiet-period: 5
     logrotate:
       daysToKeep: -1
@@ -19,3 +19,50 @@
       - shell: 
           command: |
             docker system prune -f
+- job:
+    name: maintenance-monitor-oci-artifacts
+    project-type: freestyle
+    defaults: global
+    description: ''
+    disabled: false
+    display-name: 'Monitor OCI Artifacts (daily)' 
+    concurrent: false
+    quiet-period: 5
+    logrotate:
+      daysToKeep: -1
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    scm:
+      - git:
+          url: https://github.com/stackabletech/ci.git
+          branches:
+            - origin/feature/testing-stackable-tech
+          browser: githubweb
+          browser-url: https://github.com/stackabletech/ci.git
+          timeout: 20
+    triggers:
+      - timed: "H 7 * * *"
+    builders:
+      - shell: 
+          command: |
+            cd tools/monitor-oci-artifacts/
+            docker build . -t docker.stackable.tech/tools/monitor-oci-artifacts:latest
+            cd ../../
+
+            set +x
+            set +e
+
+            docker run --rm docker.stackable.tech/tools/monitor-oci-artifacts:latest > report.txt
+            report_exit_code=$?
+
+            exit $report_exit_code
+    publishers:
+      - archive:
+          artifacts: 'report.txt'
+          allow-empty: true
+      - slack:
+          room: '#team-cloud'
+          notify-unstable: True
+          notify-every-failure: True
+          notify-back-to-normal: True
