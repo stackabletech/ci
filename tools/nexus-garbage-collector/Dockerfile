@@ -6,11 +6,8 @@ ARG VERSION
 ARG RELEASE="1"
 
 # Update image
-RUN microdnf install -y yum \
-    && yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical \
-    && yum clean all \
-    && microdnf clean all
+RUN microdnf update && microdnf clean all
 
-COPY --from=builder /app/harbor-garbage-collector  /
+COPY --from=builder /app/nexus-garbage-collector  /
 
-ENTRYPOINT ["/harbor-garbage-collector"]
+ENTRYPOINT ["/nexus-garbage-collector"]

@@ -1,4 +1,4 @@
-use std::process::exit;
+use std::{env, process::exit};
 
 use log::{debug, error, info};
 use regex::Regex;
@@ -41,6 +41,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut attestations = Vec::<(String, String)>::new();
     let mut normal_artifacts = Vec::<String>::new();
 
+    let nexus_user = env::var("NEXUS_USER").unwrap();
+    let nexus_password = env::var("NEXUS_PASSWORD").unwrap();
+
     loop {
         // Loop over all repositories, paged
         let mut url = base_url.clone();
@@ -50,7 +53,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         let resp: AssetResponse = client
             .get(&url)
-            .basic_auth("lukas.voetmand", Some("t2jLFstgm3ikGjdPZwT9xy5DnHLhcTM3"))
+            .basic_auth(&nexus_user, Some(&nexus_password))
             .send()
             .await?
             .json()
@@ -97,7 +100,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     "https://{}/service/rest/v1/assets/{}",
                     registry_hostname, signature.0
                 ))
-                .basic_auth("lukas.voetmand", Some("t2jLFstgm3ikGjdPZwT9xy5DnHLhcTM3"))
+                .basic_auth(&nexus_user, Some(&nexus_password))
                 .send()
                 .await?
                 .status();
@@ -124,7 +127,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     "https://{}/service/rest/v1/assets/{}",
                     registry_hostname, attestation.0
                 ))
-                .basic_auth("lukas.voetmand", Some("t2jLFstgm3ikGjdPZwT9xy5DnHLhcTM3"))
+                .basic_auth(&nexus_user, Some(&nexus_password))
                 .send()
                 .await?
                 .status();
