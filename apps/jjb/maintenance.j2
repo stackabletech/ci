@@ -118,3 +118,60 @@
           notify-unstable: True
           notify-every-failure: True
           notify-back-to-normal: True
+- job:
+    name: maintenance-nexus-garbage-collection
+    project-type: freestyle
+    defaults: global
+    description: ''
+    disabled: false
+    display-name: 'Nexus Garbage Collection (daily)' 
+    concurrent: false
+    quiet-period: 5
+    logrotate:
+      daysToKeep: -1
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    scm:
+      - git:
+          url: https://github.com/stackabletech/ci.git
+          branches:
+            - origin/feature/testing-stackable-tech
+          browser: githubweb
+          browser-url: https://github.com/stackabletech/ci.git
+          timeout: 20
+    triggers:
+      - timed: "H 7 * * *"
+    wrappers:
+      - credentials-binding:
+        - username-password-separated:
+            credential-id: NEXUS_USER
+            username: NEXUS_USER
+            password: NEXUS_PASSWORD
+    builders:
+      - shell: 
+          command: |
+            cd tools/nexus-garbage-collector/
+            docker build . -t docker.stackable.tech/tools/nexus-garbage-collector:latest
+            cd ../../
+
+            set +x
+            set +e
+
+            docker run --rm \
+              -e NEXUS_USER=$NEXUS_USER \
+              -e NEXUS_PASSWORD=$NEXUS_PASSWORD \
+              -e RUST_LOG=info \
+              docker.stackable.tech/tools/nexus-garbage-collector:latest > report.txt
+            report_exit_code=$?
+
+            exit $report_exit_code
+    publishers:
+      - archive:
+          artifacts: 'report.txt'
+          allow-empty: true
+      - slack:
+          room: '#team-cloud'
+          notify-unstable: True
+          notify-every-failure: True
+          notify-back-to-normal: True
