@@ -1,3 +1,8 @@
+"""
+    Main module of the Jenkins Job builder application
+
+    See https://jenkins-job-builder.readthedocs.io/en/latest/
+"""
 import os
 from jinja2 import Template
 from subprocess import PIPE, Popen
@@ -5,26 +10,31 @@ import json
 
 import modules.catalog as catalog
 
+# values of the params (given as env vars during Docker run)
 param_jenkins_url = None
 param_jenkins_username = None
 param_jenkins_password = None
 
+# keys for the env vars
 PARAM_KEY_JENKINS_URL = 'JENKINS_URL'
 PARAM_KEY_JENKINS_USERNAME = 'JENKINS_USERNAME'
 PARAM_KEY_JENKINS_PASSWORD = 'JENKINS_PASSWORD'
 
 SLACK_CHANNEL = '#team-testing'
-
 CLUSTER_LOGGING_ENDPOINT = 'https://search.t2.stackable.tech'
 OPENSEARCH_DASHBOARDS_URL = 'https://logs.t2.stackable.tech'
 
 def get_platform_metadata():
+    """
+        Creates a dict containing display name and version list for a given platform.
+    """
     return { p['id']: { 'name': p['name'], 'versions': [ v for v in p['versions']] } for p in catalog.platforms }
-
 
 def init():
     """
         Initializes this app, checks if all params are provided as environment variables.
+
+        Returns True if initialization succeeded, False otherwise.
     """
     global param_jenkins_url
     global param_jenkins_username
@@ -48,24 +58,30 @@ def init():
 
     return True
 
-
 def generate_jjb_config():
+    """
+        Creates the config file for the JJB util using Jinja templating.
+    """
     with open("/jjb/jjb.conf.j2", "r") as t:
         template = Template(t.read())
         with open("/jjb/jjb.conf", "w") as f:
             f.write(template.render(os.environ))
             f.close()
 
-
 def generate_jjb_file_maintenance_jobs():
+    """
+        Creates the JJB job definition file defining the maintenance jobs using Jinja templating.
+    """
     with open("/jjb/maintenance.j2", "r") as t:
         template = Template(t.read())
         with open("/jjb/maintenance.yaml", "w") as f:
             f.write(template.render(os.environ))
             f.close()
 
-
 def generate_jjb_file_operator_weekly_test_jobs(platform_metadata):
+    """
+        Creates the JJB job definition files defining the weekly operator test jobs using Jinja templating.
+    """
     with open("/jjb/trigger-weekly-tests.groovy.j2", "r") as t:
         template = Template(t.read())
         with open("/jjb/trigger-weekly-tests.groovy", "w") as f:
@@ -79,6 +95,9 @@ def generate_jjb_file_operator_weekly_test_jobs(platform_metadata):
 
 
 def generate_jjb_file_operator_custom_test_jobs(platform_metadata, operator_versions):
+    """
+        Creates the JJB job definition file defining the custom operator test jobs using Jinja templating.
+    """
     with open("/jjb/operator_custom_tests.j2", "r") as t:
         template = Template(t.read())
         with open("/jjb/operator_custom_tests.yaml", "w") as f:
@@ -87,6 +106,9 @@ def generate_jjb_file_operator_custom_test_jobs(platform_metadata, operator_vers
 
 
 def execute_jjb():
+    """
+        Executes JJB for all job definition files
+    """
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/maintenance.yaml")
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/operator_weekly_tests.yaml")
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/operator_custom_tests.yaml")

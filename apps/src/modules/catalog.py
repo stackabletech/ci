@@ -1,20 +1,20 @@
-# import sys
-# import os
-# import os.path
+"""
+    This module enables access to the catalog
+"""
+
 import hiyapyco
-# from jinja2 import Template
 
-# platform_name = None
-# k8s_version = None
-# metadata_annotations = {}
-
-# catalog_platforms = None
-
+# variables holding the catalog data
 providers = []
 platforms = []
 operator_tests = []
 
 def read_providers(logger):
+    """
+        Reads the list of cluster providers from platforms.yaml
+
+        logger              logger (String-consuming function)
+    """
     global providers
     platforms_yaml = hiyapyco.load("/platforms.yaml")
     if not 'providers' in platforms_yaml:
@@ -24,10 +24,15 @@ def read_providers(logger):
     if len(providers) == 0:
         logger('platforms.yaml does not contain providers.')
         return False
-    # TODO More checks to make sure the catalog file is usable
+    # TODO More syntax checks to make sure the catalog file is usable
     return True
 
 def read_platforms(logger):
+    """
+        Reads the list of cluster platforms from platforms.yaml
+
+        logger              logger (String-consuming function)
+    """
     global platforms
     platforms = hiyapyco.load("/platforms.yaml")['platforms']
     platforms_yaml = hiyapyco.load("/platforms.yaml")
@@ -38,21 +43,29 @@ def read_platforms(logger):
     if len(platforms) == 0:
         logger('platforms.yaml does not contain platforms.')
         return False
-    # TODO More checks to make sure the catalog file is usable
+    # TODO More syntax checks to make sure the catalog file is usable
     return True
 
-
 def read_operator_tests(logger):
+    """
+        Reads the list of operator test definitions from operator-tests.yaml
+
+        logger              logger (String-consuming function)
+    """
     global operator_tests
     operator_tests = hiyapyco.load("/operator-tests.yaml")
     if len(operator_tests) == 0:
         logger('operator-tests.yaml does not contain any tests.')
         return False
-    # TODO More checks to make sure the catalog file is usable
+    # TODO More syntax checks to make sure the catalog file is usable
     return True
 
-
 def read_catalog(logger):
+    """
+        Read all catalogs
+
+        logger              logger (String-consuming function)
+    """
     if not read_providers(logger):
         return False
     if not read_platforms(logger):
@@ -64,13 +77,18 @@ def read_catalog(logger):
     logger(f"Read {len(operator_tests)} operator tests: [{','.join([ot['id'] for ot in operator_tests])}]")
     return True
 
-
 def get_platform(platform):
+    """
+        Get the platform matching the platform string.
+        If the platform string matches an ID, that platform is chosen.
+        Otherwise, we search for a matching name attribute.
+
+        platform        string which identifies a platform
+    """
     matching_platform = next(filter(lambda p: p['id']==platform, platforms), None)
     if not matching_platform:
         matching_platform = next(filter(lambda p: p['name']==platform, platforms), None)
     return matching_platform
-
 
 def get_spec_for_operator_test(operator_test, platform, logger):
     """

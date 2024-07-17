@@ -1,3 +1,6 @@
+"""
+    Main module of the Operator Test Runner application
+"""
 import sys
 import os
 from datetime import datetime, timedelta, UTC
@@ -10,6 +13,7 @@ from modules.cluster import create_cluster, terminate_cluster
 from modules.command import run_command
 from modules.cluster_logging import install_cluster_logging
 
+# values of the params (given as env vars during Docker run)
 param_output_file_user = '0:0'
 param_platform = None
 param_platform_version = None
@@ -21,6 +25,7 @@ param_cluster_logging_username = None
 param_cluster_logging_password = None
 param_opensearch_dashboards_url = None
 
+# keys for the env vars
 PARAM_KEY_PLATFORM = 'PLATFORM'
 PARAM_KEY_PLATFORM_VERSION = 'PLATFORM_VERSION'
 PARAM_KEY_OPERATOR = 'OPERATOR'
@@ -36,10 +41,11 @@ PARAM_KEY_CLUSTER_LOGGING_USERNAME = 'CLUSTER_LOGGING_USERNAME'
 PARAM_KEY_CLUSTER_LOGGING_PASSWORD = 'CLUSTER_LOGGING_PASSWORD'
 PARAM_KEY_OPENSEARCH_DASHBOARDS_URL = 'OPENSEARCH_DASHBOARDS_URL'
 
+# by convention, this is the return code for "unstable cluster"
 EXIT_CODE_CLUSTER_FAILED = 255
 
+# constants for the file handling
 TARGET_FOLDER = "/target/"
-
 TESTDRIVER_LOGFILE = f"{TARGET_FOLDER}testdriver.log"
 TEST_OUTPUT_LOGFILE = f"{TARGET_FOLDER}test-output.log"
 CLUSTER_INFO_FILE = f"{TARGET_FOLDER}cluster-info.txt"
@@ -48,6 +54,8 @@ LOG_INDEX_LINKS_FILE = f"{TARGET_FOLDER}logs.html"
 def init():
     """
         Initializes this app, checks if all params are provided as environment variables.
+
+        Returns True if initialization succeeded, False otherwise.
     """
     global param_platform
     global param_platform_version
@@ -127,13 +135,13 @@ def init():
 
     return True
 
-
 def set_target_folder_owner():
     """
-        The target folder must be owned by the user/group given as UID_GID.
+        As the Docker container is run with the root user (0:0), the files it produces will not be manageable by the Jenkins user.
+        That's why a UID/GID combo is to be specified as the OUTPUT_FILE_USER env var.
+        This method recursively sets the ownership of the output files.
     """
     os.system(f"chown -R {param_output_file_user} {TARGET_FOLDER}")
-
 
 def log(msg=""):
     """ 
@@ -146,8 +154,10 @@ def log(msg=""):
     f.write(f"{msg}\n")
     f.close()    
 
-
 def clone_git_repo(repo):
+    """
+        Clones the given Stackable GitHub repo
+    """
     git_branch_option = f"-b { param_git_branch }" if param_git_branch else ""
     exit_code, output = run_command(f"git clone {git_branch_option} https://github.com/stackabletech/{repo}.git", 'git clone')
     if exit_code != 0:
@@ -155,7 +165,6 @@ def clone_git_repo(repo):
             log(line)
         return False
     return True
-
 
 def run_tests(operator, operator_version, test_script_params):
     """ 
@@ -187,8 +196,11 @@ def run_tests(operator, operator_version, test_script_params):
     with open ("/test_exit_code", "r") as f:
         return int(f.read().strip())
 
-
 def write_logs_html(cluster_id, timestamp_start, timestamp_stop, opensearch_dashboards_url):
+    """
+        The output file 'logs.html' contains links to the OpenSearch Dashboards application which
+        are prepared to filter the matching cluster id and timeframe.
+    """
 
     date_from = (timestamp_start - timedelta(hours=0, minutes=5)).strftime("%Y-%m-%dT%H:%M:00Z")
     date_to = (timestamp_stop + timedelta(hours=0, minutes=5)).strftime("%Y-%m-%dT%H:%M:00Z")
@@ -221,30 +233,29 @@ if __name__ == "__main__":
         log("Error reading catalog, operator-test-runner is aborted.")
         exit(EXIT_CODE_CLUSTER_FAILED)
 
+    # Read the platform and version data from the catalog
     platform = catalog.get_platform(param_platform)
-
     if not platform:
         log(f"The platform '{param_platform}' does not exist.")
         exit(EXIT_CODE_CLUSTER_FAILED)
-
     if not param_platform_version in platform['versions']:
         log(f"The version '{param_platform_version}' does not exist for platform '{param_platform}'.")
         exit(EXIT_CODE_CLUSTER_FAILED)
-
     log(f"Test running on platform '{platform['id']}', version {param_platform_version}.")
 
+    # Read the cluster spec for the given platform
     cluster_spec = catalog.get_spec_for_operator_test(param_operator, platform['id'], log)
-
     if not cluster_spec:
         log("Cluster spec could not be determined.")
         exit(EXIT_CODE_CLUSTER_FAILED)
 
     log(f"Test running on Git Branch {param_git_branch} with the test script parameters '{param_test_script_params}'...")
 
+    # random cluster ID
     cluster_id = uuid.uuid4().hex
 
+    log("Creating cluster...")
     cluster = create_cluster(platform['provider'], cluster_id, cluster_spec, param_platform_version, CLUSTER_INFO_FILE, log)
-    
     if not cluster:
         log("Cluster could not be created.")
         exit(EXIT_CODE_CLUSTER_FAILED)
@@ -252,7 +263,7 @@ if __name__ == "__main__":
     log("Cloning git repo...")
     clone_git_repo(param_operator)
 
-    log("Waiting 1 minute for the Cluster to become ready...")
+    log("Waiting 1 minute for the cluster to become ready...")
     sleep(60)
 
     log("Install Cluster Logging (powered by Vector)...")

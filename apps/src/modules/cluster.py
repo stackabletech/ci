@@ -1,3 +1,9 @@
+"""
+    This module is a facade to the cluster providers.
+
+    Currently, we offer clusters for replicated.com and IONOS.
+"""
+
 import modules.provider_ionos as ionos
 import modules.provider_replicated as replicated
 
@@ -21,10 +27,13 @@ def create_cluster(provider_id, id, spec, platform_version, cluster_info_file, l
     if 'ionos' == provider_id:
         return ionos.create_cluster(id, spec, platform_version, cluster_info_file, logger)
 
-
 def terminate_cluster(provider_id, cluster, logger):
     """
         Terminates the given cluster. (Blocking operation)
+
+        provider_id         ID of the cloud provider / vendor
+        cluster             vendor-specific cluster object which was previously returned by create_cluster()
+        logger              logger (String-consuming function)
     """
     if 'replicated' == provider_id:
         return replicated.terminate_cluster(cluster, logger)

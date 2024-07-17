@@ -1,3 +1,11 @@
+"""
+    This module installs the "cluster logging" on a test cluster.
+
+    "cluster logging" refers to the ability of a cluster to forward the logs
+    (K8s Events, Stackable Operator, Stackable Products) to our centralized
+    log index.
+"""
+
 from modules.command import run_command
 
 def install_cluster_logging(cluster_id, endpoint, username, password, logger):
@@ -54,4 +62,3 @@ def install_cluster_logging(cluster_id, endpoint, username, password, logger):
         return False
 
     return True
-    
