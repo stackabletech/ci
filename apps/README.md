@@ -17,7 +17,7 @@ The code is documented inline, here's the project structure:
 * [jjb/](jjb/) contains the templates for the jobs for the **Jenkins Job Builder** app.
 * [src/](src/) contains the Python sources.
 * [src/modules/](src/modules/) contains the common Python modules of this project
-* [jenkins-job-builer.py](src/jenkins-job-builder.py) is the main program of the **Jenkins Job Builder** app.
+* [jenkins-job-builder.py](src/jenkins-job-builder.py) is the main program of the **Jenkins Job Builder** app.
 * [operator-test-runner.py](src/operator-test-runner.py) is the main program of the **Operator Test Runner** app.
 * [build.sh](build.sh) lets you build the Docker images locally.
 
