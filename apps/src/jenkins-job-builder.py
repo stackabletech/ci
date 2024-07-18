@@ -118,6 +118,7 @@ def read_helm_operator_versions():
     """
         Reads all available Stackable operator versions from our Helm repos
     """
+    os.system("helm repo update")
     command = "helm search repo --versions --devel | grep stackable | grep '\\-operator' | awk -F'/' '{print $2}' | sort | awk '{print $1\"/\"$2}'"
     proc = Popen(['/bin/bash', '-c', command], stdout=PIPE, stderr=PIPE)
     output = proc.stdout.read()
