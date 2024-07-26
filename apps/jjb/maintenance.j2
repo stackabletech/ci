@@ -162,7 +162,7 @@
               -e NEXUS_USER=$NEXUS_USER \
               -e NEXUS_PASSWORD=$NEXUS_PASSWORD \
               -e RUST_LOG=info \
-              docker.stackable.tech/tools/nexus-garbage-collector:latest > report.txt
+              docker.stackable.tech/tools/nexus-garbage-collector:latest &> report.txt
             report_exit_code=$?
 
             exit $report_exit_code
