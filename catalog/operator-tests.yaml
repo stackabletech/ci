@@ -17,7 +17,7 @@
       spec: {}
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: druid-operator
   display_name: Druid Operator
   git_repo: druid-operator
@@ -36,7 +36,7 @@
       spec: {}
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: hbase-operator
   display_name: HBase Operator
   git_repo: hbase-operator
@@ -55,7 +55,7 @@
       spec: {}
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: hdfs-operator
   display_name: HDFS Operator
   git_repo: hdfs-operator
@@ -74,7 +74,7 @@
       spec: {}
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: hello-world-operator
   display_name: Hello World Operator
   git_repo: hello-world-operator
@@ -95,7 +95,7 @@
         ram: 4096
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: hive-operator
   display_name: Hive Operator
   git_repo: hive-operator
@@ -114,7 +114,7 @@
       spec: {}
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: kafka-operator
   display_name: Kafka Operator
   git_repo: kafka-operator
@@ -133,7 +133,7 @@
       spec: {}
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: listener-operator
   display_name: Listener Operator
   git_repo: listener-operator
@@ -154,7 +154,7 @@
         ram: 4096
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: nifi-operator
   display_name: NiFi Operator
   git_repo: nifi-operator
@@ -173,7 +173,7 @@
       spec: {}
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: opa-operator
   display_name: OPA Operator
   git_repo: opa-operator
@@ -192,7 +192,7 @@
       spec: {}
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: secret-operator
   display_name: Secret Operator
   git_repo: secret-operator
@@ -211,7 +211,7 @@
       spec: {}
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: spark-k8s-operator
   display_name: Spark K8s Operator
   git_repo: spark-k8s-operator
@@ -230,7 +230,7 @@
       spec: {}
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: superset-operator
   display_name: Superset Operator
   git_repo: superset-operator
@@ -249,7 +249,7 @@
       spec: {}
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: trino-operator
   display_name: Trino Operator
   git_repo: trino-operator
@@ -268,7 +268,7 @@
       spec: {}
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
 - id: zookeeper-operator
   display_name: ZooKeeper Operator
   git_repo: zookeeper-operator
@@ -287,4 +287,4 @@
       spec: {}
   weekly_test:
     platform: replicated-azure
-    test_script_params: --test-suite nightly --parallel 1
+    test_script_params: --parallel 1
