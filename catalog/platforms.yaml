@@ -5,6 +5,17 @@ providers:
   - id: ionos
     name: "IONOS"
 platforms:
+  - id: replicated-kind
+    name: "kind on replicated.com"
+    provider: replicated
+    versions:
+      - "1.31.0"
+      - "1.30.3"
+    spec:
+      distribution: kind
+      instance-type: r1.xlarge
+      disk-size: 100
+      node-count: 1
   - id: replicated-azure
     name: "Azure AKS on replicated.com"
     provider: replicated

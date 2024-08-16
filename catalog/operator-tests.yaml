@@ -5,6 +5,9 @@
   spec:
     node-count: 3
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -24,6 +27,9 @@
   spec:
     node-count: 5
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -43,6 +49,9 @@
   spec:
     node-count: 3
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -62,6 +71,9 @@
   spec:
     node-count: 3
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -81,6 +93,9 @@
   spec:
     node-count: 1
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -102,6 +117,9 @@
   spec:
     node-count: 5
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -121,6 +139,9 @@
   spec:
     node-count: 5
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -140,6 +161,9 @@
   spec:
     node-count: 3
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -161,6 +185,9 @@
   spec:
     node-count: 5
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -180,6 +207,9 @@
   spec:
     node-count: 5
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -199,6 +229,9 @@
   spec:
     node-count: 3
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -218,6 +251,9 @@
   spec:
     node-count: 3
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -237,6 +273,9 @@
   spec:
     node-count: 5
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -256,6 +295,9 @@
   spec:
     node-count: 5
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
@@ -275,6 +317,9 @@
   spec:
     node-count: 8
   platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
