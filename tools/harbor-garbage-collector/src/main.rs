@@ -131,51 +131,56 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Cleanup old rust builder artifacts, they don't get garbage collected by Harbor because all of them are tagged
     // Only keep the "latest" manifest and its referenced artifacts
-    let latest_rust_builder_manifest_list: Artifact = reqwest::Client::new()
-        .get(format!(
-            "{}/projects/sdp/repositories/ubi8-rust-builder/artifacts/latest",
+
+    for ubi_version in &["ubi8", "ubi9"] {
+        let latest_rust_builder_manifest_list: Artifact = reqwest::Client::new()
+            .get(format!(
+                "{}/projects/sdp/repositories/{}-rust-builder/artifacts/latest",
+                base_url,
+                ubi_version
+            ))
+            .send()
+            .await?
+            .json()
+            .await?;
+
+        let referenced_digests = latest_rust_builder_manifest_list
+            .references
+            .unwrap()
+            .into_iter()
+            .map(|reference| reference.child_digest)
+            .collect::<Vec<String>>();
+
+        let rust_builder_artifacts: Vec<Artifact> = reqwest::get(format!(
+            "{}/projects/sdp/repositories/{}-rust-builder/artifacts?page_size=100",
             base_url,
+            ubi_version
         ))
-        .send()
         .await?
         .json()
         .await?;
 
-    let referenced_digests = latest_rust_builder_manifest_list
-        .references
-        .unwrap()
-        .into_iter()
-        .map(|reference| reference.child_digest)
-        .collect::<Vec<String>>();
-
-    let rust_builder_artifacts: Vec<Artifact> = reqwest::get(format!(
-        "{}/projects/sdp/repositories/ubi8-rust-builder/artifacts?page_size=100",
-        base_url
-    ))
-    .await?
-    .json()
-    .await?;
-
-    for artifact in rust_builder_artifacts {
-        // Keep "latest" and its referenced artifacts
-        if artifact.digest != latest_rust_builder_manifest_list.digest
-            && !referenced_digests.contains(&artifact.digest)
-        {
-            println!(
-                "Removing dangling rust builder artifact {}",
-                artifact.digest
-            );
-            reqwest::Client::new()
-                .delete(format!(
-                    "{}/projects/sdp/repositories/ubi8-rust-builder/artifacts/{}",
-                    base_url, artifact.digest
-                ))
-                .basic_auth(
-                    "robot$stackable-cleanup",
-                    env::var("HARBOR_ROBOT_PASSWORD").ok(),
-                )
-                .send()
-                .await?;
+        for artifact in rust_builder_artifacts {
+            // Keep "latest" and its referenced artifacts
+            if artifact.digest != latest_rust_builder_manifest_list.digest
+                && !referenced_digests.contains(&artifact.digest)
+            {
+                println!(
+                    "Removing dangling rust builder artifact {}",
+                    artifact.digest
+                );
+                reqwest::Client::new()
+                    .delete(format!(
+                        "{}/projects/sdp/repositories/{}-rust-builder/artifacts/{}",
+                        base_url, ubi_version, artifact.digest,
+                    ))
+                    .basic_auth(
+                        "robot$stackable-cleanup",
+                        env::var("HARBOR_ROBOT_PASSWORD").ok(),
+                    )
+                    .send()
+                    .await?;
+            }
         }
     }
 
