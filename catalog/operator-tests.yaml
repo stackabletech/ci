@@ -293,7 +293,7 @@
   display_name: Trino Operator
   git_repo: trino-operator
   spec:
-    node-count: 5
+    node-count: 6 # The Trino tests need more resources than others
   platforms:
     - id: replicated-kind
       spec:
