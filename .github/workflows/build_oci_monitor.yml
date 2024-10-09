@@ -1,9 +1,7 @@
 name: Build OCI monitor docker image
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   id-token: write
