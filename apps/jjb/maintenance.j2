@@ -5,7 +5,7 @@
     defaults: global
     description: ''
     disabled: false
-    display-name: 'Docker system prune (nightly)' 
+    display-name: 'Docker system prune (nightly)'
     concurrent: false
     quiet-period: 5
     logrotate:
@@ -16,7 +16,7 @@
     triggers:
       - timed: "H 23 * * *"
     builders:
-      - shell: 
+      - shell:
           command: |
             docker system prune -f
 - job:
@@ -25,7 +25,7 @@
     defaults: global
     description: ''
     disabled: false
-    display-name: 'Monitor OCI Artifacts (daily)' 
+    display-name: 'Monitor OCI Artifacts (daily)'
     concurrent: false
     quiet-period: 5
     logrotate:
@@ -44,16 +44,12 @@
     triggers:
       - timed: "H 7 * * *"
     builders:
-      - shell: 
+      - shell:
           command: |
-            cd tools/monitor-oci-artifacts/
-            docker build . -t docker.stackable.tech/tools/monitor-oci-artifacts:latest
-            cd ../../
-
             set +x
             set +e
 
-            docker run --rm docker.stackable.tech/tools/monitor-oci-artifacts:latest > report.txt
+            docker run --rm oci.stackable.tech/stackable/monitor-oci-artifacts:0.0.0-dev > report.txt
             report_exit_code=$?
 
             exit $report_exit_code
@@ -72,7 +68,7 @@
     defaults: global
     description: ''
     disabled: false
-    display-name: 'Harbor Garbage Collection (daily)' 
+    display-name: 'Harbor Garbage Collection (daily)'
     concurrent: false
     quiet-period: 5
     logrotate:
@@ -96,16 +92,12 @@
             credential-id: HARBOR_ROBOT_PASSWORD
             variable: HARBOR_ROBOT_PASSWORD
     builders:
-      - shell: 
+      - shell:
           command: |
-            cd tools/harbor-garbage-collector/
-            docker build . -t docker.stackable.tech/tools/harbor-garbage-collector:latest
-            cd ../../
-
             set +x
             set +e
 
-            docker run --rm -e HARBOR_ROBOT_PASSWORD=$HARBOR_ROBOT_PASSWORD docker.stackable.tech/tools/harbor-garbage-collector:latest > report.txt
+            docker run --rm -e HARBOR_ROBOT_PASSWORD=$HARBOR_ROBOT_PASSWORD oci.stackable.tech/stackable/harbor-garbage-collector:0.0.0-dev > report.txt
             report_exit_code=$?
 
             exit $report_exit_code
@@ -124,7 +116,7 @@
     defaults: global
     description: ''
     disabled: false
-    display-name: 'Nexus Garbage Collection (daily)' 
+    display-name: 'Nexus Garbage Collection (daily)'
     concurrent: false
     quiet-period: 5
     logrotate:
@@ -149,12 +141,8 @@
             username: NEXUS_USER
             password: NEXUS_PASSWORD
     builders:
-      - shell: 
+      - shell:
           command: |
-            cd tools/nexus-garbage-collector/
-            docker build . -t docker.stackable.tech/tools/nexus-garbage-collector:latest
-            cd ../../
-
             set +x
             set +e
 
@@ -162,7 +150,7 @@
               -e NEXUS_USER=$NEXUS_USER \
               -e NEXUS_PASSWORD=$NEXUS_PASSWORD \
               -e RUST_LOG=info \
-              docker.stackable.tech/tools/nexus-garbage-collector:latest &> report.txt
+              oci.stackable.tech/stackable/nexus-garbage-collector:0.0.0-dev &> report.txt
             report_exit_code=$?
 
             exit $report_exit_code
