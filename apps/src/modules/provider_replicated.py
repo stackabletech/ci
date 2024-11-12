@@ -14,7 +14,7 @@ def api_call_create_cluster(cluster_name, spec, platform_version, logger):
         platform_version    version of the (K8s) platform
         logger              logger (String-consuming function)
     """
-    command = f"replicated cluster create --name {cluster_name} --distribution {spec['distribution']} --instance-type {spec['instance-type']} --version {platform_version} --disk {spec['disk-size']} --nodes {spec['node-count']} --ttl 4h"
+    command = f"replicated cluster create --name {cluster_name} --distribution {spec['distribution']} --instance-type {spec['instance-type']} --version {platform_version} --disk {spec['disk-size']} --nodes {spec['node-count']} --ttl 6h"
     logger(f"System call: --> {command}")
     exit_code, output = run_command(command, 'replicated cluster create')
     if exit_code != 0:
