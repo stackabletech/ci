@@ -69,7 +69,7 @@
   display_name: HDFS Operator
   git_repo: hdfs-operator
   spec:
-    node-count: 3
+    node-count: 4
   platforms:
     - id: replicated-kind
       spec:
