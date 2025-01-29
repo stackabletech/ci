@@ -21,6 +21,30 @@
   weekly_test:
     platform: replicated-azure
     test_script_params: --parallel 1
+- id: commons-operator
+  display_name: Commons Operator
+  git_repo: commons-operator
+  spec:
+    node-count: 3
+  platforms:
+    - id: replicated-kind
+      spec:
+        node-count: 1
+    - id: replicated-azure
+      spec: {}
+    - id: replicated-openshift
+      spec:
+        instance-type: r1.medium
+    - id: replicated-gke
+      spec: {}
+    - id: replicated-aws
+      spec: {}
+    - id: ionos-k8s
+      spec:
+        ram: 4096
+  weekly_test:
+    platform: replicated-azure
+    test_script_params: --parallel 1
 - id: druid-operator
   display_name: Druid Operator
   git_repo: druid-operator
@@ -99,7 +123,7 @@
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
-      spec: 
+      spec:
         instance-type: r1.medium
     - id: replicated-gke
       spec: {}
@@ -167,7 +191,7 @@
     - id: replicated-azure
       spec: {}
     - id: replicated-openshift
-      spec: 
+      spec:
         instance-type: r1.medium
     - id: replicated-gke
       spec: {}
