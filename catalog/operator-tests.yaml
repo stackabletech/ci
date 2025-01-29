@@ -25,7 +25,7 @@
   display_name: Commons Operator
   git_repo: commons-operator
   spec:
-    node-count: 3
+    node-count: 1
   platforms:
     - id: replicated-kind
       spec:
