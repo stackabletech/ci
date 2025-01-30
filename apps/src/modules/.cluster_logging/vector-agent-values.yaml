@@ -124,3 +124,9 @@ env:
       secretKeyRef:
         name: cluster-logging-target
         key: password
+
+# This is needed on OpenShift clusters to be able to write to /vector-data-dir
+# which is a hostPath mounted volume.
+securityContext:
+  privileged: true
+
