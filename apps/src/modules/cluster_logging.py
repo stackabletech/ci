@@ -41,14 +41,14 @@ def install_cluster_logging(cluster_id, endpoint, username, password, logger):
         return False
 
     logger("Install Vector agent using Helm...")
-    exit_code, output = run_command(f"helm install vector-agent vector/vector --version 0.18.0  --values /src/modules/.cluster_logging/vector-agent-values.yaml --wait", 'helm install')
+    exit_code, output = run_command(f"helm install vector-agent vector/vector --version 0.40.0  --values /src/modules/.cluster_logging/vector-agent-values.yaml --wait", 'helm install')
     if exit_code != 0:
         for line in output:
             logger(line)
         return False
 
     logger("Install Vector aggregator using Helm...")
-    exit_code, output = run_command(f"helm install vector-aggregator vector/vector --version 0.18.0  --values /src/modules/.cluster_logging/vector-aggregator-values.yaml --wait", 'helm install')
+    exit_code, output = run_command(f"helm install vector-aggregator vector/vector --version 0.40.0  --values /src/modules/.cluster_logging/vector-aggregator-values.yaml --wait", 'helm install')
     if exit_code != 0:
         for line in output:
             logger(line)
