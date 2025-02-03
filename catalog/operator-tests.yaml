@@ -5,6 +5,8 @@
   spec:
     node-count: 3
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -27,6 +29,8 @@
   spec:
     node-count: 1
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -51,6 +55,8 @@
   spec:
     node-count: 5
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -73,6 +79,8 @@
   spec:
     node-count: 3
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -95,6 +103,8 @@
   spec:
     node-count: 4
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -117,6 +127,8 @@
   spec:
     node-count: 1
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -141,6 +153,8 @@
   spec:
     node-count: 5
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -163,6 +177,8 @@
   spec:
     node-count: 5
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -185,6 +201,8 @@
   spec:
     node-count: 3
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -209,6 +227,8 @@
   spec:
     node-count: 5
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -231,6 +251,8 @@
   spec:
     node-count: 5
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -253,6 +275,8 @@
   spec:
     node-count: 3
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -275,6 +299,8 @@
   spec:
     node-count: 3
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -297,6 +323,8 @@
   spec:
     node-count: 5
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -319,6 +347,8 @@
   spec:
     node-count: 10 # The Trino tests need more resources than others (CPU limited)
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
@@ -341,6 +371,8 @@
   spec:
     node-count: 8
   platforms:
+    - id: replicated-k3s
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
