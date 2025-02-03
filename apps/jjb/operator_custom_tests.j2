@@ -6,7 +6,7 @@
     defaults: global
     description: ''
     disabled: false
-    display-name: '{{ testsuite.display_name }} custom test' 
+    display-name: '{{ testsuite.display_name }} custom test'
     concurrent: true
     quiet-period: 5
     logrotate:
@@ -59,7 +59,7 @@
             password: CLUSTER_LOGGING_PASSWORD
       - build-user-vars
     builders:
-      - shell: 
+      - shell:
           unstable-return: 255
           command: |
             # ---------------------------------------------------------------------------------------------
@@ -102,7 +102,7 @@
               --env GIT_BRANCH=$GIT_BRANCH \
               --env TEST_SCRIPT_PARAMS="$TEST_SCRIPT_PARAMS" \
               --env VECTOR_AGGREGATOR='vector-aggregator.default.svc.cluster.local:6000' \
-              docker.stackable.tech/operator-test-runner:latest
+              oci.stackable.tech/operator-test-runner:latest
     publishers:
       - archive:
           artifacts: 'target/*'

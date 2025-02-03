@@ -6,7 +6,7 @@
     sandbox: true
     triggers:
       - timed: "H 0 * * 0"
-    dsl: 
+    dsl:
       !include-raw-verbatim:
         - trigger-weekly-tests.groovy
 {% for testsuite in testsuites %}
@@ -16,7 +16,7 @@
     defaults: global
     description: ''
     disabled: false
-    display-name: '{{ testsuite.display_name }} weekly test' 
+    display-name: '{{ testsuite.display_name }} weekly test'
     concurrent: true
     quiet-period: 5
     logrotate:
@@ -47,7 +47,7 @@
             password: CLUSTER_LOGGING_PASSWORD
       - build-user-vars
     builders:
-      - shell: 
+      - shell:
           unstable-return: 255
           command: |
             # ---------------------------------------------------------------------------------------------
@@ -84,7 +84,7 @@
               --env OPENSEARCH_DASHBOARDS_URL='{{ opensearch_dashboards_url }}' \
               --env TEST_SCRIPT_PARAMS="{{ testsuite.weekly_test.test_script_params }}" \
               --env VECTOR_AGGREGATOR='vector-aggregator.default.svc.cluster.local:6000' \
-              docker.stackable.tech/operator-test-runner:latest
+              oci.stackable.tech/operator-test-runner:latest
     publishers:
       - archive:
           artifacts: 'target/*'
