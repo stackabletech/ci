@@ -70,13 +70,25 @@ platforms:
       instance-type: r1.large
       disk-size: 100
       node-count: 3
+  - id: replicated-k3s
+    name: "k3s on replicated.com"
+    provider: replicated
+    versions:
+      - "1.32.1"
+      - "1.31.5"
+      - "1.30.9"
+    spec:
+      distribution: k3s
+      instance-type: r1.large
+      disk-size: 100
+      node-count: 3
   - id: ionos-k8s
     name: "IONOS managed K8s"
     provider: ionos
     versions:
-      - "1.29.5"
-      - "1.28.10"
-      - "1.27.14"
+      - "1.31.4"
+      - "1.30.8"
+      - "1.29.12"
     spec:
       node-count: 3
       ram: 8192
