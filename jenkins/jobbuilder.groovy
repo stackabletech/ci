@@ -19,8 +19,8 @@ pipeline {
                     rm -rf apps/docker/operator-test-runner/src/
                     cp -r apps/src/ apps/docker/operator-test-runner/src/
 
-                    docker build apps/docker/operator-test-runner/ -t docker.stackable.tech/operator-test-runner:latest
-                ''' 
+                    docker build apps/docker/operator-test-runner/ -t oci.stackable.tech/operator-test-runner:latest
+                '''
             }
         }
 
@@ -35,8 +35,8 @@ pipeline {
                     rm -rf apps/docker/jenkins-job-builder/jjb/
                     cp -r apps/jjb/ apps/docker/jenkins-job-builder
 
-                    docker build apps/docker/jenkins-job-builder/ -t docker.stackable.tech/jenkins-job-builder:latest
-                ''' 
+                    docker build apps/docker/jenkins-job-builder/ -t oci.stackable.tech/jenkins-job-builder:latest
+                '''
             }
         }
 
@@ -48,9 +48,9 @@ pipeline {
                             --env JENKINS_URL=https://testing.stackable.tech \
                             --env JENKINS_USERNAME=$JENKINS_BOT_USERNAME \
                             --env JENKINS_PASSWORD=$JENKINS_BOT_PASSWORD \
-                            docker.stackable.tech/jenkins-job-builder:latest
-                    ''' 
-                }            
+                            oci.stackable.tech/jenkins-job-builder:latest
+                    '''
+                }
             }
         }
 
