@@ -118,7 +118,27 @@ pub async fn render_as_html(
     <ul id='tree'>"#,
     );
 
-    for (release_version, repositories) in artifact_tree {
+    // Convert the artifact tree into a sorted list of releases
+    let mut releases: Vec<(&String, &BTreeMap<String, BTreeSet<TagInfo>>)> = artifact_tree.iter().collect();
+    releases.sort_by(|(ver_a, _), (ver_b, _)| {
+        // Parse versions like "24.3.0" into components for semantic comparison
+        let parse_version = |v: &str| -> Vec<u32> {
+            v.split('.')
+                .filter_map(|part| {
+                    // Ignore any suffixes like "-dev" or "-arm64"
+                    part.split('-')
+                        .next()
+                        .and_then(|num| num.parse::<u32>().ok())
+                })
+                .collect()
+        };
+
+        let ver_a_parts = parse_version(ver_a);
+        let ver_b_parts = parse_version(ver_b);
+        ver_b_parts.cmp(&ver_a_parts) // Reverse order to get newest versions first
+    });
+
+    for (release_version, repositories) in releases {
         html.push_str(&format!("<li>Release {}<ul>", release_version));
         for (repository, artifacts) in repositories {
             html.push_str(&format!("<li>{}<ul>", repository));
