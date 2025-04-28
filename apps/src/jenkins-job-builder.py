@@ -137,6 +137,63 @@ def read_helm_operator_versions():
 
     return result
 
+def read_chart_versions() -> dict[str, list[str]]:
+    """
+        Find operator chart versions.
+
+        Returns a dict like this
+
+        {
+            "airflow-operator": [
+                "0.0.0-dev",
+                "0.0.0-pr604",
+                "0.0.0-pr609",
+                "24.11.0",
+                "24.11.1",
+                "24.3.0",
+                "24.7.0",
+                "25.3.0"
+            ],
+            "commons-operator": [
+                "0.0.0-dev",
+                "24.3.0",
+                "24.7.0",
+                "25.3.0"
+            ],
+            ...
+        } 
+    """
+    ops = [
+        "airflow-operator",
+        "commons-operator",
+        "druid-operator",
+        "edc-operator",
+        "hbase-operator",
+        "hdfs-operator",
+        "hello-world-operator",
+        "hive-operator",
+        "kafka-operator",
+        "listener-operator",
+        "nifi-operator",
+        "opa-operator",
+        "secret-operator",
+        "spark-k8s-operator",
+        "superset-operator",
+        "trino-operator",
+        "zookeeper-operator"
+    ]
+
+    result = {}
+
+    import requests
+
+    for op_name in ops:
+        r = requests.get(f"https://oci.stackable.tech/v2/sdp-charts/{op_name}/tags/list", auth=('user', 'pass'))
+        if  r.status_code == 200:
+            result[op_name] = sorted([tag for tag in r.json()['tags'] if not tag.startswith('sha256-')])
+        else:
+            print(f"failed to get tags for operator {op_name}: {r.text}", file=sys.stderr)
+    return result
 
 if __name__ == "__main__":
 
@@ -150,7 +207,7 @@ if __name__ == "__main__":
         exit(1)
     
     print("Step 1: Read current operator versions from Helm repository:")
-    operator_versions = read_helm_operator_versions()
+    operator_versions = read_chart_versions()
     print()
     print(json.dumps(operator_versions, indent=4, sort_keys=True))
     print()
