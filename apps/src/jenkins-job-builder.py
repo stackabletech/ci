@@ -6,6 +6,7 @@
 import os
 from jinja2 import Template
 import json
+import requests
 
 import modules.catalog as catalog
 
@@ -161,12 +162,10 @@ def read_chart_versions() -> dict[str, list[str]]:
 
     result = {}
 
-    import requests
-
     for op_name in ops:
         r = requests.get(f"https://oci.stackable.tech/v2/sdp-charts/{op_name}/tags/list", auth=('user', 'pass'))
         if  r.status_code == 200:
-            result[op_name] = sorted([tag for tag in r.json()['tags'] if not tag.startswith('sha256-')])
+            result[op_name] = sorted([tag for tag in r.json()['tags'] if not tag.endswith('.sig')])
         else:
             print(f"failed to get tags for operator {op_name}: {r.text}", file=sys.stderr)
     return result
