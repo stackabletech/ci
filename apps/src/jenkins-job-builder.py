@@ -5,8 +5,8 @@
 """
 import os
 from jinja2 import Template
-from subprocess import PIPE, Popen
 import json
+import requests
 
 import modules.catalog as catalog
 
@@ -114,29 +114,6 @@ def execute_jjb():
     os.system(f"jenkins-jobs --conf /jjb/jjb.conf update /jjb/operator_custom_tests.yaml")
 
 
-def read_helm_operator_versions():
-    """
-        Reads all available Stackable operator versions from our Helm repos
-    """
-    os.system("helm repo update")
-    command = "helm search repo --versions --devel | grep stackable | grep '\\-operator' | awk -F'/' '{print $2}' | sort | awk '{print $1\"/\"$2}'"
-    proc = Popen(['/bin/bash', '-c', command], stdout=PIPE, stderr=PIPE)
-    output = proc.stdout.read()
-
-    tuples = [tuple(l.decode('utf-8').split('/')) for l in output.splitlines()]
-
-    keys = {t[0] for t in tuples}
-
-    result = { key: [] for key in keys }
-
-    for t in tuples:
-        result[t[0]].append(t[1])
-
-    for key in result:
-        result[key].sort()
-
-    return result
-
 def read_chart_versions() -> dict[str, list[str]]:
     """
         Find operator chart versions.
@@ -185,12 +162,10 @@ def read_chart_versions() -> dict[str, list[str]]:
 
     result = {}
 
-    import requests
-
     for op_name in ops:
         r = requests.get(f"https://oci.stackable.tech/v2/sdp-charts/{op_name}/tags/list", auth=('user', 'pass'))
         if  r.status_code == 200:
-            result[op_name] = sorted([tag for tag in r.json()['tags'] if not tag.startswith('sha256-')])
+            result[op_name] = sorted([tag for tag in r.json()['tags'] if not tag.endswith('.sig')])
         else:
             print(f"failed to get tags for operator {op_name}: {r.text}", file=sys.stderr)
     return result
