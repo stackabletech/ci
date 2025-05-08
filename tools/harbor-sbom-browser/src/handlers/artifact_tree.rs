@@ -43,7 +43,7 @@ impl IntoResponse for ArtifactTreeError {
 
 lazy_static! {
     static ref RELEASE_TAG_REGEX: Regex =
-        Regex::new(r"^(?P<prefix>.+\-stackable)?(?P<release>\d+\.\d+\.\d+(\-dev)?(\-(?P<architecture>arm64|amd64))?)$").unwrap();
+        Regex::new(r"^(?P<prefix>.+\-stackable)?(?P<release>(2\d|0).\d{1,2}\.\d+(\-dev)?(\-(?P<architecture>arm64|amd64))?)$").unwrap();
 }
 
 pub async fn render_as_html(
