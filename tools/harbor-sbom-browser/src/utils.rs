@@ -28,6 +28,8 @@ pub enum DownloadSbomError {
         cosign_stdout: String,
         cosign_stderr: String,
         cosign_status: std::process::ExitStatus,
+        repository: String,
+        digest: String,
     },
     #[snafu(display("cannot parse DSSE"))]
     ParseDsse { source: serde_json::Error },
@@ -80,6 +82,8 @@ pub async fn verify_attestation(
             cosign_stdout: String::from_utf8_lossy(&cmd_output.stdout).to_string(),
             cosign_stderr: stderr_output.to_string(),
             cosign_status: cmd_output.status,
+            repository: repository.to_string(),
+            digest: digest.to_string(),
         });
     }
 
