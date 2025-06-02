@@ -15,13 +15,13 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: eventrouter 
+  name: eventrouter
   namespace: kube-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: eventrouter 
+  name: eventrouter
 rules:
 - apiGroups: [""]
   resources: ["events"]
@@ -30,7 +30,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: eventrouter 
+  name: eventrouter
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -42,7 +42,7 @@ subjects:
 ---
 apiVersion: v1
 data:
-  config.json: |- 
+  config.json: |-
     {
       "sink": "stdout"
     }
@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
         - name: kube-eventrouter
-          image: gcr.io/heptio-images/eventrouter:latest
+          image: oci.stackable.tech/stackable/eventrouter:0.0.0-dev
           resources:
             requests:
               cpu: 100m
