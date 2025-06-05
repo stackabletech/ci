@@ -1,8 +1,23 @@
-FROM python:3
+# From ubuntu 24.04 LTS
+FROM ubuntu@sha256:b59d21599a2b151e23eea5f6602f4af4d7d31c4e236d22bf0b62b86d2e386b8f
+
+RUN apt update && \
+    apt install -y \
+       git \
+       python3 \
+       python3-pip \
+       python3-venv \
+       curl \
+       wget \
+       ca-certificates && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 # install required Python modules
 COPY python_modules /
-RUN pip install --no-cache-dir -r python_modules
+RUN pip install --break-system-packages --no-cache-dir -r python_modules
 
 # install Replicated CLI
 RUN mkdir -p /tmp/replicated/
@@ -25,7 +40,7 @@ RUN helm repo add vector https://helm.vector.dev/
 RUN helm repo update
 
 # install beku
-RUN pip install beku-stackabletech
+RUN pip install --break-system-packages --no-cache-dir beku-stackabletech
 
 # install stackablectl
 RUN curl -L https://github.com/stackabletech/stackable-cockpit/releases/latest/download/stackablectl-x86_64-unknown-linux-gnu --output /usr/local/bin/stackablectl 
