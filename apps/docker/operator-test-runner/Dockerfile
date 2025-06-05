@@ -13,10 +13,14 @@ RUN apt update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Make /usr/bin/python an alias for /usr/bin/python3
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 # install required Python modules
 COPY python_modules /
+# Newer versions of pip refuse to install packages in the system directory
+# unless --break-system-packages is used.
+# The recommended way for the future is to use virtual environments.
 RUN pip install --break-system-packages --no-cache-dir -r python_modules
 
 # install Replicated CLI
