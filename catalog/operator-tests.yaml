@@ -11,7 +11,8 @@
       spec:
         node-count: 1
     - id: replicated-azure
-      spec: {}
+      spec:
+        instance-type: Standard_D8S_v5
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
