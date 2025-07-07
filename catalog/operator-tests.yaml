@@ -268,7 +268,19 @@
     - id: ionos-k8s
       spec: {}
   weekly_test:
-    platform: replicated-azure
+    # The Azure replicated cluster has two nodepools:
+    #
+    # NAME                                STATUS   ROLES    AGE     VERSION
+    # aks-nodepool1-28336892-vmss000000   Ready    <none>   145m    v1.32.5
+    # aks-z8irlg-38791098-vmss000000      Ready    <none>   7m18s   v1.32.5
+    # aks-z8irlg-38791098-vmss000001      Ready    <none>   7m17s   v1.32.5
+    #
+    # 1. The actual node pool we specify (4 cores)
+    # 2. Some random control plan node, which is *not* tainted and has 2 cores
+    #
+    # Because OPA runs as a DaemonSet we were running into insufficient CPU.
+    # While we could taint the nodes somehow, it's easier (and probably cheaper?) to use k3s.
+    platform: replicated-k3s
     test_script_params: --parallel 1
 - id: secret-operator
   display_name: Secret Operator
