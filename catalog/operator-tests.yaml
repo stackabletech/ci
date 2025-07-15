@@ -282,6 +282,30 @@
     # While we could taint the nodes somehow, it's easier (and probably cheaper?) to use k3s.
     platform: replicated-k3s
     test_script_params: --parallel 1
+- id: opensearch-operator
+  display_name: OpenSearch Operator
+  git_repo: opensearch-operator
+  spec:
+    node-count: 5
+  platforms:
+    - id: replicated-k3s
+      spec: {}
+    - id: replicated-kind
+      spec:
+        node-count: 1
+    - id: replicated-azure
+      spec: {}
+    - id: replicated-openshift
+      spec: {}
+    - id: replicated-gke
+      spec: {}
+    - id: replicated-aws
+      spec: {}
+    - id: ionos-k8s
+      spec: {}
+  weekly_test:
+    platform: replicated-azure
+    test_script_params: --parallel 1
 - id: secret-operator
   display_name: Secret Operator
   git_repo: secret-operator

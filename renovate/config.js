@@ -22,6 +22,7 @@ module.exports = {
         "stackabletech/listener-operator",
         "stackabletech/nifi-operator",
         "stackabletech/opa-operator",
+        "stackabletech/opensearch-operator",
         "stackabletech/operator-rs",
         "stackabletech/operator-templating",
         "stackabletech/product-config",

@@ -153,6 +153,7 @@ def read_chart_versions() -> dict[str, list[str]]:
         "listener-operator",
         "nifi-operator",
         "opa-operator",
+        "opensearch-operator",
         "secret-operator",
         "spark-k8s-operator",
         "superset-operator",
