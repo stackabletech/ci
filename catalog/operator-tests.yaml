@@ -244,7 +244,7 @@
     - id: ionos-k8s
       spec: {}
   weekly_test:
-    platform: replicated-azure
+    platform: replicated-k3s
     test_script_params: --parallel 1
 - id: opa-operator
   display_name: OPA Operator
