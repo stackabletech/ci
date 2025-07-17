@@ -19,7 +19,7 @@ pipeline {
                     rm -rf apps/docker/operator-test-runner/src/
                     cp -r apps/src/ apps/docker/operator-test-runner/src/
 
-                    docker build --no-cache apps/docker/operator-test-runner/ -t oci.stackable.tech/operator-test-runner:latest
+                    docker build apps/docker/operator-test-runner/ -t oci.stackable.tech/operator-test-runner:latest
                 '''
             }
         }
@@ -35,7 +35,7 @@ pipeline {
                     rm -rf apps/docker/jenkins-job-builder/jjb/
                     cp -r apps/jjb/ apps/docker/jenkins-job-builder
 
-                    docker build --no-cache apps/docker/jenkins-job-builder/ -t oci.stackable.tech/jenkins-job-builder:latest
+                    docker build apps/docker/jenkins-job-builder/ -t oci.stackable.tech/jenkins-job-builder:latest
                 '''
             }
         }
