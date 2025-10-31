@@ -49,7 +49,7 @@
             set +x
             set +e
 
-            docker run --rm oci.stackable.tech/stackable/monitor-oci-artifacts:0.0.0-dev > report.txt
+            docker run --rm oci.stackable.tech/stackable/monitor-oci-artifacts:25.11.0 > report.txt
             report_exit_code=$?
 
             exit $report_exit_code

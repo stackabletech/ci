@@ -31,7 +31,7 @@ jobs:
           context: ./tools/monitor-oci-artifacts
           file: ./tools/monitor-oci-artifacts/Dockerfile
           push: true
-          tags: oci.stackable.tech/stackable/monitor-oci-artifacts:0.0.0-dev
+          tags: oci.stackable.tech/stackable/monitor-oci-artifacts:25.11.0
           build-args: |
             REVISION=${{ github.sha }}
             VERSION=dev
