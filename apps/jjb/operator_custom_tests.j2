@@ -28,6 +28,13 @@
           choices:{% for platform in testsuite.platforms %}{% for version in platforms[platform.id].versions %}
             - {{ platforms[platform.id].name }} ({{ version }}){% endfor %}{% endfor %}
           description: On which platform should the test run?
+      - git-parameter:
+          name: GIT_BRANCH_OR_TAG
+          description: The Git branch or tag where your Operator integration tests are, defaults to 'main'.
+          type: PT_BRANCH_TAG
+          selectedValue: NONE
+          sortMode: ASCENDING_SMART
+          defaultValue: origin/main
     wrappers:
       - credentials-binding:
         - text:
