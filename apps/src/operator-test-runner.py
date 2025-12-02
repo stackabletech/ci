@@ -225,7 +225,7 @@ def run_tests(operator, operator_version, test_script_params):
         log(
             f"Auto-retry configuration: attempts_parallel={retry_config['attempts_parallel']}, "
             f"attempts_serial={retry_config['attempts_serial']}, "
-            f"keep_failed_namespaces={retry_config['keep_failed_namespaces']}"
+            f"delete_failed_namespaces={retry_config['delete_failed_namespaces']}"
         )
 
         # Extract parallel value from test_script_params (default to 0)
@@ -249,9 +249,8 @@ def run_tests(operator, operator_version, test_script_params):
             f"--output-dir {TARGET_FOLDER}test-results",
         ]
 
-        # Add keep-failed-namespaces flag if configured to keep them
-        if retry_config["keep_failed_namespaces"]:
-            command_parts.append("--keep-failed-namespaces")
+        if retry_config["delete_failed_namespaces"]:
+            command_parts.append("--delete-failed-namespaces")
 
         # Add extra args from test_script_params (excluding --parallel which we already handled)
         extra_params = []

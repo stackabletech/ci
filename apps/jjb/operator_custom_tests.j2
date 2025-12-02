@@ -50,7 +50,7 @@
             - Default (from catalog)
             - Auto-retry
             - run-tests
-          description: "Test execution mode: Default uses catalog configuration (hdfs-operator uses auto-retry, others use run-tests), Auto-retry forces auto-retry-tests.py with intelligent retry logic, run-tests forces traditional run-tests script"
+          description: "Test execution mode: Default uses catalog configuration, Auto-retry uses a script to automatically retry failing tests, run-tests just runs the tests once"
     wrappers:
       - credentials-binding:
         - text:
