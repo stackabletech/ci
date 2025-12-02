@@ -141,9 +141,20 @@ def execute_jjb():
     """
     Executes JJB for all job definition files
     """
-    os.system("jenkins-jobs --conf /jjb/jjb.conf update /jjb/maintenance.yaml")
-    os.system("jenkins-jobs --conf /jjb/jjb.conf update /jjb/operator_weekly_tests.yaml")
-    os.system("jenkins-jobs --conf /jjb/jjb.conf update /jjb/operator_custom_tests.yaml")
+    exit_code = os.system("jenkins-jobs --conf /jjb/jjb.conf update /jjb/maintenance.yaml")
+    if exit_code != 0:
+        print(f"ERROR: jenkins-jobs failed for maintenance.yaml with exit code {exit_code}", file=sys.stderr)
+        sys.exit(1)
+
+    exit_code = os.system("jenkins-jobs --conf /jjb/jjb.conf update /jjb/operator_weekly_tests.yaml")
+    if exit_code != 0:
+        print(f"ERROR: jenkins-jobs failed for operator_weekly_tests.yaml with exit code {exit_code}", file=sys.stderr)
+        sys.exit(1)
+
+    exit_code = os.system("jenkins-jobs --conf /jjb/jjb.conf update /jjb/operator_custom_tests.yaml")
+    if exit_code != 0:
+        print(f"ERROR: jenkins-jobs failed for operator_custom_tests.yaml with exit code {exit_code}", file=sys.stderr)
+        sys.exit(1)
 
 
 def read_chart_versions() -> dict[str, list[str]]:

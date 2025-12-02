@@ -50,11 +50,7 @@
             - Default (from catalog)
             - Auto-retry
             - run-tests
-          description: |
-            Test execution mode:
-            - Default: Use catalog configuration (hdfs-operator uses auto-retry, others use run-tests)
-            - Auto-retry: Force use of auto-retry-tests.py with intelligent retry logic
-            - run-tests: Force use of traditional run-tests script
+          description: "Test execution mode: Default uses catalog configuration (hdfs-operator uses auto-retry, others use run-tests), Auto-retry forces auto-retry-tests.py with intelligent retry logic, run-tests forces traditional run-tests script"
     wrappers:
       - credentials-binding:
         - text:
@@ -132,9 +128,9 @@
             *Git branch* `$GIT_BRANCH`
             *{{ testsuite.display_name }} version* `$OPERATOR_VERSION`
             *Test script params* `$TEST_SCRIPT_PARAMS`
+            *Test script* `$TEST_SCRIPT`
       - description-setter:
           regexp: ".*build_description::#(.*)#.*"
           regexp-for-failed: ".*build_description::#(.*)#.*"
           set-for-matrix: false
 {% endfor %}
-
