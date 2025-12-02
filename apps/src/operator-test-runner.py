@@ -147,14 +147,14 @@ def set_target_folder_owner():
 
 
 def log(msg=""):
-    """ 
+    """
         Logs the given text message to stdout AND the logfile.
     """
-    print(msg)
+    timestamp = f'{datetime.now(UTC):%Y-%m-%d %H:%M:%S}'
+    print(f"{timestamp} :: {msg}")
     sys.stdout.flush()
     f = open(TESTDRIVER_LOGFILE, "a")
-    f.write(f'{datetime.now(UTC):%Y-%m-%d %H:%M:%S.%s} :: ')
-    f.write(f"{msg}\n")
+    f.write(f'{timestamp} :: {msg}\n')
     f.close()
 
 
