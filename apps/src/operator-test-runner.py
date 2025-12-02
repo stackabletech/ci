@@ -236,6 +236,7 @@ def run_tests(operator, operator_version, test_script_params):
             f"--parallel {parallel_value}",
             f"--attempts-parallel {retry_config['attempts_parallel']}",
             f"--attempts-serial {retry_config['attempts_serial']}",
+            f"--output-dir {TARGET_FOLDER}test-results",
         ]
 
         # Add keep-failed-namespaces flag if configured to keep them
