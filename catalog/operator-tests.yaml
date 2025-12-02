@@ -103,6 +103,14 @@
   git_repo: hdfs-operator
   spec:
     node-count: 4
+  # Test script configuration
+  # Options: "run-tests" (default) or "auto-retry-tests.py"
+  test_script: auto-retry-tests.py
+  # Auto-retry configuration (only used if test_script is auto-retry-tests.py)
+  auto_retry:
+    attempts_parallel: 2  # Number of parallel retry attempts
+    attempts_serial: 3    # Number of serial retry attempts after parallel
+    keep_failed_namespaces: false  # Keep namespaces for debugging (default: false)
   platforms:
     - id: replicated-k3s
       spec: {}

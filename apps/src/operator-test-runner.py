@@ -136,6 +136,7 @@ def init():
 
     return True
 
+
 def set_target_folder_owner():
     """
         As the Docker container is run with the root user (0:0), the files it produces will not be manageable by the Jenkins user.
@@ -143,6 +144,7 @@ def set_target_folder_owner():
         This method recursively sets the ownership of the output files.
     """
     os.system(f"chown -R {param_output_file_user} {TARGET_FOLDER}")
+
 
 def log(msg=""):
     """ 
@@ -154,6 +156,7 @@ def log(msg=""):
     f.write(f'{datetime.now(UTC):%Y-%m-%d %H:%M:%S.%s} :: ')
     f.write(f"{msg}\n")
     f.close()
+
 
 def clone_git_repo(repo):
     """
@@ -167,16 +170,24 @@ def clone_git_repo(repo):
         return False
     return True
 
+
 def run_tests(operator, operator_version, test_script_params):
-    """ 
+    """
     Runs the tests using the test script in the operator repo.
+    The test script can be either 'run-tests' (default) or 'auto-retry-tests.py'
+    based on the operator's catalog configuration.
 
     operator:              name of the operator-repo (usually with suffix '-operator')
     operator_version:      Version of the operator to be tested
     test_script_params:    additional params
     """
 
+    # Get test script configuration from catalog
+    test_script = catalog.get_test_script(operator)
+    log(f"Using test script: {test_script}")
+
     # Step 1: Installation of the SDP (retried max. 10 times to reduce flakiness)
+    # This step is always done with run-tests regardless of the test script choice
     command_install_sdp = f"cd {operator}/ && python ./scripts/run-tests --skip-tests --operator {operator.replace('-operator','')}={operator_version}"
     log("Running the following command to install SDP for test:")
     log(command_install_sdp)
@@ -188,8 +199,61 @@ def run_tests(operator, operator_version, test_script_params):
 
     # Step 2: Run the actual tests
     # (The aux. method run_command() is NOT used here because we want the output to be streamed, not captured!)
-    params = " --log-level debug" if "--log-level" not in test_script_params else ""
-    command_run_tests = f"(cd {operator}/ && python ./scripts/run-tests --skip-release {params} {test_script_params} 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}"
+    if test_script == 'auto-retry-tests.py':
+        # Use auto-retry test runner
+        retry_config = catalog.get_auto_retry_config(operator)
+        log(f"Auto-retry configuration: attempts_parallel={retry_config['attempts_parallel']}, "
+            f"attempts_serial={retry_config['attempts_serial']}, "
+            f"keep_failed_namespaces={retry_config['keep_failed_namespaces']}")
+
+        # Extract parallel value from test_script_params (default to 0)
+        parallel_value = "0"
+        if '--parallel' in test_script_params:
+            try:
+                parts = test_script_params.split('--parallel')
+                if len(parts) > 1:
+                    parallel_value = parts[1].strip().split()[0]
+            except:
+                pass
+
+        # Build command for auto-retry-tests.py
+        command_parts = [
+            f"cd {operator}/",
+            "&&",
+            "python ./scripts/auto-retry-tests.py",
+            f"--parallel {parallel_value}",
+            f"--attempts-parallel {retry_config['attempts_parallel']}",
+            f"--attempts-serial {retry_config['attempts_serial']}",
+        ]
+
+        # Add keep-failed-namespaces flag if configured to keep them
+        if retry_config['keep_failed_namespaces']:
+            command_parts.append("--keep-failed-namespaces")
+
+        # Add extra args from test_script_params (excluding --parallel which we already handled)
+        extra_params = []
+        skip_next = False
+        for param in test_script_params.split():
+            if skip_next:
+                skip_next = False
+                continue
+            if param == '--parallel':
+                skip_next = True
+                continue
+            extra_params.append(param)
+
+        if extra_params:
+            command_parts.append("--extra-args")
+            command_parts.extend(extra_params)
+
+        command_parts.extend(["2>&1", ";", "echo $? > /test_exit_code"])
+        command_run_tests = f"({' '.join(command_parts)}) | tee {TEST_OUTPUT_LOGFILE}"
+
+    else:
+        # Use traditional run-tests script
+        params = " --log-level debug" if "--log-level" not in test_script_params else ""
+        command_run_tests = f"(cd {operator}/ && python ./scripts/run-tests --skip-release {params} {test_script_params} 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}"
+
     log("Running the following test command:")
     log(command_run_tests)
     os.system(command_run_tests)
@@ -304,4 +368,3 @@ if __name__ == "__main__":
         exit(EXIT_CODE_CLUSTER_FAILED)
 
     exit(test_exit_code)
-

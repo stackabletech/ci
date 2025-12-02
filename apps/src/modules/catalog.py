@@ -136,3 +136,61 @@ def get_spec_for_operator_test(operator_test, platform, logger):
         spec = {**spec, **matching_operator_test_platform_def['spec']}
 
     return spec
+
+
+def get_operator_test(operator_id):
+    """
+    Get the operator test definition by ID.
+
+    operator_id     ID of the operator test
+
+    Returns the operator test dict or None if not found.
+    """
+    return next(filter(lambda ot: ot['id'] == operator_id, operator_tests), None)
+
+
+def get_test_script(operator_id):
+    """
+    Get the test script name for a given operator.
+    Defaults to "run-tests" if not specified.
+
+    operator_id     ID of the operator test
+
+    Returns the test script name (e.g., "run-tests" or "auto-retry-tests.py")
+    """
+    operator_test = get_operator_test(operator_id)
+    if not operator_test:
+        return "run-tests"  # default
+
+    return operator_test.get('test_script', 'run-tests')
+
+
+def get_auto_retry_config(operator_id):
+    """
+    Get the auto-retry configuration for a given operator.
+    Returns default values if not specified.
+
+    operator_id     ID of the operator test
+
+    Returns dict with retry configuration:
+    {
+        'attempts_parallel': int,
+        'attempts_serial': int,
+        'keep_failed_namespaces': bool
+    }
+    """
+    operator_test = get_operator_test(operator_id)
+
+    # Default configuration
+    default_config = {
+        'attempts_parallel': 0,
+        'attempts_serial': 3,
+        'keep_failed_namespaces': False
+    }
+
+    if not operator_test or 'auto_retry' not in operator_test:
+        return default_config
+
+    # Merge operator config with defaults
+    config = {**default_config, **operator_test['auto_retry']}
+    return config
