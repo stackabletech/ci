@@ -113,7 +113,7 @@
               oci.stackable.tech/operator-test-runner:latest
     publishers:
       - archive:
-          artifacts: 'target/*'
+          artifacts: 'target/**'
           allow-empty: true
       - slack:
           room: '{{ slack_channel }}'
