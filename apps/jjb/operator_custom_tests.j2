@@ -22,6 +22,12 @@
           browser: githubweb
           browser-url: https://github.com/stackabletech/{{ testsuite.git_repo }}.git
           timeout: 20
+    parameters:
+      - choice:
+          name: TEST_PLATFORM
+          choices:{% for platform in testsuite.platforms %}{% for version in platforms[platform.id].versions %}
+            - {{ platforms[platform.id].name }} ({{ version }}){% endfor %}{% endfor %}
+          description: On which platform should the test run?
     wrappers:
       - credentials-binding:
         - text:
