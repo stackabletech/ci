@@ -17,7 +17,7 @@ def read_providers(logger):
     """
     global providers
     platforms_yaml = hiyapyco.load("/platforms.yaml")
-    if not 'providers' in platforms_yaml:
+    if 'providers' not in platforms_yaml:
         logger('platforms.yaml does not contain providers.')
         return False
     providers = platforms_yaml['providers']
@@ -36,7 +36,7 @@ def read_platforms(logger):
     global platforms
     platforms = hiyapyco.load("/platforms.yaml")['platforms']
     platforms_yaml = hiyapyco.load("/platforms.yaml")
-    if not 'platforms' in platforms_yaml:
+    if 'platforms' not in platforms_yaml:
         logger('platforms.yaml does not contain platforms.')
         return False
     platforms = platforms_yaml['platforms']
@@ -120,7 +120,7 @@ def get_spec_for_operator_test(operator_test, platform, logger):
 
     # Find out the matching definition for the given platform inside the given operator test, exit if not existing
     matching_operator_test_platform_def = next(filter(lambda p: p['id']==platform, matching_operator_test['platforms']), None)
-    if not matching_operator_test_platform_def: 
+    if not matching_operator_test_platform_def:
         logger(f"The test for '{operator_test}' is not defined for the platform '{platform}'.")
         return None
 

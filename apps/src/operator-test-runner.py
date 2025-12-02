@@ -1,17 +1,18 @@
 """
     Main module of the Operator Test Runner application
 """
-import sys
 import os
-from datetime import datetime, timedelta, UTC
-from time import sleep
+import sys
 import uuid
-from jinja2 import Template 
+from datetime import UTC, datetime, timedelta
+from time import sleep
+
+from jinja2 import Template
 
 import modules.catalog as catalog
 from modules.cluster import create_cluster, terminate_cluster
-from modules.command import run_command
 from modules.cluster_logging import install_cluster_logging
+from modules.command import run_command
 
 # values of the params (given as env vars during Docker run)
 param_output_file_user = '0:0'
@@ -69,43 +70,43 @@ def init():
     global param_cluster_logging_password
     global param_opensearch_dashboards_url
 
-    if not PARAM_KEY_REPLICATED_API_TOKEN in os.environ:
+    if PARAM_KEY_REPLICATED_API_TOKEN not in os.environ:
         print(f"Error: Please supply {PARAM_KEY_REPLICATED_API_TOKEN} as an environment variable.")
         return False
 
-    if not PARAM_KEY_IONOS_USERNAME in os.environ:
+    if PARAM_KEY_IONOS_USERNAME not in os.environ:
         print(f"Error: Please supply {PARAM_KEY_IONOS_USERNAME} as an environment variable.")
         return False
 
-    if not PARAM_KEY_IONOS_PASSWORD in os.environ:
+    if PARAM_KEY_IONOS_PASSWORD not in os.environ:
         print(f"Error: Please supply {PARAM_KEY_IONOS_PASSWORD} as an environment variable.")
         return False
 
-    if not PARAM_KEY_PLATFORM in os.environ:
+    if PARAM_KEY_PLATFORM not in os.environ:
         print(f"Error: Please supply {PARAM_KEY_PLATFORM} as an environment variable.")
         return False
 
-    if not PARAM_KEY_PLATFORM_VERSION in os.environ:
+    if PARAM_KEY_PLATFORM_VERSION not in os.environ:
         print(f"Error: Please supply {PARAM_KEY_PLATFORM_VERSION} as an environment variable.")
         return False
 
-    if not PARAM_KEY_OPERATOR in os.environ:
+    if PARAM_KEY_OPERATOR not in os.environ:
         print(f"Error: Please supply {PARAM_KEY_OPERATOR} as an environment variable.")
         return False
 
-    if not PARAM_KEY_OPERATOR_VERSION in os.environ:
+    if PARAM_KEY_OPERATOR_VERSION not in os.environ:
         print(f"Error: Please supply {PARAM_KEY_OPERATOR_VERSION} as an environment variable.")
         return False
 
-    if not PARAM_KEY_CLUSTER_LOGGING_ENDPOINT in os.environ:
+    if PARAM_KEY_CLUSTER_LOGGING_ENDPOINT not in os.environ:
         print(f"Error: Please supply {PARAM_KEY_CLUSTER_LOGGING_ENDPOINT} as an environment variable.")
         return False
 
-    if not PARAM_KEY_CLUSTER_LOGGING_USERNAME in os.environ:
+    if PARAM_KEY_CLUSTER_LOGGING_USERNAME not in os.environ:
         print(f"Error: Please supply {PARAM_KEY_CLUSTER_LOGGING_USERNAME} as an environment variable.")
         return False
 
-    if not PARAM_KEY_CLUSTER_LOGGING_PASSWORD in os.environ:
+    if PARAM_KEY_CLUSTER_LOGGING_PASSWORD not in os.environ:
         print(f"Error: Please supply {PARAM_KEY_CLUSTER_LOGGING_PASSWORD} as an environment variable.")
         return False
 
@@ -150,9 +151,9 @@ def log(msg=""):
     print(msg)
     sys.stdout.flush()
     f = open(TESTDRIVER_LOGFILE, "a")
-    f.write('{:%Y-%m-%d %H:%M:%S.%s} :: '.format(datetime.now(UTC)))
+    f.write(f'{datetime.now(UTC):%Y-%m-%d %H:%M:%S.%s} :: ')
     f.write(f"{msg}\n")
-    f.close()    
+    f.close()
 
 def clone_git_repo(repo):
     """
@@ -173,7 +174,7 @@ def run_tests(operator, operator_version, test_script_params):
     operator:              name of the operator-repo (usually with suffix '-operator')
     operator_version:      Version of the operator to be tested
     test_script_params:    additional params
-    """ 
+    """
 
     # Step 1: Installation of the SDP (retried max. 10 times to reduce flakiness)
     command_install_sdp = f"cd {operator}/ && python ./scripts/run-tests --skip-tests --operator {operator.replace('-operator','')}={operator_version}"
@@ -193,7 +194,7 @@ def run_tests(operator, operator_version, test_script_params):
     log(command_run_tests)
     os.system(command_run_tests)
     sleep(15)
-    with open ("/test_exit_code", "r") as f:
+    with open ("/test_exit_code") as f:
         return int(f.read().strip())
 
 def write_logs_html(cluster_id, timestamp_start, timestamp_stop, opensearch_dashboards_url):
@@ -205,7 +206,7 @@ def write_logs_html(cluster_id, timestamp_start, timestamp_stop, opensearch_dash
     date_from = (timestamp_start - timedelta(hours=0, minutes=5)).strftime("%Y-%m-%dT%H:%M:00Z")
     date_to = (timestamp_stop + timedelta(hours=0, minutes=5)).strftime("%Y-%m-%dT%H:%M:00Z")
 
-    with open ("/src/modules/.cluster_logging/logs.html.j2", "r") as f:
+    with open ("/src/modules/.cluster_logging/logs.html.j2") as f:
         logs_html = Template(f.read())
 
     with open (LOG_INDEX_LINKS_FILE, 'w') as f:
@@ -222,7 +223,7 @@ if __name__ == "__main__":
 
     print("This app runs an operator integration test.")
     print()
-    
+
     if not init():
         exit(EXIT_CODE_CLUSTER_FAILED)
 
@@ -238,7 +239,7 @@ if __name__ == "__main__":
     if not platform:
         log(f"The platform '{param_platform}' does not exist.")
         exit(EXIT_CODE_CLUSTER_FAILED)
-    if not param_platform_version in platform['versions']:
+    if param_platform_version not in platform['versions']:
         log(f"The version '{param_platform_version}' does not exist for platform '{param_platform}'.")
         exit(EXIT_CODE_CLUSTER_FAILED)
     log(f"Test running on platform '{platform['id']}', version {param_platform_version}.")
@@ -259,7 +260,7 @@ if __name__ == "__main__":
     if not cluster:
         log("Cluster could not be created.")
         exit(EXIT_CODE_CLUSTER_FAILED)
-    
+
     log("Cloning git repo...")
     clone_git_repo(param_operator)
 
@@ -293,7 +294,7 @@ if __name__ == "__main__":
     if param_opensearch_dashboards_url:
         write_logs_html(cluster_id, job_start_timestamp_utc, job_finished_timestamp_utc, param_opensearch_dashboards_url)
 
-    # Set output file ownership recursively 
+    # Set output file ownership recursively
     # This is important as the test script might have added files which are not controlled
     # by this Python script and therefore most probably are owned by root
     set_target_folder_owner()
