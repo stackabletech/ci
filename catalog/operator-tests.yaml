@@ -130,32 +130,6 @@
   weekly_test:
     platform: replicated-azure
     test_script_params: --parallel 1
-- id: hello-world-operator
-  display_name: Hello World Operator
-  git_repo: hello-world-operator
-  spec:
-    node-count: 1
-  platforms:
-    - id: replicated-k3s
-      spec: {}
-    - id: replicated-kind
-      spec:
-        node-count: 1
-    - id: replicated-azure
-      spec: {}
-    - id: replicated-openshift
-      spec:
-        instance-type: r1.medium
-    - id: replicated-gke
-      spec: {}
-    - id: replicated-aws
-      spec: {}
-    - id: ionos-k8s
-      spec:
-        ram: 4096
-  weekly_test:
-    platform: replicated-azure
-    test_script_params: --parallel 1
 - id: hive-operator
   display_name: Hive Operator
   git_repo: hive-operator
