@@ -33,7 +33,7 @@ def get_platform_metadata():
     Creates a dict containing display name and version list for a given platform.
     """
     return {
-        p["id"]: {"name": p["name"], "versions": dict(p["versions"])} for p in catalog.platforms
+        p["id"]: {"name": p["name"], "versions": list(p["versions"])} for p in catalog.platforms
     }
 
 
