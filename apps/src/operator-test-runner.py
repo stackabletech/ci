@@ -192,9 +192,19 @@ def run_tests(operator, operator_version, test_script_params):
     test_script_params:    additional params
     """
 
-    # Get test script configuration from catalog
-    test_script = catalog.get_test_script(operator)
-    log(f"Using test script: {test_script}")
+    # Get test script configuration - check for runtime override first
+    test_script_override = os.environ.get('TEST_SCRIPT', '').strip()
+
+    if test_script_override == 'Auto-retry':
+        test_script = 'auto-retry-tests.py'
+        log(f"Using test script: {test_script} (user override)")
+    elif test_script_override == 'run-tests':
+        test_script = 'run-tests'
+        log(f"Using test script: {test_script} (user override)")
+    else:
+        # Default or empty - use catalog configuration
+        test_script = catalog.get_test_script(operator)
+        log(f"Using test script: {test_script} (from catalog)")
 
     # Step 1: Installation of the SDP (retried max. 10 times to reduce flakiness)
     # This step is always done with run-tests regardless of the test script choice

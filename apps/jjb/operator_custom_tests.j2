@@ -44,6 +44,17 @@
           name: TEST_SCRIPT_PARAMS
           description: Use this string to specify a list of params/options for the test script.
           trim: true
+      - choice:
+          name: TEST_SCRIPT
+          choices:
+            - Default (from catalog)
+            - Auto-retry
+            - run-tests
+          description: |
+            Test execution mode:
+            - Default: Use catalog configuration (hdfs-operator uses auto-retry, others use run-tests)
+            - Auto-retry: Force use of auto-retry-tests.py with intelligent retry logic
+            - run-tests: Force use of traditional run-tests script
     wrappers:
       - credentials-binding:
         - text:
@@ -101,6 +112,7 @@
               --env OPENSEARCH_DASHBOARDS_URL='{{ opensearch_dashboards_url }}' \
               --env GIT_BRANCH=$GIT_BRANCH \
               --env TEST_SCRIPT_PARAMS="$TEST_SCRIPT_PARAMS" \
+              --env TEST_SCRIPT="$TEST_SCRIPT" \
               --env VECTOR_AGGREGATOR='vector-aggregator.default.svc.cluster.local:6000' \
               oci.stackable.tech/operator-test-runner:latest
     publishers:
