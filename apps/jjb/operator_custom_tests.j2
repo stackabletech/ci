@@ -35,11 +35,17 @@
           selectedValue: NONE
           sortMode: ASCENDING_SMART
           defaultValue: origin/main
+      - string:
+          name: TEST_SCRIPT_PARAMS
+          description: Use this string to specify a list of params/options for the test script.
+          trim: true
       - choice:
-          name: OPERATOR_VERSION
-          description: Version of the operator (binary) this test should use
-          choices:{% for version in operator_versions[testsuite.id] %}
-            - {{ version }}{% endfor %}
+          name: TEST_SCRIPT
+          choices:
+            - Default (from catalog)
+            - Auto-retry
+            - run-tests
+          description: "Test execution mode: Default uses catalog configuration (hdfs-operator uses auto-retry, others use run-tests), Auto-retry forces auto-retry-tests.py with intelligent retry logic, run-tests forces traditional run-tests script"
     wrappers:
       - credentials-binding:
         - text:
