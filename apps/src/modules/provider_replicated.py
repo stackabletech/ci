@@ -67,7 +67,7 @@ def get_cluster(name):
     Get cluster by name
     """
     clusters = get_clusters()
-    return clusters[name] if name in clusters else None
+    return clusters.get(name, None)
 
 
 def wait_for_running_cluster(name, logger):

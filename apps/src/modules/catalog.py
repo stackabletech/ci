@@ -194,7 +194,11 @@ def get_auto_retry_config(operator_id):
     operator_test = get_operator_test(operator_id)
 
     # Default configuration
-    default_config = {"attempts_parallel": 0, "attempts_serial": 3, "delete_failed_namespaces": True}
+    default_config = {
+        "attempts_parallel": 0,
+        "attempts_serial": 3,
+        "delete_failed_namespaces": True,
+    }
 
     if not operator_test or "auto_retry" not in operator_test:
         return default_config

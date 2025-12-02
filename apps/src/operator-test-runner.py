@@ -161,9 +161,8 @@ def log(msg=""):
     timestamp = f"{datetime.now(UTC):%Y-%m-%d %H:%M:%S}"
     print(f"{timestamp} :: {msg}")
     sys.stdout.flush()
-    f = open(TESTDRIVER_LOGFILE, "a")
-    f.write(f"{timestamp} :: {msg}\n")
-    f.close()
+    with open(TESTDRIVER_LOGFILE, "a") as f:
+        f.write(f"{timestamp} :: {msg}\n")
 
 
 def clone_git_repo(repo):
@@ -193,13 +192,13 @@ def run_tests(operator, operator_version, test_script_params):
     """
 
     # Get test script configuration - check for runtime override first
-    test_script_override = os.environ.get('TEST_SCRIPT', '').strip()
+    test_script_override = os.environ.get("TEST_SCRIPT", "").strip()
 
-    if test_script_override == 'Auto-retry':
-        test_script = 'auto-retry-tests.py'
+    if test_script_override == "Auto-retry":
+        test_script = "auto-retry-tests.py"
         log(f"Using test script: {test_script} (user override)")
-    elif test_script_override == 'run-tests':
-        test_script = 'run-tests'
+    elif test_script_override == "run-tests":
+        test_script = "run-tests"
         log(f"Using test script: {test_script} (user override)")
     else:
         # Default or empty - use catalog configuration
@@ -235,7 +234,7 @@ def run_tests(operator, operator_version, test_script_params):
                 parts = test_script_params.split("--parallel")
                 if len(parts) > 1:
                     parallel_value = parts[1].strip().split()[0]
-            except:
+            except Exception:
                 pass
 
         # Build command for auto-retry-tests.py

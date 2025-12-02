@@ -33,8 +33,7 @@ def get_platform_metadata():
     Creates a dict containing display name and version list for a given platform.
     """
     return {
-        p["id"]: {"name": p["name"], "versions": [v for v in p["versions"]]}
-        for p in catalog.platforms
+        p["id"]: {"name": p["name"], "versions": dict(p["versions"])} for p in catalog.platforms
     }
 
 
@@ -143,17 +142,30 @@ def execute_jjb():
     """
     exit_code = os.system("jenkins-jobs --conf /jjb/jjb.conf update /jjb/maintenance.yaml")
     if exit_code != 0:
-        print(f"ERROR: jenkins-jobs failed for maintenance.yaml with exit code {exit_code}", file=sys.stderr)
+        print(
+            f"ERROR: jenkins-jobs failed for maintenance.yaml with exit code {exit_code}",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
-    exit_code = os.system("jenkins-jobs --conf /jjb/jjb.conf update /jjb/operator_weekly_tests.yaml")
+    exit_code = os.system(
+        "jenkins-jobs --conf /jjb/jjb.conf update /jjb/operator_weekly_tests.yaml"
+    )
     if exit_code != 0:
-        print(f"ERROR: jenkins-jobs failed for operator_weekly_tests.yaml with exit code {exit_code}", file=sys.stderr)
+        print(
+            f"ERROR: jenkins-jobs failed for operator_weekly_tests.yaml with exit code {exit_code}",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
-    exit_code = os.system("jenkins-jobs --conf /jjb/jjb.conf update /jjb/operator_custom_tests.yaml")
+    exit_code = os.system(
+        "jenkins-jobs --conf /jjb/jjb.conf update /jjb/operator_custom_tests.yaml"
+    )
     if exit_code != 0:
-        print(f"ERROR: jenkins-jobs failed for operator_custom_tests.yaml with exit code {exit_code}", file=sys.stderr)
+        print(
+            f"ERROR: jenkins-jobs failed for operator_custom_tests.yaml with exit code {exit_code}",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
 
