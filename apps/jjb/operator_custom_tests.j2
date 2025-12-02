@@ -35,6 +35,11 @@
           selectedValue: NONE
           sortMode: ASCENDING_SMART
           defaultValue: origin/main
+      - choice:
+          name: OPERATOR_VERSION
+          description: Version of the operator (binary) this test should use
+          choices:{% for version in operator_versions[testsuite.id] %}
+            - {{ version }}{% endfor %}
     wrappers:
       - credentials-binding:
         - text:
