@@ -7,19 +7,39 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
+      spec:
+        node-count: 1
+    - id: replicated-kind-arm
       spec:
         node-count: 1
     - id: replicated-azure
       spec:
         instance-type: Standard_D8S_v5
+    - id: replicated-azure-arm
+      spec:
+        instance-type: Standard_D8ps_v5
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     platform: replicated-azure
@@ -32,21 +52,40 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec:
         instance-type: r1.medium
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
+      spec: {}
+    - id: replicated-aws-arm
       spec: {}
     - id: ionos-k8s
       spec:
         ram: 4096
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
+      spec: {}
   weekly_test:
     platform: replicated-azure
     test_script_params: --parallel 1
@@ -58,18 +97,37 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     platform: replicated-k3s
@@ -82,18 +140,37 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     platform: replicated-azure
@@ -109,18 +186,37 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     platform: replicated-azure
@@ -133,18 +229,37 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     platform: replicated-azure
@@ -157,18 +272,37 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     platform: replicated-azure
@@ -181,21 +315,40 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec:
         instance-type: r1.medium
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
+      spec: {}
+    - id: replicated-aws-arm
       spec: {}
     - id: ionos-k8s
       spec:
         ram: 4096
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
+      spec: {}
   weekly_test:
     platform: replicated-azure
     test_script_params: --parallel 1
@@ -207,18 +360,37 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     platform: replicated-k3s
@@ -231,18 +403,37 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     # The Azure replicated cluster has two nodepools:
@@ -267,18 +458,37 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     platform: replicated-azure
@@ -291,18 +501,37 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     platform: replicated-azure
@@ -315,18 +544,37 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     platform: replicated-azure
@@ -339,18 +587,37 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     platform: replicated-k3s
@@ -363,18 +630,37 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     platform: replicated-k3s
@@ -387,18 +673,37 @@
   platforms:
     - id: replicated-k3s
       spec: {}
+    - id: replicated-k3s-arm
+      spec: {}
     - id: replicated-kind
       spec:
         node-count: 1
+    - id: replicated-kind-arm
+      spec:
+        node-count: 1
     - id: replicated-azure
+      spec: {}
+    - id: replicated-azure-arm
       spec: {}
     - id: replicated-openshift
       spec: {}
     - id: replicated-gke
       spec: {}
+    - id: replicated-gke-arm
+      spec: {}
     - id: replicated-aws
       spec: {}
+    - id: replicated-aws-arm
+      spec: {}
     - id: ionos-k8s
+      spec: {}
+    - id: replicated-rke2
+      spec: {}
+    - id: replicated-rke2-arm
+      spec: {}
+    - id: replicated-oke
+      spec: {}
+    - id: replicated-oke-arm
       spec: {}
   weekly_test:
     platform: replicated-azure

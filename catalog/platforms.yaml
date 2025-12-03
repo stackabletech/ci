@@ -1,105 +1,221 @@
 ---
-providers:
-  - id: replicated
-    name: "replicated.com"
-  - id: ionos
-    name: "IONOS"
 platforms:
   - id: replicated-kind
-    name: "kind on replicated.com"
+    name: kind on replicated.com
     provider: replicated
-    versions:
-      - "1.34.0"
-      - "1.33.4"
-      - "1.32.8"
-      - "1.31.12"
-      - "1.30.13"
     spec:
+      disk-size: 100
       distribution: kind
       instance-type: r1.xlarge
-      disk-size: 100
       node-count: 1
-  - id: replicated-azure
-    name: "Azure AKS on replicated.com"
+    versions:
+      - 1.34.0
+      - 1.33.4
+      - 1.32.8
+      - 1.31.12
+      - 1.30.13
+  - id: replicated-kind-arm
+    name: kind on replicated.com - ARM
     provider: replicated
+    spec:
+      disk-size: 100
+      distribution: kind
+      instance-type: r1a.xlarge
+      node-count: 1
+    versions:
+      - 1.34.0
+      - 1.33.4
+      - 1.32.8
+      - 1.31.12
+      - 1.30.13
+  - id: replicated-rke2
+    name: RKE2 on replicated.com
+    provider: replicated
+    spec:
+      disk-size: 100
+      distribution: rke2
+      instance-type: r1.large
+      node-count: 3
+    versions:
+      - 1.34.2
+      - 1.33.6
+      - 1.32.10
+      - 1.31.14
+      - 1.30.14
+  - id: replicated-rke2-arm
+    name: RKE2 on replicated.com - ARM
+    provider: replicated
+    spec:
+      disk-size: 100
+      distribution: rke2
+      instance-type: r1a.large
+      node-count: 3
+    versions:
+      - 1.34.2
+      - 1.33.6
+      - 1.32.10
+      - 1.31.14
+      - 1.30.14
+  - id: replicated-k3s
+    name: k3s on replicated.com
+    provider: replicated
+    spec:
+      disk-size: 100
+      distribution: k3s
+      instance-type: r1.large
+      node-count: 3
+    versions:
+      - 1.34.2
+      - 1.33.6
+      - 1.32.10
+      - 1.31.14
+      - 1.30.14
+  - id: replicated-k3s-arm
+    name: k3s on replicated.com - ARM
+    provider: replicated
+    spec:
+      disk-size: 100
+      distribution: k3s
+      instance-type: r1a.large
+      node-count: 3
+    versions:
+      - 1.34.2
+      - 1.33.6
+      - 1.32.10
+      - 1.31.14
+      - 1.30.14
+  - id: replicated-azure
+    name: Azure AKS on replicated.com
+    provider: replicated
+    spec:
+      disk-size: 100
+      distribution: aks
+      instance-type: Standard_D4S_v5
+      node-count: 3
     versions:
       - "1.33"
       - "1.32"
       - "1.31"
-    spec:
-      distribution: aks
-      instance-type: Standard_D4S_v5
-      disk-size: 100
-      node-count: 3
-  - id: replicated-aws
-    name: "Amazon AWS EKS on replicated.com"
+  - id: replicated-azure-arm
+    name: Azure AKS on replicated.com - ARM
     provider: replicated
+    spec:
+      disk-size: 100
+      distribution: aks
+      instance-type: Standard_D4ps_v5
+      node-count: 3
+    versions:
+      - "1.33"
+      - "1.32"
+      - "1.31"
+  - id: replicated-aws
+    name: Amazon AWS EKS on replicated.com
+    provider: replicated
+    spec:
+      disk-size: 100
+      distribution: eks
+      instance-type: m6i.large
+      node-count: 3
     versions:
       - "1.34"
       - "1.33"
       - "1.32"
       - "1.31"
       - "1.30"
-      - "1.29"
-      - "1.28"
-    spec:
-      distribution: eks
-      instance-type: m6i.large
-      disk-size: 100
-      node-count: 3
-  - id: replicated-gke
-    name: "Google GKE on replicated.com"
+  - id: replicated-aws-arm
+    name: Amazon AWS EKS on replicated.com - ARM
     provider: replicated
+    spec:
+      disk-size: 100
+      distribution: eks
+      instance-type: m7g.large
+      node-count: 3
+    versions:
+      - "1.34"
+      - "1.33"
+      - "1.32"
+      - "1.31"
+      - "1.30"
+  - id: replicated-gke
+    name: Google GKE on replicated.com
+    provider: replicated
+    spec:
+      disk-size: 100
+      distribution: gke
+      instance-type: e2-standard-2
+      node-count: 3
     versions:
       - "1.33"
       - "1.32"
       - "1.31"
-    spec:
-      distribution: gke
-      instance-type: e2-standard-2
-      disk-size: 100
-      node-count: 3
-  - id: replicated-openshift
-    name: "Openshift on replicated.com"
+  - id: replicated-gke-arm
+    name: Google GKE on replicated.com - ARM
     provider: replicated
+    spec:
+      disk-size: 100
+      distribution: gke
+      instance-type: t2a-standard-2
+      node-count: 3
     versions:
+      - "1.33"
+      - "1.32"
+      - "1.31"
+  - id: replicated-openshift
+    name: OpenShift on replicated.com
+    provider: replicated
+    spec:
+      disk-size: 100
+      distribution: openshift
+      instance-type: r1.large
+      node-count: 3
+    versions: &id001
       - 4.20.0-okd
       - 4.19.0-okd
       - 4.18.0-okd
       - 4.17.0-okd
       - 4.16.0-okd
-      - 4.15.0-okd
-      - 4.14.0-okd
-    spec:
-      distribution: openshift
-      instance-type: r1.large
-      disk-size: 100
-      node-count: 3
-  - id: replicated-k3s
-    name: "k3s on replicated.com"
-    provider: replicated
-    versions:
-      - "1.34.1"
-      - "1.33.5"
-      - "1.32.9"
-      - "1.31.13"
-      - "1.30.14"
-    spec:
-      distribution: k3s
-      instance-type: r1.large
-      disk-size: 100
-      node-count: 3
   - id: ionos-k8s
-    name: "IONOS managed K8s"
+    name: IONOS managed K8s
     provider: ionos
-    versions:
-      - "1.33.3"
-      - "1.32.6"
-      - "1.31.9"
     spec:
+      cores: 4
+      disk-size: 100
+      disk-type: HDD
+      location: de/txl
       node-count: 3
       ram: 8192
-      cores: 4
-      location: de/txl
-      disk-type: HDD
+    versions:
+      - 1.33.3
+      - 1.32.6
+      - 1.31.10
+  - id: replicated-oke
+    name: OKE on replicated.com
+    provider: replicated
+    spec:
       disk-size: 100
+      distribution: oke
+      instance-type: VM.Standard3.Flex.2
+      node-count: 3
+    versions:
+      - 1.34.1
+      - 1.33.1
+      - 1.32.1
+      - 1.31.10
+  - id: replicated-oke-arm
+    name: OKE on replicated.com - ARM
+    provider: replicated
+    spec:
+      disk-size: 100
+      distribution: oke
+      instance-type: VM.Standard.A1.Flex.2
+      node-count: 3
+    versions:
+      - 1.34.1
+      - 1.33.1
+      - 1.32.1
+      - 1.31.10
+providers:
+  - id: replicated
+    name: replicated.com
+  - id: ionos
+    name: IONOS
