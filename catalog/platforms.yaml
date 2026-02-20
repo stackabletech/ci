@@ -9,10 +9,11 @@ platforms:
       instance-type: r1.xlarge
       node-count: 1
     versions:
-      - 1.34.0
-      - 1.33.4
-      - 1.32.8
-      - 1.31.12
+      - 1.35.0
+      - 1.34.3
+      - 1.33.7
+      - 1.32.11
+      - 1.31.14
       - 1.30.13
   - id: replicated-kind-arm
     name: kind on replicated.com - ARM
@@ -23,10 +24,11 @@ platforms:
       instance-type: r1a.xlarge
       node-count: 1
     versions:
-      - 1.34.0
-      - 1.33.4
-      - 1.32.8
-      - 1.31.12
+      - 1.35.0
+      - 1.34.3
+      - 1.33.7
+      - 1.32.11
+      - 1.31.14
       - 1.30.13
   - id: replicated-rke2
     name: RKE2 on replicated.com
@@ -37,11 +39,10 @@ platforms:
       instance-type: r1.large
       node-count: 3
     versions:
-      - 1.34.2
-      - 1.33.6
-      - 1.32.10
-      - 1.31.14
-      - 1.30.14
+      - 1.35.0
+      - 1.34.3
+      - 1.33.7
+      - 1.32.11
   - id: replicated-rke2-arm
     name: RKE2 on replicated.com - ARM
     provider: replicated
@@ -51,11 +52,10 @@ platforms:
       instance-type: r1a.large
       node-count: 3
     versions:
-      - 1.34.2
-      - 1.33.6
-      - 1.32.10
-      - 1.31.14
-      - 1.30.14
+      - 1.35.0
+      - 1.34.3
+      - 1.33.7
+      - 1.32.11
   - id: replicated-k3s
     name: k3s on replicated.com
     provider: replicated
@@ -65,11 +65,10 @@ platforms:
       instance-type: r1.large
       node-count: 3
     versions:
-      - 1.34.2
-      - 1.33.6
-      - 1.32.10
-      - 1.31.14
-      - 1.30.14
+      - 1.35.0
+      - 1.34.3
+      - 1.33.7
+      - 1.32.11
   - id: replicated-k3s-arm
     name: k3s on replicated.com - ARM
     provider: replicated
@@ -79,11 +78,10 @@ platforms:
       instance-type: r1a.large
       node-count: 3
     versions:
-      - 1.34.2
-      - 1.33.6
-      - 1.32.10
-      - 1.31.14
-      - 1.30.14
+      - 1.35.0
+      - 1.34.3
+      - 1.33.7
+      - 1.32.11
   - id: replicated-azure
     name: Azure AKS on replicated.com
     provider: replicated
@@ -93,9 +91,9 @@ platforms:
       instance-type: Standard_D4S_v5
       node-count: 3
     versions:
+      - "1.34"
       - "1.33"
       - "1.32"
-      - "1.31"
   - id: replicated-azure-arm
     name: Azure AKS on replicated.com - ARM
     provider: replicated
@@ -105,9 +103,9 @@ platforms:
       instance-type: Standard_D4ps_v5
       node-count: 3
     versions:
+      - "1.34"
       - "1.33"
       - "1.32"
-      - "1.31"
   - id: replicated-aws
     name: Amazon AWS EKS on replicated.com
     provider: replicated
@@ -117,6 +115,7 @@ platforms:
       instance-type: m6i.large
       node-count: 3
     versions:
+      - "1.35"
       - "1.34"
       - "1.33"
       - "1.32"
@@ -131,6 +130,7 @@ platforms:
       instance-type: m7g.large
       node-count: 3
     versions:
+      - "1.35"
       - "1.34"
       - "1.33"
       - "1.32"
@@ -145,9 +145,9 @@ platforms:
       instance-type: e2-standard-2
       node-count: 3
     versions:
+      - "1.34"
       - "1.33"
       - "1.32"
-      - "1.31"
   - id: replicated-gke-arm
     name: Google GKE on replicated.com - ARM
     provider: replicated
@@ -157,9 +157,9 @@ platforms:
       instance-type: t2a-standard-2
       node-count: 3
     versions:
+      - "1.34"
       - "1.33"
       - "1.32"
-      - "1.31"
   - id: replicated-openshift
     name: OpenShift on replicated.com
     provider: replicated
@@ -169,6 +169,7 @@ platforms:
       instance-type: r1.large
       node-count: 3
     versions: &id001
+      - 4.21.0-okd
       - 4.20.0-okd
       - 4.19.0-okd
       - 4.18.0-okd
@@ -197,10 +198,9 @@ platforms:
       instance-type: VM.Standard3.Flex.2
       node-count: 3
     versions:
-      - 1.34.1
+      - 1.34.2
       - 1.33.1
-      - 1.32.1
-      - 1.31.10
+      - 1.32.10
   - id: replicated-oke-arm
     name: OKE on replicated.com - ARM
     provider: replicated
@@ -210,10 +210,9 @@ platforms:
       instance-type: VM.Standard.A1.Flex.2
       node-count: 3
     versions:
-      - 1.34.1
+      - 1.34.2
       - 1.33.1
-      - 1.32.1
-      - 1.31.10
+      - 1.32.10
 providers:
   - id: replicated
     name: replicated.com
