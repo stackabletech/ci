@@ -14,7 +14,6 @@ platforms:
       - 1.33.7
       - 1.32.11
       - 1.31.14
-      - 1.30.13
   - id: replicated-kind-arm
     name: kind on replicated.com - ARM
     provider: replicated
@@ -29,7 +28,6 @@ platforms:
       - 1.33.7
       - 1.32.11
       - 1.31.14
-      - 1.30.13
   - id: replicated-rke2
     name: RKE2 on replicated.com
     provider: replicated
@@ -120,7 +118,6 @@ platforms:
       - "1.33"
       - "1.32"
       - "1.31"
-      - "1.30"
   - id: replicated-aws-arm
     name: Amazon AWS EKS on replicated.com - ARM
     provider: replicated
@@ -135,7 +132,6 @@ platforms:
       - "1.33"
       - "1.32"
       - "1.31"
-      - "1.30"
   - id: replicated-gke
     name: Google GKE on replicated.com
     provider: replicated
@@ -174,7 +170,15 @@ platforms:
       - 4.19.0-okd
       - 4.18.0-okd
       - 4.17.0-okd
-      - 4.16.0-okd
+  - id: replicated-openshift-arm
+    name: OpenShift on replicated.com - ARM
+    provider: replicated
+    spec:
+      disk-size: 100
+      distribution: openshift
+      instance-type: r1a.large
+      node-count: 3
+    versions: *id001
   - id: ionos-k8s
     name: IONOS managed K8s
     provider: ionos
@@ -185,10 +189,7 @@ platforms:
       location: de/txl
       node-count: 3
       ram: 8192
-    versions:
-      - 1.33.3
-      - 1.32.6
-      - 1.31.10
+    versions: []
   - id: replicated-oke
     name: OKE on replicated.com
     provider: replicated
