@@ -3,7 +3,7 @@ requests==2.32.5
 HiYaPyCo==0.7.0
 jinja2==3.1.6
 jenkins-job-builder==6.4.3
-# Need to pin setuptools to this version because it's the last one that ships with the pkg_resources module
-# which is required by jenkins-job-builder above.
+# Need to pin setuptools to this version because it's the last one that ships
+# with the pkg_resources module which is required by jenkins-job-builder above.
 # See: https://setuptools.pypa.io/en/stable/history.html#v82-0-0
 setuptools==81.0.0
