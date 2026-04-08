@@ -84,6 +84,9 @@ def wait_for_running_cluster(name, logger):
         cluster = get_cluster(name)
         state = cluster["state"] if cluster else None
 
+    logger(f"Cluster '{name}' is in state {state}")
+    logger("Sleeping 10 seconds, as sometimes kubeconfig could not be generated directly afterwards")
+    sleep(10)
 
 def update_kubeconfig(cluster, logger):
     """
