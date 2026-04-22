@@ -51,7 +51,7 @@ RUN curl -L https://github.com/stackabletech/stackable-cockpit/releases/latest/d
 RUN chmod a+x /usr/local/bin/stackablectl 
 
 # install kubectl-kuttl
-RUN wget -O /tmp/kubectl-kuttl https://github.com/kudobuilder/kuttl/releases/download/v0.11.1/kubectl-kuttl_0.11.1_linux_x86_64
+RUN wget -O /tmp/kubectl-kuttl https://github.com/kudobuilder/kuttl/releases/download/v0.20.0/kubectl-kuttl_0.20.0_linux_x86_64
 RUN install -o root -g root -m 0755 /tmp/kubectl-kuttl /usr/local/bin/kubectl-kuttl
 RUN rm /tmp/kubectl-kuttl
 
