@@ -164,7 +164,7 @@ def get_operator_test(operator_id):
 def get_test_script(operator_id):
     """
     Get the test script name for a given operator.
-    Defaults to "run-tests" if not specified.
+    Defaults to "auto-retry-tests.py" if not specified.
 
     operator_id     ID of the operator test
 
@@ -172,9 +172,9 @@ def get_test_script(operator_id):
     """
     operator_test = get_operator_test(operator_id)
     if not operator_test:
-        return "run-tests"  # default
+        return "auto-retry-tests.py"  # default
 
-    return operator_test.get("test_script", "run-tests")
+    return operator_test.get("test_script", "auto-retry-tests.py")
 
 
 def get_auto_retry_config(operator_id):

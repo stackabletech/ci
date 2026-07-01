@@ -183,7 +183,7 @@ def clone_git_repo(repo):
 def run_tests(operator, operator_version, test_script_params):
     """
     Runs the tests using the test script in the operator repo.
-    The test script can be either 'run-tests' (default) or 'auto-retry-tests.py'
+    The test script can be either 'auto-retry-tests.py' (default) or 'run-tests'
     based on the operator's catalog configuration.
 
     operator:              name of the operator-repo (usually with suffix '-operator')

@@ -36,7 +36,7 @@ Test script selection is configured per-operator in `catalog/operator-tests.yaml
   auto_retry:
     attempts_parallel: 2  # Number of parallel retry attempts (default: 0)
     attempts_serial: 3    # Number of serial retry attempts (default: 3)
-    keep_failed_namespaces: false  # Keep namespaces for debugging (default: false)
+    delete_failed_namespaces: true  # Keep namespaces for debugging (default: false)
 ```
 
 If `test_script` is not specified, the default `run-tests` is used, maintaining backward compatibility with all existing operators.

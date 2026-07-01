@@ -180,9 +180,6 @@
   git_repo: hdfs-operator
   spec:
     node-count: 4
-  # Test script configuration
-  # Options: "run-tests" (default) or "auto-retry-tests.py"
-  test_script: auto-retry-tests.py
   platforms:
     - id: replicated-k3s
       spec: {}
