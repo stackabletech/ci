@@ -108,6 +108,9 @@ class PlatformUpdater:
     # Distributions to exclude
     EXCLUDED_DISTRIBUTIONS = {"embedded-cluster"}
 
+    # Keep at most this many (latest) minor version lines per platform.
+    MAX_VERSIONS_PER_PLATFORM = 5
+
     def __init__(self, platforms_yaml_path: str = "catalog/platforms.yaml"):
         self.platforms_yaml_path = Path(platforms_yaml_path)
         self.replicated_data = None
@@ -258,10 +261,7 @@ class PlatformUpdater:
             distribution_data["versions"], distribution
         )
 
-        # Limit to reasonable number of versions (e.g., last 5 minor versions)
-        max_versions = 5
-        if len(latest_versions) > max_versions:
-            latest_versions = latest_versions[:max_versions]
+        latest_versions = latest_versions[: self.MAX_VERSIONS_PER_PLATFORM]
 
         platform["versions"] = latest_versions
         return platform
@@ -331,9 +331,7 @@ class PlatformUpdater:
                 latest_versions = self.get_latest_patch_versions(
                     ionos_versions, "ionos"
                 )
-                # Limit to 5 versions
-                if len(latest_versions) > 5:
-                    latest_versions = latest_versions[:5]
+                latest_versions = latest_versions[: self.MAX_VERSIONS_PER_PLATFORM]
                 platform["versions"] = latest_versions
 
                 print(f"  ✓ Updated {platform_id}")
