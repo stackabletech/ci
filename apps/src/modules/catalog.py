@@ -36,7 +36,6 @@ def read_platforms(logger):
     logger              logger (String-consuming function)
     """
     global platforms
-    platforms = hiyapyco.load("/platforms.yaml")["platforms"]
     platforms_yaml = hiyapyco.load("/platforms.yaml")
     if "platforms" not in platforms_yaml:
         logger("platforms.yaml does not contain platforms.")
