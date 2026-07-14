@@ -27,6 +27,8 @@ def create_cluster(provider_id, id, spec, platform_version, cluster_info_file, l
         return replicated.create_cluster(id, spec, platform_version, cluster_info_file, logger)
     if provider_id == "ionos":
         return ionos.create_cluster(id, spec, platform_version, cluster_info_file, logger)
+    logger(f"Unknown provider '{provider_id}'; cannot create a cluster.")
+    return None
 
 
 def terminate_cluster(provider_id, cluster, logger):
@@ -41,3 +43,5 @@ def terminate_cluster(provider_id, cluster, logger):
         return replicated.terminate_cluster(cluster, logger)
     if provider_id == "ionos":
         return ionos.terminate_cluster(cluster, logger)
+    logger(f"Unknown provider '{provider_id}'; cannot terminate the cluster.")
+    return False
