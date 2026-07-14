@@ -1,0 +1,26 @@
+---
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request: {}
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    name: Lint Python & validate catalog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Install tools
+        run: pip install --quiet pyyaml ruff
+      - name: Ruff (scripts)
+        run: ruff check scripts/
+      - name: Ruff (apps)
+        run: ruff check apps/
+      - name: Validate catalog consistency
+        run: python3 scripts/check-catalog.py
