@@ -165,11 +165,11 @@ platforms:
       instance-type: r1.large
       node-count: 3
     versions: &id001
+      - 4.22.0-okd
       - 4.21.0-okd
       - 4.20.0-okd
       - 4.19.0-okd
       - 4.18.0-okd
-      - 4.17.0-okd
   - id: replicated-openshift-arm
     name: OpenShift on replicated.com - ARM
     provider: replicated
