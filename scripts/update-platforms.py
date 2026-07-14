@@ -7,11 +7,15 @@ This script:
 2. Fetches available versions from `ionosctl k8s version list --output json`
 3. Filters to keep only the latest patch version from each minor version line
 4. Adds ARM alternatives where supported (Replicated only)
-5. Updates the platforms.yaml file while preserving structure
-6. Formats the YAML output using yq for consistency
+5. Rewrites platforms.yaml in a canonical, deterministic style
+
+The script owns the layout of platforms.yaml end to end (see _CatalogDumper),
+so it needs no external formatter and re-running it on an unchanged catalog
+produces no diff. Do not hand-edit platforms.yaml; re-run this script instead.
 """
 
 import json
+import shutil
 import subprocess
 import sys
 from collections import defaultdict
@@ -19,6 +23,42 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 import yaml
+
+
+class _CatalogDumper(yaml.SafeDumper):
+    """Emit YAML in the catalog's canonical style so the script fully owns the file.
+
+    Two deviations from PyYAML's defaults keep diffs limited to real changes:
+    - Block sequences are indented under their key (the committed 2-space style)
+      rather than sitting at the parent's indentation.
+    - Anchors/aliases are never emitted: the script owns the whole file, so every
+      list is written literally. This keeps entries independent (e.g. OpenShift
+      and its ARM variant) instead of coupling them through a shared anchor.
+    """
+
+    def increase_indent(self, flow=False, indentless=False):
+        return super().increase_indent(flow, indentless=False)
+
+    def ignore_aliases(self, data):
+        return True
+
+
+def _represent_str(dumper: yaml.Dumper, data: str):
+    """Double-quote scalars that would otherwise parse as a non-string.
+
+    Version lines like "1.34" must stay strings (bare 1.34 is a float). We defer
+    the "would this parse as a number/bool/etc.?" decision to PyYAML's own
+    resolver, and only override the quote character to double quotes to match the
+    committed convention. Genuine strings (ids, names, "1.35.0") stay unquoted.
+    """
+    node = dumper.represent_scalar("tag:yaml.org,2002:str", data)
+    resolved = dumper.resolve(yaml.nodes.ScalarNode, data, (True, False))
+    if resolved != "tag:yaml.org,2002:str":
+        node.style = '"'
+    return node
+
+
+_CatalogDumper.add_representer(str, _represent_str)
 
 
 class PlatformUpdater:
@@ -72,6 +112,19 @@ class PlatformUpdater:
         self.platforms_yaml_path = Path(platforms_yaml_path)
         self.replicated_data = None
 
+    def check_prerequisites(self) -> None:
+        """Verify the provider CLIs used to fetch versions are available."""
+        print("🔎 Checking prerequisites...")
+
+        # The version data comes from these provider CLIs; fail early with a
+        # clear message rather than midway through the update.
+        for tool in ("replicated", "ionosctl"):
+            if shutil.which(tool) is None:
+                print(f"❌ `{tool}` not found on PATH. It is required to fetch versions.")
+                sys.exit(1)
+
+        print("✓ Prerequisites OK")
+
     def fetch_replicated_versions(self) -> List[Dict]:
         """Fetch available versions from Replicated API."""
         print("📡 Fetching versions from Replicated API...")
@@ -104,6 +157,24 @@ class PlatformUpdater:
                 check=True,
             )
             data = json.loads(result.stdout)
+
+            # `ionosctl ... --output json` does not return a JSON array. It
+            # returns a JSON-encoded *string* holding a Go slice literal, e.g.
+            #   "[1.34.2 1.33.3 1.32.7]"
+            # Iterating that string directly (as this script used to) walks it
+            # character by character and produces garbage versions like "7",
+            # "6", ... — which silently wiped/corrupted the IONOS entry. Parse
+            # the slice literal into an actual list of version strings.
+            if isinstance(data, str):
+                data = data.strip().strip("[]").split()
+
+            if not isinstance(data, list) or not all(
+                self.parse_version(v) != (0, 0, 0) for v in data
+            ):
+                print(f"❌ Unexpected IONOS version data: {data!r}")
+                print("   Expected a list of versions like ['1.34.2', '1.33.3'].")
+                sys.exit(1)
+
             print(f"✓ Fetched {len(data)} versions from IONOS")
             return data
         except subprocess.CalledProcessError as e:
@@ -205,13 +276,17 @@ class PlatformUpdater:
         if not arm_instance:
             return None
 
-        # Create a copy with ARM-specific changes
+        # Create a copy with ARM-specific changes. Copy the nested spec and
+        # versions too, so the ARM variant never shares mutable state with its
+        # x86 counterpart.
         arm_platform = platform.copy()
         arm_platform["id"] = platform["id"] + suffix
         # Use "-" instead of parentheses to avoid parsing issues in Jenkins
         arm_platform["name"] = platform["name"] + " - ARM"
         arm_platform["spec"] = platform["spec"].copy()
         arm_platform["spec"]["instance-type"] = arm_instance
+        if "versions" in platform:
+            arm_platform["versions"] = list(platform["versions"])
 
         return arm_platform
 
@@ -315,7 +390,13 @@ class PlatformUpdater:
                             arm_id
                         )  # Track it to avoid future duplicates
 
-        # Check for missing distributions from Replicated and add them
+        # Warn about distributions Replicated offers that aren't in the catalog.
+        # We deliberately do NOT auto-create them: the correct instance-type,
+        # node-count and disk-size are provider-specific (a cloud distribution
+        # like eks/aks/gke cannot use a Replicated `r1.*` instance type), so a
+        # fabricated entry would be wrong and fail at test time. Adding a new
+        # distribution is a rare, deliberate act — surface it and let a human
+        # add it with the right spec.
         print("\n🔍 Checking for missing Replicated distributions...")
         for short_name, dist_data in distribution_lookup.items():
             if self.should_skip_distribution(short_name):
@@ -325,43 +406,11 @@ class PlatformUpdater:
             if not platform_id or platform_id in existing_platform_ids:
                 continue  # Already exists or not mapped
 
-            # Create new platform for this distribution
-            # Generate name if not provided (rke2, oke don't have "name" field)
-            platform_name = dist_data.get("name", f"{short_name.upper()} on replicated.com")
-            print(f"  ➕ Adding new platform: {platform_id} ({platform_name})")
-
-            # Get versions
-            latest_versions = self.get_latest_patch_versions(
-                dist_data["versions"], short_name
+            print(
+                f"  ⚠️  Replicated offers distribution '{short_name}' "
+                f"(would be '{platform_id}') which is not in {self.platforms_yaml_path}.\n"
+                f"      Add it manually with the correct spec if it should be tested."
             )
-            if len(latest_versions) > 5:
-                latest_versions = latest_versions[:5]
-
-            new_platform = {
-                "id": platform_id,
-                "name": platform_name,
-                "provider": "replicated",
-                "spec": {
-                    "distribution": short_name,
-                    "instance-type": "r1.xlarge",  # Default instance type
-                    "node-count": 3,
-                    "disk-size": 100,
-                },
-                "versions": latest_versions,
-            }
-
-            updated_platforms.append(new_platform)
-            existing_platform_ids.add(platform_id)
-
-            # Create ARM variant
-            arm_platform = self.create_arm_variant(new_platform)
-            if arm_platform:
-                arm_id = arm_platform["id"]
-                print(
-                    f"    ➕ Adding ARM variant: {arm_id} (instance: {arm_platform['spec']['instance-type']})"
-                )
-                new_arm_platforms.append(arm_platform)
-                existing_platform_ids.add(arm_id)
 
         # Add new ARM platforms after their x86 counterparts
         final_platforms = []
@@ -381,32 +430,27 @@ class PlatformUpdater:
         return platforms_data
 
     def save_platforms(self, data: Dict) -> None:
-        """Save updated platforms to YAML file."""
+        """Save updated platforms to YAML file.
+
+        The output is produced entirely by `_CatalogDumper`, which emits the
+        catalog's canonical style directly. There is deliberately no external
+        formatter (previously `yq`): the script owns the format on its own, so
+        the result is deterministic regardless of what tools are installed.
+        """
         print(f"\n💾 Saving updated platforms to {self.platforms_yaml_path}...")
         try:
             with open(self.platforms_yaml_path, "w") as f:
-                yaml.safe_dump(
+                yaml.dump(
                     data,
                     f,
+                    Dumper=_CatalogDumper,
                     sort_keys=True,
                     allow_unicode=True,
                     explicit_start=True,
+                    default_flow_style=False,
                     indent=2,
                 )
             print("✓ Saved successfully")
-
-            # Fix YAML formatting using yq (PyYAML has known formatting issues)
-            # https://github.com/yaml/pyyaml/issues/234
-            print("🔧 Fixing YAML formatting with yq...")
-            result = subprocess.run(
-                ["yq", "-i", "-P", str(self.platforms_yaml_path)],
-                capture_output=True,
-                text=True,
-            )
-            if result.returncode == 0:
-                print("✓ YAML formatting fixed")
-            else:
-                print(f"⚠️  yq formatting failed (non-critical): {result.stderr}")
         except Exception as e:
             print(f"❌ Failed to save: {e}")
             sys.exit(1)
@@ -417,6 +461,7 @@ class PlatformUpdater:
         print("Platform Version Updater")
         print("=" * 60)
 
+        self.check_prerequisites()
         updated_data = self.update_platforms()
         self.save_platforms(updated_data)
 
