@@ -36,6 +36,15 @@ python3 scripts/update-platforms.py
 git diff catalog/platforms.yaml
 ```
 
+[`scripts/check-catalog.py`](scripts/check-catalog.py) validates that `platforms.yaml`
+and `operator-tests.yaml` are consistent (every platform referenced by a test exists,
+every platform has a known provider). It exits non-zero on errors, so it is suitable
+for CI. Run it after editing either catalog file:
+
+```bash
+python3 scripts/check-catalog.py
+```
+
 ## Apps
 
 Under [apps/](apps/README.md), we maintain a bunch of Dockerized applications for the maintenance of Jenkins and to run the tests.
