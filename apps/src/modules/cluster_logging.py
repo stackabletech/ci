@@ -6,6 +6,8 @@ This module installs the "cluster logging" on a test cluster.
 log index.
 """
 
+import shlex
+
 from modules.command import run_command
 
 
@@ -22,7 +24,8 @@ def install_cluster_logging(cluster_id, endpoint, username, password, logger):
 
     logger("Creating configmap 'cluster-metadata' to be used by Vector aggretator and agent...")
     exit_code, output = run_command(
-        f"kubectl create configmap cluster-metadata --from-literal=T2_CLUSTER_ID={cluster_id}",
+        f"kubectl create configmap cluster-metadata "
+        f"--from-literal=T2_CLUSTER_ID={shlex.quote(str(cluster_id))}",
         "create configmap cluster-metadata",
     )
     if exit_code != 0:
@@ -32,7 +35,10 @@ def install_cluster_logging(cluster_id, endpoint, username, password, logger):
 
     logger("Create secret containing the credentials and endpoint for target logging system...")
     exit_code, output = run_command(
-        f"kubectl create secret generic cluster-logging-target  --from-literal=endpoint='{endpoint}' --from-literal=user='{username}' --from-literal=password='{password}'",
+        f"kubectl create secret generic cluster-logging-target "
+        f"--from-literal=endpoint={shlex.quote(endpoint)} "
+        f"--from-literal=user={shlex.quote(username)} "
+        f"--from-literal=password={shlex.quote(password)}",
         "create secret for logging target",
     )
     if exit_code != 0:
