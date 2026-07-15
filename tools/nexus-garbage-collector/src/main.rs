@@ -1,4 +1,4 @@
-use std::{env, process::exit};
+use std::{env, process::exit, time::Duration};
 
 use log::{debug, error, info};
 use regex::Regex;
@@ -35,7 +35,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let attestation_tag_regex = Regex::new(r"/manifests/sha256-([0-9a-f]{64}).att$").unwrap();
     let signature_tag_regex = Regex::new(r"/manifests/sha256-([0-9a-f]{64}).sig$").unwrap();
     let mut continuation_token: Option<String> = None;
-    let client = reqwest::Client::new();
+    // Timeout so a hung/slow Nexus can't block the job indefinitely.
+    let client = reqwest::Client::builder()
+        .timeout(Duration::from_secs(30))
+        .build()?;
 
     let mut signatures = Vec::<(String, String)>::new();
     let mut attestations = Vec::<(String, String)>::new();
