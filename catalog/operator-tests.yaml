@@ -67,6 +67,8 @@
     - id: replicated-openshift
       spec:
         instance-type: r1.medium
+        # OKD is so heavy that one node isn't enough and the operator sometimes gets stuck in Pending
+        node-count: 2
     - id: replicated-gke
       spec: {}
     - id: replicated-gke-arm
