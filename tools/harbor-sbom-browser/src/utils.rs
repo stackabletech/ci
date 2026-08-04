@@ -7,8 +7,8 @@ use lazy_static::lazy_static;
 use regex::Regex;
 use snafu::ResultExt;
 use snafu::Snafu;
-use std::process::Command;
 use strum::{EnumDiscriminants, IntoStaticStr};
+use tokio::process::Command;
 use tracing::error;
 
 lazy_static! {
@@ -74,6 +74,7 @@ pub async fn verify_attestation(
             repository, digest
         ))
         .output()
+        .await
         .context(CosignExecutionSnafu)?;
 
     if !cmd_output.status.success() {
