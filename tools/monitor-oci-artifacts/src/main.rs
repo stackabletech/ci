@@ -110,6 +110,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     continue;
                 }
 
+                if artifact
+                    .tags
+                    .as_ref()
+                    .unwrap()
+                    .iter()
+                    .any(|tag| tag.name == "artifacthub.io")
+                {
+                    // Artifact Hub metadata artifacts are not signed
+                    println!(
+                        "skipping Artifact Hub metadata {} {} ({})",
+                        repository_name,
+                        artifact.digest,
+                        artifact.tags.as_ref().unwrap()
+                    );
+                    continue;
+                }
+
                 if attestation_tag_regex.is_match(&artifact.tags.as_ref().unwrap()[0].name)
                 // .unwrap() can be used here because it's checked that tags are present and not empty at the beginning of the for loop
                 {
