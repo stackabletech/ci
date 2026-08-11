@@ -3,6 +3,7 @@ Main module of the Operator Test Runner application
 """
 
 import os
+import shlex
 import sys
 import uuid
 from datetime import UTC, datetime, timedelta
@@ -151,7 +152,7 @@ def set_target_folder_owner():
     That's why a UID/GID combo is to be specified as the OUTPUT_FILE_USER env var.
     This method recursively sets the ownership of the output files.
     """
-    os.system(f"chown -R {param_output_file_user} {TARGET_FOLDER}")
+    os.system(f"chown -R {shlex.quote(param_output_file_user)} {TARGET_FOLDER}")
 
 
 def log(msg=""):
@@ -169,9 +170,11 @@ def clone_git_repo(repo):
     """
     Clones the given Stackable GitHub repo
     """
-    git_branch_option = f"-b {param_git_branch}" if param_git_branch else ""
+    git_branch_option = f"-b {shlex.quote(param_git_branch)}" if param_git_branch else ""
     exit_code, output = run_command(
-        f"git clone {git_branch_option} https://github.com/stackabletech/{repo}.git", "git clone"
+        f"git clone {git_branch_option} "
+        f"https://github.com/stackabletech/{shlex.quote(repo)}.git",
+        "git clone",
     )
     if exit_code != 0:
         for line in output:
@@ -207,7 +210,11 @@ def run_tests(operator, operator_version, test_script_params):
 
     # Step 1: Installation of the SDP (retried max. 10 times to reduce flakiness)
     # This step is always done with run-tests regardless of the test script choice
-    command_install_sdp = f"cd {operator}/ && python ./scripts/run-tests --skip-tests --operator {operator.replace('-operator', '')}={operator_version}"
+    operator_name = operator.replace("-operator", "")
+    command_install_sdp = (
+        f"cd {shlex.quote(operator)}/ && python ./scripts/run-tests --skip-tests "
+        f"--operator {shlex.quote(operator_name)}={shlex.quote(operator_version)}"
+    )
     log("Running the following command to install SDP for test:")
     log(command_install_sdp)
     exit_code, output = run_command(command_install_sdp, "install sdp", retries=10, delay=60)
@@ -239,10 +246,10 @@ def run_tests(operator, operator_version, test_script_params):
 
         # Build command for auto-retry-tests.py
         command_parts = [
-            f"cd {operator}/",
+            f"cd {shlex.quote(operator)}/",
             "&&",
             "python ./scripts/auto-retry-tests.py",
-            f"--parallel {parallel_value}",
+            f"--parallel {shlex.quote(parallel_value)}",
             f"--attempts-parallel {retry_config['attempts_parallel']}",
             f"--attempts-serial {retry_config['attempts_serial']}",
             f"--output-dir {TARGET_FOLDER}test-results",
@@ -265,7 +272,7 @@ def run_tests(operator, operator_version, test_script_params):
 
         if extra_params:
             command_parts.append("--extra-args")
-            command_parts.extend(extra_params)
+            command_parts.extend(shlex.quote(param) for param in extra_params)
 
         command_parts.extend(["2>&1", ";", "echo $? > /test_exit_code"])
         command_run_tests = f"({' '.join(command_parts)}) | tee {TEST_OUTPUT_LOGFILE}"
@@ -273,7 +280,11 @@ def run_tests(operator, operator_version, test_script_params):
     else:
         # Use traditional run-tests script
         params = " --log-level debug" if "--log-level" not in test_script_params else ""
-        command_run_tests = f"(cd {operator}/ && python ./scripts/run-tests --skip-release {params} {test_script_params} 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}"
+        safe_params = " ".join(shlex.quote(tok) for tok in test_script_params.split())
+        command_run_tests = (
+            f"(cd {shlex.quote(operator)}/ && python ./scripts/run-tests --skip-release"
+            f"{params} {safe_params} 2>&1; echo $? > /test_exit_code) | tee {TEST_OUTPUT_LOGFILE}"
+        )
 
     log("Running the following test command:")
     log(command_run_tests)
