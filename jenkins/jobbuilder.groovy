@@ -44,10 +44,12 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'JENKINS_BOT_CREDENTIALS', passwordVariable: 'JENKINS_BOT_PASSWORD', usernameVariable: 'JENKINS_BOT_USERNAME')]) {
                     sh '''
+                        JENKINS_USERNAME="$JENKINS_BOT_USERNAME" \
+                        JENKINS_PASSWORD="$JENKINS_BOT_PASSWORD" \
                         docker run --rm \
                             --env JENKINS_URL=https://testing.stackable.tech \
-                            --env JENKINS_USERNAME=$JENKINS_BOT_USERNAME \
-                            --env JENKINS_PASSWORD=$JENKINS_BOT_PASSWORD \
+                            --env JENKINS_USERNAME \
+                            --env JENKINS_PASSWORD \
                             oci.stackable.tech/jenkins-job-builder:latest
                     '''
                 }
