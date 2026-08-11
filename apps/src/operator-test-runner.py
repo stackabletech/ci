@@ -367,7 +367,10 @@ if __name__ == "__main__":
         exit(EXIT_CODE_CLUSTER_FAILED)
 
     log("Cloning git repo...")
-    clone_git_repo(param_operator)
+    if not clone_git_repo(param_operator):
+        log("Could not clone the git repo; terminating the cluster and aborting.")
+        terminate_cluster(platform["provider"], cluster, log)
+        exit(EXIT_CODE_CLUSTER_FAILED)
 
     log("Waiting 1 minute for the cluster to become ready...")
     sleep(60)

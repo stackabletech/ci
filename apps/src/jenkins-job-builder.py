@@ -218,7 +218,9 @@ def read_chart_versions() -> dict[str, list[str]]:
 
     for op_name in ops:
         r = requests.get(
-            f"https://oci.stackable.tech/v2/sdp-charts/{op_name}/tags/list", auth=("user", "pass")
+            f"https://oci.stackable.tech/v2/sdp-charts/{op_name}/tags/list",
+            auth=("user", "pass"),
+            timeout=30,
         )
         if r.status_code == 200:
             result[op_name] = sorted([tag for tag in r.json()["tags"] if not tag.endswith(".sig")])

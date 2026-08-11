@@ -3,9 +3,13 @@ This module creates replicated.com clusters using the CLI
 """
 
 import re
-from time import sleep
+from time import monotonic, sleep
 
-from modules.command import run_command
+from modules.command import run_command, write_cluster_info_file
+
+# Upper bound for the blocking "wait for running" poll, so a stuck cluster
+# state can never hang a Jenkins job forever.
+WAIT_TIMEOUT_SECONDS = 1800
 
 
 def api_call_create_cluster(cluster_name, spec, platform_version, logger):
@@ -70,16 +74,23 @@ def get_cluster(name):
     return clusters.get(name, None)
 
 
-def wait_for_running_cluster(name, logger):
+def wait_for_running_cluster(name, logger, timeout=WAIT_TIMEOUT_SECONDS):
     """
     Wait until the named cluster is in the state 'running' (blocking operation)
 
     name        name of the cluster
     logger              logger (String-consuming function)
+    timeout             max seconds to wait before giving up
+
+    Returns True if the cluster became 'running', False on timeout.
     """
+    deadline = monotonic() + timeout
     state = None
     while state != "running":
         logger(f"Cluster '{name}' is in state {state}")
+        if monotonic() >= deadline:
+            logger(f"Timed out after {timeout}s waiting for cluster '{name}' to be running.")
+            return False
         sleep(5)
         cluster = get_cluster(name)
         state = cluster["state"] if cluster else None
@@ -87,6 +98,8 @@ def wait_for_running_cluster(name, logger):
     logger(f"Cluster '{name}' is in state {state}")
     logger("Sleeping 10 seconds, as sometimes kubeconfig could not be generated directly afterwards")
     sleep(10)
+    return True
+
 
 def update_kubeconfig(cluster, logger):
     """
@@ -100,13 +113,6 @@ def update_kubeconfig(cluster, logger):
             logger(line)
         return False
     return True
-
-
-def write_cluster_info_file(cluster_info_file):
-    """
-    Writes a file containing basic cluster information
-    """
-    run_command(f"kubectl get nodes > {cluster_info_file}", "kubectl get nodes")
 
 
 def create_cluster(id, spec, platform_version, cluster_info_file, logger):
@@ -132,7 +138,9 @@ def create_cluster(id, spec, platform_version, cluster_info_file, logger):
         return None
 
     logger("Polling for the cluster to be up and running...")
-    wait_for_running_cluster(cluster_name, logger)
+    if not wait_for_running_cluster(cluster_name, logger):
+        logger("Cluster did not become running in time.")
+        return None
 
     cluster = get_cluster(cluster_name)
 

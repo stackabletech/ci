@@ -2,9 +2,14 @@
 This module creates IONOS clusters using the CLI
 """
 
-from time import sleep
+from time import monotonic, sleep
 
-from modules.command import run_command
+from modules.command import run_command, write_cluster_info_file
+
+# Upper bound for the blocking "wait for state" polls, so a stuck IONOS API
+# state can never hang a Jenkins job forever (which would also prevent the
+# cluster from being terminated, leaking billable resources).
+WAIT_TIMEOUT_SECONDS = 1800
 
 
 def query_command_for_table(command, description):
@@ -98,23 +103,34 @@ def delete_datacenter(id, logger):
     return True
 
 
-def wait_for_datacenter_state(id, target_state, logger):
+def wait_for_datacenter_state(id, target_state, logger, timeout=WAIT_TIMEOUT_SECONDS):
     """
     Waits until a datacenter is in the desired state (blocking method)
-    Polls the CLI every 5 seconds.
+    Polls the CLI every 5 seconds, up to `timeout` seconds.
 
     id                  ID of the DC
     target_state        desired state
     logger              logger (String-consuming function)
+    timeout             max seconds to wait before giving up
+
+    Returns True if the target state was reached, False on timeout.
     """
+    deadline = monotonic() + timeout
     datacenter = get_datacenter(id, logger)
     state = datacenter["State"] if datacenter else None
     logger(f"Datacenter {id} is in state {state}")
     while state != target_state:
+        if monotonic() >= deadline:
+            logger(
+                f"Timed out after {timeout}s waiting for datacenter {id} "
+                f"to reach state {target_state}."
+            )
+            return False
         sleep(5)
         datacenter = get_datacenter(id, logger)
         state = datacenter["State"] if datacenter else None
         logger(f"Datacenter {id} is in state {state}")
+    return True
 
 
 def ionosctl_create_cluster(name, k8s_version, logger):
@@ -172,23 +188,34 @@ def delete_cluster(id, logger):
     return True
 
 
-def wait_for_cluster_state(id, target_state, logger):
+def wait_for_cluster_state(id, target_state, logger, timeout=WAIT_TIMEOUT_SECONDS):
     """
     Waits until a K8s cluster is in the desired state (blocking method)
-    Polls the CLI every 5 seconds.
+    Polls the CLI every 5 seconds, up to `timeout` seconds.
 
     id                  ID of the cluster
     target_state        desired state
     logger              logger (String-consuming function)
+    timeout             max seconds to wait before giving up
+
+    Returns True if the target state was reached, False on timeout.
     """
+    deadline = monotonic() + timeout
     cluster = get_cluster(id, logger)
     state = cluster["State"] if cluster else None
     logger(f"Cluster {id} is in state {state}")
     while state != target_state:
+        if monotonic() >= deadline:
+            logger(
+                f"Timed out after {timeout}s waiting for cluster {id} "
+                f"to reach state {target_state}."
+            )
+            return False
         sleep(5)
         cluster = get_cluster(id, logger)
         state = cluster["State"] if cluster else None
         logger(f"Cluster {id} is in state {state}")
+    return True
 
 
 def create_nodepool(
@@ -256,24 +283,35 @@ def delete_nodepool(id, cluster_id, logger):
     return True
 
 
-def wait_for_nodepool_state(id, cluster_id, target_state, logger):
+def wait_for_nodepool_state(id, cluster_id, target_state, logger, timeout=WAIT_TIMEOUT_SECONDS):
     """
     Waits until a K8s nodepool is in the desired state (blocking method)
-    Polls the CLI every 5 seconds.
+    Polls the CLI every 5 seconds, up to `timeout` seconds.
 
     id                  ID of the nodepool
     cluster_id          ID of the K8s cluster
     target_state        desired state
     logger              logger (String-consuming function)
+    timeout             max seconds to wait before giving up
+
+    Returns True if the target state was reached, False on timeout.
     """
+    deadline = monotonic() + timeout
     nodepool = get_nodepool(id, cluster_id, logger)
     state = nodepool["State"] if nodepool else None
     logger(f"Nodepool {id} is in state {state}")
     while state != target_state:
+        if monotonic() >= deadline:
+            logger(
+                f"Timed out after {timeout}s waiting for nodepool {id} "
+                f"to reach state {target_state}."
+            )
+            return False
         sleep(5)
         nodepool = get_nodepool(id, cluster_id, logger)
         state = nodepool["State"] if nodepool else None
         logger(f"Nodepool {id} is in state {state}")
+    return True
 
 
 def update_kubeconfig(cluster_id, logger):
@@ -289,13 +327,6 @@ def update_kubeconfig(cluster_id, logger):
             logger(line)
         return False
     return True
-
-
-def write_cluster_info_file(cluster_info_file):
-    """
-    Writes a file containing basic cluster information
-    """
-    run_command(f"kubectl get nodes > {cluster_info_file}", "kubectl get nodes")
 
 
 def create_cluster(id, spec, platform_version, cluster_info_file, logger):
@@ -324,7 +355,9 @@ def create_cluster(id, spec, platform_version, cluster_info_file, logger):
         logger("Error creating datacenter.")
         return None
     logger(f"Created datacenter '{cluster_name}' (id={datacenter_id})")
-    wait_for_datacenter_state(datacenter_id, "AVAILABLE", logger)
+    if not wait_for_datacenter_state(datacenter_id, "AVAILABLE", logger):
+        logger("Datacenter did not become available in time.")
+        return None
     logger(f"Datacenter '{cluster_name}' (id={datacenter_id}) is ready for use.")
 
     logger(f"Creating K8s cluster '{cluster_name}'...")
@@ -333,7 +366,9 @@ def create_cluster(id, spec, platform_version, cluster_info_file, logger):
         logger("Error creating K8s cluster.")
         return None
     logger(f"Created K8s cluster '{cluster_name}' (id={cluster_id})")
-    wait_for_cluster_state(cluster_id, "ACTIVE", logger)
+    if not wait_for_cluster_state(cluster_id, "ACTIVE", logger):
+        logger("K8s cluster did not become active in time.")
+        return None
     logger(f"K8s Cluster '{cluster_name}' (id={cluster_id}) is ready for use.")
 
     logger(f"Creating nodepool '{cluster_name}'...")
@@ -352,7 +387,9 @@ def create_cluster(id, spec, platform_version, cluster_info_file, logger):
         logger("Error creating nodepool.")
         return None
     logger(f"Created nodepool '{cluster_name}' (id={nodepool_id})")
-    wait_for_nodepool_state(nodepool_id, cluster_id, "ACTIVE", logger)
+    if not wait_for_nodepool_state(nodepool_id, cluster_id, "ACTIVE", logger):
+        logger("Nodepool did not become active in time.")
+        return None
     logger(f"Nodepool '{cluster_name}' (id={nodepool_id}) is ready for use.")
 
     logger("Updating kubeconfig...")

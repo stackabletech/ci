@@ -50,7 +50,16 @@ def _run_command(command, description, timeout=60):
     except TimeoutExpired:
         proc.kill()
         _, errs = proc.communicate()
-        return -1, f"{description} timed out after {timeout} seconds."
+        # Return a list, like every other path: callers iterate the output
+        # line by line, and a bare string would be iterated character by character.
+        return -1, [f"{description} timed out after {timeout} seconds."]
     if proc.returncode != 0:
         return proc.returncode, output_to_string_array(errs)
     return 0, output_to_string_array(output)
+
+
+def write_cluster_info_file(cluster_info_file):
+    """
+    Writes a file containing basic cluster information (the node list).
+    """
+    run_command(f"kubectl get nodes > {cluster_info_file}", "kubectl get nodes")
