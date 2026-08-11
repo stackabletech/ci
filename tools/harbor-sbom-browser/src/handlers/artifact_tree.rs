@@ -2,22 +2,30 @@ use crate::structs::*;
 use axum::extract::State;
 use axum::http::StatusCode;
 use axum::response::{Html, IntoResponse, Response};
+use futures::{StreamExt, TryStreamExt};
 use lazy_static::lazy_static;
 use regex::Regex;
 use snafu::{OptionExt, ResultExt, Snafu};
 use std::collections::{BTreeMap, BTreeSet};
 use std::sync::{Arc, Mutex};
+use std::time::Duration;
 use strum::{EnumDiscriminants, IntoStaticStr};
 use tracing::error;
 use urlencoding::encode;
 
 type ArtifactTree = BTreeMap<String, BTreeMap<String, BTreeSet<TagInfo>>>;
 
+/// Cap on how many repositories are fetched from Harbor at once, so a cache
+/// miss can't fan out one request-chain per `sdp/` repository simultaneously.
+const MAX_CONCURRENT_REPO_REQUESTS: usize = 8;
+
 #[derive(Snafu, Debug, EnumDiscriminants)]
 #[strum_discriminants(derive(IntoStaticStr))]
 #[snafu(visibility(pub))]
 #[allow(clippy::enum_variant_names)]
 pub enum ArtifactTreeError {
+    #[snafu(display("cannot build the HTTP client"))]
+    BuildHttpClient { source: reqwest::Error },
     #[snafu(display("cannot get repositories"))]
     GetRepositories { source: reqwest::Error },
     #[snafu(display("cannot parse repositories"))]
@@ -179,7 +187,13 @@ async fn build_artifact_tree() -> Result<ArtifactTree, ArtifactTreeError> {
     let base_url = format!("https://{}/api/v2.0", registry_hostname);
     let url = format!("{}/repositories?page_size={}&q=name=~sdp/", base_url, 100);
 
-    let response = reqwest::get(&url).await.context(GetRepositoriesSnafu)?;
+    // Shared client with a timeout so a hung registry can't block a request.
+    let client = reqwest::Client::builder()
+        .timeout(Duration::from_secs(30))
+        .build()
+        .context(BuildHttpClientSnafu)?;
+
+    let response = client.get(&url).send().await.context(GetRepositoriesSnafu)?;
     let repositories: Vec<Repository> = response.json().await.context(ParseRepositoriesSnafu)?;
     let artifact_tree = Arc::new(Mutex::new(ArtifactTree::new()));
 
@@ -190,13 +204,18 @@ async fn build_artifact_tree() -> Result<ArtifactTree, ArtifactTreeError> {
             .split_once('/')
             .context(UnexpectedRepositoryNameSnafu)?;
         requests.push(process_artifacts(
+            &client,
             &base_url,
             project_name,
             repository_name,
             artifact_tree.clone(),
         ));
     }
-    futures::future::try_join_all(requests).await?;
+    // Bound concurrency instead of firing every repository's request-chain at once.
+    futures::stream::iter(requests)
+        .buffer_unordered(MAX_CONCURRENT_REPO_REQUESTS)
+        .try_collect::<Vec<()>>()
+        .await?;
     Ok(Arc::try_unwrap(artifact_tree)
         .unwrap()
         .into_inner()
@@ -204,6 +223,7 @@ async fn build_artifact_tree() -> Result<ArtifactTree, ArtifactTreeError> {
 }
 
 pub async fn process_artifacts(
+    client: &reqwest::Client,
     base_url: &str,
     project_name: &str,
     repository_name: &str,
@@ -213,19 +233,21 @@ pub async fn process_artifacts(
     let mut page = 1;
     let page_size = 20;
     loop {
-        let artifacts_page: Vec<Artifact> = reqwest::get(format!(
-            "{}/projects/{}/repositories/{}/artifacts?page_size={}&page={}",
-            base_url,
-            encode(project_name),
-            encode(repository_name),
-            page_size,
-            page
-        ))
-        .await
-        .context(GetArtifactsSnafu)?
-        .json()
-        .await
-        .context(ParseArtifactsSnafu)?;
+        let artifacts_page: Vec<Artifact> = client
+            .get(format!(
+                "{}/projects/{}/repositories/{}/artifacts?page_size={}&page={}",
+                base_url,
+                encode(project_name),
+                encode(repository_name),
+                page_size,
+                page
+            ))
+            .send()
+            .await
+            .context(GetArtifactsSnafu)?
+            .json()
+            .await
+            .context(ParseArtifactsSnafu)?;
 
         let number_of_returned_artifacts = artifacts_page.len();
         artifacts.extend(artifacts_page);

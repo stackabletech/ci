@@ -3,6 +3,7 @@ use serde::Deserialize;
 use std::{
     fmt::Formatter,
     process::{exit, Command, Stdio},
+    time::Duration,
 };
 use urlencoding::encode;
 
@@ -58,13 +59,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut page = 1;
     let attestation_tag_regex = Regex::new(r"^sha256-[0-9a-f]{64}.att$").unwrap();
 
+    // Timeout so a hung registry can't block the job indefinitely.
+    let client = reqwest::Client::builder()
+        .timeout(Duration::from_secs(30))
+        .build()?;
+
     loop {
         let url = format!(
             "{}/repositories?page_size={}&page={}",
             base_url, page_size, page
         );
 
-        let response = reqwest::get(&url).await?;
+        let response = client.get(&url).send().await?;
         let repositories: Vec<Repository> = response.json().await?;
 
         for repository in &repositories {
@@ -80,17 +86,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             loop {
                 // Loop over pages to get all artifacts
-                let artifacts_page: Vec<Artifact> = reqwest::get(format!(
-                    "{}/projects/{}/repositories/{}/artifacts?page_size={}&page={}",
-                    base_url,
-                    encode(project_name),
-                    encode(repository_name),
-                    page_size,
-                    page
-                ))
-                .await?
-                .json()
-                .await?;
+                let artifacts_page: Vec<Artifact> = client
+                    .get(format!(
+                        "{}/projects/{}/repositories/{}/artifacts?page_size={}&page={}",
+                        base_url,
+                        encode(project_name),
+                        encode(repository_name),
+                        page_size,
+                        page
+                    ))
+                    .send()
+                    .await?
+                    .json()
+                    .await?;
 
                 let number_of_returned_artifacts = artifacts_page.len();
                 artifacts.extend(artifacts_page);
