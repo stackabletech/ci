@@ -42,8 +42,18 @@ impl IntoResponse for ArtifactTreeError {
 }
 
 lazy_static! {
+    // SDP releases use calendar versioning (e.g. `26.7.0`), dev builds use `0.0.0-dev`. Everything
+    // else is not a release, e.g. the upstream version of a mirrored third-party image.
     static ref RELEASE_TAG_REGEX: Regex =
-        Regex::new(r"^(?P<prefix>.+\-stackable)?(?P<release>(2\d|0).\d{1,2}\.\d+(\-dev)?(\-(?P<architecture>arm64|amd64))?)$").unwrap();
+        Regex::new(r"^(?P<prefix>.+\-stackable)?(?P<release>(2\d\.\d{1,2}|0\.0)\.\d+(\-dev)?(\-(?P<architecture>arm64|amd64))?)$").unwrap();
+}
+
+/// Returns whether the artifacts of the given repository are listed in the artifact tree. Nested
+/// repositories are not listed. They either contain mirrored third-party images (e.g.
+/// `astral-sh/uv`, `sig-storage/…`), which are not part of an SDP release, or images which are only
+/// used for integration tests (e.g. `testing-tools/hive`).
+fn is_listed_repository(repository_name: &str) -> bool {
+    !repository_name.contains('/')
 }
 
 pub async fn render_as_html(
@@ -119,7 +129,8 @@ pub async fn render_as_html(
     );
 
     // Convert the artifact tree into a sorted list of releases
-    let mut releases: Vec<(&String, &BTreeMap<String, BTreeSet<TagInfo>>)> = artifact_tree.iter().collect();
+    let mut releases: Vec<(&String, &BTreeMap<String, BTreeSet<TagInfo>>)> =
+        artifact_tree.iter().collect();
     releases.sort_by(|(ver_a, _), (ver_b, _)| {
         // Parse versions like "24.3.0" into components for semantic comparison
         let parse_version = |v: &str| -> Vec<u32> {
@@ -177,10 +188,27 @@ pub async fn render_as_html(
 async fn build_artifact_tree() -> Result<ArtifactTree, ArtifactTreeError> {
     let registry_hostname = "oci.stackable.tech";
     let base_url = format!("https://{}/api/v2.0", registry_hostname);
-    let url = format!("{}/repositories?page_size={}&q=name=~sdp/", base_url, 100);
 
-    let response = reqwest::get(&url).await.context(GetRepositoriesSnafu)?;
-    let repositories: Vec<Repository> = response.json().await.context(ParseRepositoriesSnafu)?;
+    let mut repositories: Vec<Repository> = Vec::with_capacity(128);
+    let mut page = 1;
+    let page_size = 100;
+    loop {
+        let url = format!(
+            "{}/repositories?page_size={}&page={}&q=name=~sdp/",
+            base_url, page_size, page
+        );
+        let response = reqwest::get(&url).await.context(GetRepositoriesSnafu)?;
+        let repositories_page: Vec<Repository> =
+            response.json().await.context(ParseRepositoriesSnafu)?;
+
+        let number_of_returned_repositories = repositories_page.len();
+        repositories.extend(repositories_page);
+        if number_of_returned_repositories < page_size {
+            break;
+        }
+        page += 1;
+    }
+
     let artifact_tree = Arc::new(Mutex::new(ArtifactTree::new()));
 
     let mut requests = Vec::new();
@@ -189,6 +217,9 @@ async fn build_artifact_tree() -> Result<ArtifactTree, ArtifactTreeError> {
             .name
             .split_once('/')
             .context(UnexpectedRepositoryNameSnafu)?;
+        if !is_listed_repository(repository_name) {
+            continue;
+        }
         requests.push(process_artifacts(
             &base_url,
             project_name,
@@ -240,7 +271,11 @@ pub async fn process_artifacts(
             tags.iter()
                 .filter_map(|tag| {
                     RELEASE_TAG_REGEX.captures(&tag.name).map(|captures| {
-                        (tag, captures.name("release").unwrap().as_str().to_string(), captures.name("architecture"))
+                        (
+                            tag,
+                            captures.name("release").unwrap().as_str().to_string(),
+                            captures.name("architecture"),
+                        )
                     })
                 })
                 .next()
@@ -271,4 +306,42 @@ pub async fn process_artifacts(
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rstest::rstest;
+
+    #[rstest]
+    // The architecture suffix is part of the release capture and is stripped by the caller
+    #[case("26.7.0-amd64", Some("26.7.0-amd64"))]
+    #[case("25.11.1-arm64", Some("25.11.1-arm64"))]
+    #[case("24.3.0", Some("24.3.0"))]
+    #[case("1.12.3-stackable26.7.0-amd64", Some("26.7.0-amd64"))]
+    #[case("0.3.0-stackable0.0.0-dev-arm64", Some("0.0.0-dev-arm64"))]
+    #[case("0.0.0-dev-amd64", Some("0.0.0-dev-amd64"))]
+    // The upstream version of a mirrored third-party image is not an SDP release
+    #[case("0.9.10-amd64", None)]
+    #[case("1.24.0", None)]
+    #[case("v5.0.1", None)]
+    #[case("latest", None)]
+    fn release_tag_regex(#[case] tag: &str, #[case] expected_release: Option<&str>) {
+        let release = RELEASE_TAG_REGEX
+            .captures(tag)
+            .and_then(|captures| captures.name("release").map(|release| release.as_str()));
+        assert_eq!(release, expected_release);
+    }
+
+    #[rstest]
+    #[case("zookeeper-operator", true)]
+    #[case("testing-tools", true)]
+    #[case("testing-tools/hive", false)]
+    #[case("astral-sh/uv", false)]
+    #[case("library/golang", false)]
+    #[case("git-sync/git-sync", false)]
+    #[case("sig-storage/csi-provisioner", false)]
+    fn listed_repositories(#[case] repository_name: &str, #[case] expected: bool) {
+        assert_eq!(is_listed_repository(repository_name), expected);
+    }
 }

@@ -9,7 +9,7 @@ use snafu::ResultExt;
 use snafu::Snafu;
 use strum::{EnumDiscriminants, IntoStaticStr};
 use tokio::process::Command;
-use tracing::error;
+use tracing::{error, warn};
 
 lazy_static! {
     static ref SHA256_REGEX: Regex = Regex::new(r"^[a-f0-9]{64}$").unwrap();
@@ -23,6 +23,8 @@ lazy_static! {
 pub enum DownloadSbomError {
     #[snafu(display("invalid repository or digest"))]
     InvalidSbomParameters,
+    #[snafu(display("no SBOM attestation found for {repository}@sha256:{digest}"))]
+    SbomNotFound { repository: String, digest: String },
     #[snafu(display("failed to verify SBOM"))]
     SbomVerification {
         cosign_stdout: String,
@@ -43,14 +45,28 @@ pub enum DownloadSbomError {
     CosignExecution { source: std::io::Error },
 }
 
+impl DownloadSbomError {
+    fn status_code(&self) -> StatusCode {
+        match self {
+            Self::InvalidSbomParameters => StatusCode::BAD_REQUEST,
+            Self::SbomNotFound { .. } => StatusCode::NOT_FOUND,
+            _ => StatusCode::INTERNAL_SERVER_ERROR,
+        }
+    }
+}
+
 impl IntoResponse for DownloadSbomError {
     fn into_response(self) -> Response {
-        error!("error: {:?}", self);
-        (
-            StatusCode::INTERNAL_SERVER_ERROR,
-            format!("Something went wrong: {}", self),
-        )
-            .into_response()
+        let status_code = self.status_code();
+        // Only unexpected failures are logged as errors. Requests for unknown images are expected,
+        // because links to deleted artifacts (e.g. dev builds) are crawled long after the artifacts
+        // are gone.
+        if status_code == StatusCode::INTERNAL_SERVER_ERROR {
+            error!("error: {:?}", self);
+        } else {
+            warn!("error: {:?}", self);
+        }
+        (status_code, self.to_string()).into_response()
     }
 }
 
@@ -79,6 +95,14 @@ pub async fn verify_attestation(
 
     if !cmd_output.status.success() {
         let stderr_output = String::from_utf8_lossy(&cmd_output.stderr);
+        // cosign reports the same error for images without a CycloneDX attestation and for images
+        // which do not exist (any more).
+        if stderr_output.contains("no matching attestations") {
+            return Err(DownloadSbomError::SbomNotFound {
+                repository: repository.to_string(),
+                digest: digest.to_string(),
+            });
+        }
         return Err(DownloadSbomError::SbomVerification {
             cosign_stdout: String::from_utf8_lossy(&cmd_output.stdout).to_string(),
             cosign_stderr: stderr_output.to_string(),
