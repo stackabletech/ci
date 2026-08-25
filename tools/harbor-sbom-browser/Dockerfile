@@ -13,6 +13,11 @@ RUN microdnf install -y yum \
     && yum clean all \
     && microdnf clean all
 
+# cosign caches the sigstore trusted root and the ctlog public keys below `$HOME/.sigstore`.
+# The container runs as an unprivileged user whose home directory would otherwise be `/`, which
+# is not writable, and every attestation verification would fail.
+ENV HOME=/tmp
+
 COPY --from=builder /app/harbor-sbom-browser  /
 
 ENTRYPOINT ["/harbor-sbom-browser"]
