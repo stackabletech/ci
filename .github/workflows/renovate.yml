@@ -15,16 +15,46 @@ on:
           - lookup
           - full
 
+permissions: {}
+
 env:
   # Look at https://hub.docker.com/r/renovate/renovate/tags and identify new versions if an
   # update is required
-  RENOVATE_VERSION: sha256:3e59ae8e4251678f7a0ef5c0abc4e0abf643b5b10bcbbb36fc51c4427533f4d4
+  #
+  # TODO: Renovate 37.78.0 is six major versions behind as of 30 June 2026.
+  #
+  # The config validator https://docs.renovatebot.com/config-validation/  (V 43.246.1) was run against all public 
+  # stackabletech repositories
+  # 
+  # Two repository configs require changes before upgrading:
+  # 1) SecObserve
+  # - Replace "baseBranches" with "baseBranchPatterns".
+  # - Replace "pip_requirements.fileMatch" with "pip_requirements.managerFilePatterns".
+  # - Remove "binarySource" from renovate.json because it is now a global-only option.
+  # 2) ny-tlc-report
+  # - Replace "config:base" preset with "config:recommended".
+  #
+  # Note: The validator only test the config files and does't check runtime behaviour etc 
+  RENOVATE_VERSION: sha256:3e59ae8e4251678f7a0ef5c0abc4e0abf643b5b10bcbbb36fc51c4427533f4d4 #37.78.0 (1st Dec 2023)
 
 jobs:
   renovate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.6.0
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
       - name: Self-hosted Renovate
-        run: docker run --rm --volume "${{ github.workspace }}/renovate/config.js:/usr/src/app/config.js" --env RENOVATE_TOKEN="${{ secrets.STACKY_RENOVATE_TOKEN }}" --env LOG_LEVEL=debug --env RENOVATE_DRY_RUN=${{ github.event.inputs.dry-run }} renovate/renovate@$RENOVATE_VERSION
+        env:
+          RENOVATE_TOKEN: ${{ secrets.STACKY_RENOVATE_TOKEN }}
+          RENOVATE_DRY_RUN: ${{ github.event.inputs.dry-run }}
+        run: |
+          docker run --rm \
+            --volume "${{ github.workspace }}/renovate/config.js:/usr/src/app/config.js" \
+            --env RENOVATE_TOKEN \
+            --env LOG_LEVEL=debug \
+            --env RENOVATE_DRY_RUN="$RENOVATE_DRY_RUN" \
+            "renovate/renovate@$RENOVATE_VERSION"

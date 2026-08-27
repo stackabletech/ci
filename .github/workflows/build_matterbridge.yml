@@ -3,19 +3,23 @@ name: Build Matterbridge
 on:
   workflow_dispatch:
 
-permissions:
-  id-token: write
+permissions: {}
 
 jobs:
   docker:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       -
         name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
       -
         name: Login to Stackable Harbor
-        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0 
         with:
           registry: oci.stackable.tech
           username: robot$stackable+github-action-build
@@ -26,7 +30,7 @@ jobs:
       -
         name: Build and push
         id: build-and-push
-        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
         with:
           context: ./tools/matterbridge
           file: ./tools/matterbridge/Dockerfile
