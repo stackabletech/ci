@@ -24,14 +24,6 @@
       numToKeep: 20
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
-    scm:
-      - git:
-          url: https://github.com/stackabletech/{{ testsuite.git_repo }}.git
-          branches:
-            - origin/main
-          browser: githubweb
-          browser-url: https://github.com/stackabletech/{{ testsuite.git_repo }}.git
-          timeout: 20
     wrappers:
       - credentials-binding:
         - text:

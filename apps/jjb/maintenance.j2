@@ -33,14 +33,6 @@
       numToKeep: 20
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
-    scm:
-      - git:
-          url: https://github.com/stackabletech/ci.git
-          branches:
-            - origin/main
-          browser: githubweb
-          browser-url: https://github.com/stackabletech/ci.git
-          timeout: 20
     triggers:
       - timed: "H 7 * * *"
     builders:
@@ -76,14 +68,6 @@
       numToKeep: 20
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
-    scm:
-      - git:
-          url: https://github.com/stackabletech/ci.git
-          branches:
-            - origin/main
-          browser: githubweb
-          browser-url: https://github.com/stackabletech/ci.git
-          timeout: 20
     triggers:
       - timed: "H 1 * * *"
     wrappers:
@@ -124,14 +108,6 @@
       numToKeep: 20
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
-    scm:
-      - git:
-          url: https://github.com/stackabletech/ci.git
-          branches:
-            - origin/main
-          browser: githubweb
-          browser-url: https://github.com/stackabletech/ci.git
-          timeout: 20
     triggers:
       - timed: "H 7 * * *"
     wrappers:
