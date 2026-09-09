@@ -28,7 +28,7 @@ impl std::fmt::Display for TagList {
             } else {
                 write!(f, ", ")?;
             }
-            write!(f, "{}", tag.name)?;
+            write!(f, "{tag}", tag = tag.name)?;
         }
         Ok(())
     }
@@ -53,16 +53,13 @@ struct Artifact {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let registry_hostname = "oci.stackable.tech";
-    let base_url = format!("https://{}/api/v2.0", registry_hostname);
+    let base_url = format!("https://{registry_hostname}/api/v2.0");
     let page_size = 20;
     let mut page = 1;
     let attestation_tag_regex = Regex::new(r"^sha256-[0-9a-f]{64}.att$").unwrap();
 
     loop {
-        let url = format!(
-            "{}/repositories?page_size={}&page={}",
-            base_url, page_size, page
-        );
+        let url = format!("{base_url}/repositories?page_size={page_size}&page={page}",);
 
         let response = reqwest::get(&url).await?;
         let repositories: Vec<Repository> = response.json().await?;
@@ -81,12 +78,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             loop {
                 // Loop over pages to get all artifacts
                 let artifacts_page: Vec<Artifact> = reqwest::get(format!(
-                    "{}/projects/{}/repositories/{}/artifacts?page_size={}&page={}",
-                    base_url,
-                    encode(project_name),
-                    encode(repository_name),
-                    page_size,
-                    page
+                    "{base_url}/projects/{encoded_project_name}/repositories/{encoded_repository_name}/artifacts?page_size={page_size}&page={page}",
+                    encoded_project_name = encode(project_name),
+                    encoded_repository_name = encode(repository_name),
                 ))
                 .await?
                 .json()
@@ -110,6 +104,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     continue;
                 }
 
+                let tags = artifact
+                    .tags
+                    .as_ref()
+                    .expect("tags are checked to be present and not empty above");
+                let digest = artifact.digest.as_str();
+
                 if artifact
                     .tags
                     .as_ref()
@@ -118,33 +118,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     .any(|tag| tag.name == "artifacthub.io")
                 {
                     // Artifact Hub metadata artifacts are not signed
-                    println!(
-                        "skipping Artifact Hub metadata {} {} ({})",
-                        repository_name,
-                        artifact.digest,
-                        artifact.tags.as_ref().unwrap()
-                    );
+                    println!("skipping Artifact Hub metadata {repository_name} {digest} ({tags})");
                     continue;
                 }
 
-                if attestation_tag_regex.is_match(&artifact.tags.as_ref().unwrap()[0].name)
-                // .unwrap() can be used here because it's checked that tags are present and not empty at the beginning of the for loop
-                {
+                if attestation_tag_regex.is_match(&artifact.tags.as_ref().unwrap()[0].name) {
                     // It's an attestation, attestations artifacts themselves are not signed
-                    println!(
-                        "skipping attestation {} {} ({})",
-                        repository_name,
-                        artifact.digest,
-                        artifact.tags.as_ref().unwrap()
-                    );
+                    println!("skipping attestation {repository_name} {digest} ({tags})");
                     continue;
                 }
 
-                let artifact_uri = format!(
-                    "{}/{}/{}@{}",
-                    registry_hostname, project_name, repository_name, artifact.digest
-                );
-                println!("trying to verify {}", artifact_uri);
+                let artifact_uri =
+                    format!("{registry_hostname}/{project_name}/{repository_name}@{digest}");
+                println!("trying to verify {artifact_uri}");
 
                 let cmd_output = Command::new("cosign")
                     .arg("verify")
@@ -159,10 +145,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     .expect("failed to execute cosign");
 
                 if !cmd_output.status.success() {
-                    println!("failed to verify {}", artifact_uri);
+                    println!("failed to verify {artifact_uri}");
                     println!(
-                        "cosign reported: {}",
-                        String::from_utf8_lossy(&cmd_output.stdout)
+                        "cosign reported: {stdout}",
+                        stdout = String::from_utf8_lossy(&cmd_output.stdout)
                     );
                     exit(cmd_output.status.code().unwrap_or(1));
                 }
