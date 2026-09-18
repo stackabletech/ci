@@ -9,11 +9,11 @@ platforms:
       instance-type: r1.xlarge
       node-count: 1
     versions:
-      - 1.35.0
-      - 1.34.3
-      - 1.33.7
-      - 1.32.11
-      - 1.31.14
+      - 1.37.0
+      - 1.36.4
+      - 1.35.8
+      - 1.34.11
+      - 1.33.12
   - id: replicated-kind-arm
     name: kind on replicated.com - ARM
     provider: replicated
@@ -23,11 +23,11 @@ platforms:
       instance-type: r1a.xlarge
       node-count: 1
     versions:
-      - 1.35.0
-      - 1.34.3
-      - 1.33.7
-      - 1.32.11
-      - 1.31.14
+      - 1.37.0
+      - 1.36.4
+      - 1.35.8
+      - 1.34.11
+      - 1.33.12
   - id: replicated-rke2
     name: RKE2 on replicated.com
     provider: replicated
@@ -37,10 +37,9 @@ platforms:
       instance-type: r1.large
       node-count: 3
     versions:
-      - 1.35.0
-      - 1.34.3
-      - 1.33.7
-      - 1.32.11
+      - 1.35.7
+      - 1.34.10
+      - 1.33.13
   - id: replicated-rke2-arm
     name: RKE2 on replicated.com - ARM
     provider: replicated
@@ -50,10 +49,9 @@ platforms:
       instance-type: r1a.large
       node-count: 3
     versions:
-      - 1.35.0
-      - 1.34.3
-      - 1.33.7
-      - 1.32.11
+      - 1.35.7
+      - 1.34.10
+      - 1.33.13
   - id: replicated-k3s
     name: k3s on replicated.com
     provider: replicated
@@ -63,9 +61,11 @@ platforms:
       instance-type: r1.large
       node-count: 3
     versions:
-      - 1.36.2
-      - 1.35.6
-      - 1.34.9
+      - 1.37.0
+      - 1.36.4
+      - 1.35.8
+      - 1.34.11
+      - 1.33.13
   - id: replicated-k3s-arm
     name: k3s on replicated.com - ARM
     provider: replicated
@@ -75,9 +75,11 @@ platforms:
       instance-type: r1a.large
       node-count: 3
     versions:
-      - 1.36.2
-      - 1.35.6
-      - 1.34.9
+      - 1.37.0
+      - 1.36.4
+      - 1.35.8
+      - 1.34.11
+      - 1.33.13
   - id: replicated-azure
     name: Azure AKS on replicated.com
     provider: replicated
@@ -184,9 +186,9 @@ platforms:
       node-count: 3
       ram: 8192
     versions:
+      - 1.35.6
+      - 1.34.2
       - 1.33.3
-      - 1.32.6
-      - 1.31.10
   - id: replicated-oke
     name: OKE (deprecated) on replicated.com
     provider: replicated
