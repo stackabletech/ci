@@ -15,7 +15,7 @@ async fn main() {
 
     let app = Router::new()
         .route("/", get(artifact_tree::render_as_html))
-        .route("/sbom/:repository/:digest", get(sbom::download))
+        .route("/sbom/{repository}/{digest}", get(sbom::download))
         .with_state(cached_rendered_artifact_tree);
     let listener = tokio::net::TcpListener::bind("0.0.0.0:9000").await.unwrap();
 
