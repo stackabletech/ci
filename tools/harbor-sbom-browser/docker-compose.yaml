@@ -1,0 +1,12 @@
+# Local test setup: `docker compose up --build`, then open http://localhost:9000
+services:
+  harbor-sbom-browser:
+    build:
+      context: .
+      args:
+        VERSION: dev
+    # The Dockerfile installs the x86_64 cosign RPM, so the image only works on amd64.
+    platform: linux/amd64
+    image: harbor-sbom-browser:local
+    ports:
+      - "9000:9000"
