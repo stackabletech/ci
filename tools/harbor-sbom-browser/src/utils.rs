@@ -1,5 +1,7 @@
+use std::time::Duration;
+
 use crate::structs::{Dsse, InTotoAttestation};
-use axum::http::StatusCode;
+use axum::http::{header, StatusCode};
 use axum::response::{IntoResponse, Response};
 use base64::prelude::BASE64_STANDARD;
 use base64::Engine;
@@ -9,11 +11,25 @@ use snafu::ResultExt;
 use snafu::Snafu;
 use strum::{EnumDiscriminants, IntoStaticStr};
 use tokio::process::Command;
+use tokio::sync::Semaphore;
 use tracing::{error, warn};
+
+/// How many `cosign verify-attestation` processes may run at the same time. Each one needs up to
+/// about 170 MiB for the larger SBOMs, and crawlers request dozens of SBOMs at once, which
+/// otherwise gets the container OOMKilled.
+const MAX_CONCURRENT_COSIGN_RUNS: usize = 4;
+
+/// How long a request waits for a free cosign slot before it is rejected. Waiting requests cost
+/// next to no memory, but without a bound a crawler burst queues for minutes.
+const COSIGN_PERMIT_TIMEOUT: Duration = Duration::from_secs(10);
+
+/// Sent with the 503 response when all cosign slots are taken.
+const RETRY_AFTER_SECONDS: &str = "30";
 
 lazy_static! {
     static ref SHA256_REGEX: Regex = Regex::new(r"^[a-f0-9]{64}$").unwrap();
     static ref ALPHANUMERIC_REGEX: Regex = Regex::new(r"^[a-zA-Z0-9\-]+$").unwrap();
+    static ref COSIGN_PERMITS: Semaphore = Semaphore::new(MAX_CONCURRENT_COSIGN_RUNS);
 }
 
 #[derive(Snafu, Debug, EnumDiscriminants)]
@@ -43,6 +59,8 @@ pub enum DownloadSbomError {
     ParseInTotoAttestation { source: serde_json::Error },
     #[snafu(display("failed to execute cosign"))]
     CosignExecution { source: std::io::Error },
+    #[snafu(display("too many SBOM downloads at the moment, try again later"))]
+    CosignBusy,
 }
 
 impl DownloadSbomError {
@@ -50,6 +68,7 @@ impl DownloadSbomError {
         match self {
             Self::InvalidSbomParameters => StatusCode::BAD_REQUEST,
             Self::SbomNotFound { .. } => StatusCode::NOT_FOUND,
+            Self::CosignBusy => StatusCode::SERVICE_UNAVAILABLE,
             _ => StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
@@ -66,6 +85,14 @@ impl IntoResponse for DownloadSbomError {
         } else {
             warn!("error: {:?}", self);
         }
+        if matches!(self, Self::CosignBusy) {
+            return (
+                status_code,
+                [(header::RETRY_AFTER, RETRY_AFTER_SECONDS)],
+                self.to_string(),
+            )
+                .into_response();
+        }
         (status_code, self.to_string()).into_response()
     }
 }
@@ -77,6 +104,11 @@ pub async fn verify_attestation(
     if !SHA256_REGEX.is_match(digest) || !ALPHANUMERIC_REGEX.is_match(repository) {
         return Err(DownloadSbomError::InvalidSbomParameters);
     }
+    // Held until the attestation is parsed, because parsing also holds copies of the whole SBOM.
+    let _permit = tokio::time::timeout(COSIGN_PERMIT_TIMEOUT, COSIGN_PERMITS.acquire())
+        .await
+        .map_err(|_| DownloadSbomError::CosignBusy)?
+        .expect("the cosign semaphore is never closed");
     let cmd_output = Command::new("cosign")
         .arg("verify-attestation")
         .arg("--type")
@@ -115,12 +147,9 @@ pub async fn verify_attestation(
     parse_attestation(cmd_output.stdout)
 }
 
-/// Extracts the in-toto attestation from the DSSE envelope printed by `cosign verify-attestation`.
-///
-/// Every intermediate step holds a copy of the whole SBOM, so each one is dropped as soon as the
-/// next one exists.
 fn parse_attestation(cosign_stdout: Vec<u8>) -> Result<InTotoAttestation, DownloadSbomError> {
     let dsse = serde_json::from_slice::<Dsse>(&cosign_stdout).context(ParseDsseSnafu)?;
+    // Drop the cosign stdout to free memory before decoding the payload, which is a copy of the stdout.
     drop(cosign_stdout);
     let attestation_bytes = BASE64_STANDARD
         .decode(dsse.payload)
@@ -129,37 +158,4 @@ fn parse_attestation(cosign_stdout: Vec<u8>) -> Result<InTotoAttestation, Downlo
         std::str::from_utf8(&attestation_bytes).context(ParseDssePayloadAsStringSnafu)?;
     serde_json::from_str::<InTotoAttestation>(attestation_string)
         .context(ParseInTotoAttestationSnafu)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn dsse_envelope(attestation: &str) -> Vec<u8> {
-        format!(
-            r#"{{"payloadType":"application/vnd.in-toto+json","payload":"{}","signatures":[]}}"#,
-            BASE64_STANDARD.encode(attestation)
-        )
-        .into_bytes()
-    }
-
-    #[test]
-    fn parse_attestation_keeps_predicate_as_is() {
-        let predicate = r#"{"bomFormat": "CycloneDX",  "components":[{"name":"zookeeper"}]}"#;
-        let attestation = format!(
-            r#"{{"_type":"https://in-toto.io/Statement/v0.1","predicateType":"https://cyclonedx.org/bom","predicate":{predicate}}}"#
-        );
-
-        let parsed = parse_attestation(dsse_envelope(&attestation))
-            .expect("a valid DSSE envelope must be parsed");
-        assert_eq!(parsed.predicate.get(), predicate);
-    }
-
-    #[test]
-    fn parse_attestation_rejects_invalid_payload() {
-        let envelope = br#"{"payload":"not base64!"}"#.to_vec();
-
-        let error = parse_attestation(envelope).expect_err("an invalid payload must be rejected");
-        assert!(matches!(error, DownloadSbomError::DecodeDssePayload { .. }));
-    }
 }

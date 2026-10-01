@@ -16,7 +16,7 @@ serde = { version = "1.0.196", features = ["derive"] }
 serde_json = { version = "1.0.113", features = ["raw_value"] }
 snafu = "0.9.2"
 strum = { version = "0.28.0", features = ["derive"] }
-tokio = { version = "1.36.0", features = ["macros", "process", "rt-multi-thread"] }
+tokio = { version = "1.36.0", features = ["macros", "process", "rt-multi-thread", "sync", "time"] }
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
 urlencoding = "2.1.3"
