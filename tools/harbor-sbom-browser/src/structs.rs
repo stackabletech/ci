@@ -2,7 +2,7 @@ use std::sync::{Arc, RwLock};
 use std::time::Duration;
 
 use serde::Deserialize;
-use serde_json::Value;
+use serde_json::value::RawValue;
 
 /// How long a cached object stays valid. This is kept short, because artifacts are deleted from the
 /// registry regularly (e.g. dev builds), and links to deleted artifacts do not work any more.
@@ -25,7 +25,9 @@ pub struct Artifact {
 
 #[derive(Deserialize, Debug)]
 pub struct InTotoAttestation {
-    pub predicate: Value,
+    /// Kept as raw JSON text. SBOMs can be tens of MB, and parsing them into a `serde_json::Value`
+    /// tree only to serialize them again costs several times their size in memory.
+    pub predicate: Box<RawValue>,
 }
 #[derive(Deserialize, Debug)]
 pub struct Dsse {
