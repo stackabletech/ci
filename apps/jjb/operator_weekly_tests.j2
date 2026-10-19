@@ -75,7 +75,7 @@
               --env CLUSTER_LOGGING_PASSWORD="$CLUSTER_LOGGING_PASSWORD" \
               --env OPENSEARCH_DASHBOARDS_URL='{{ opensearch_dashboards_url }}' \
               --env TEST_SCRIPT_PARAMS="{{ testsuite.weekly_test.test_script_params }}" \
-              --env VECTOR_AGGREGATOR='vector-aggregator.default.svc.cluster.local:6000' \
+              --env VECTOR_AGGREGATOR='http://vector-aggregator.default.svc.cluster.local:6000' \
               oci.stackable.tech/operator-test-runner:latest
     publishers:
       - archive:
