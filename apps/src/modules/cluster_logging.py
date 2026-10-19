@@ -52,7 +52,7 @@ def install_cluster_logging(cluster_id, endpoint, username, password, logger):
 
     logger("Install Vector agent using Helm...")
     exit_code, output = run_command(
-        "helm install vector-agent vector/vector --version 0.58.0  --values /src/modules/.cluster_logging/vector-agent-values.yaml --wait",
+        "helm install vector-agent vector --version 0.58.0 --repo https://helm.vector.dev --values /src/modules/.cluster_logging/vector-agent-values.yaml --wait",
         "helm install",
     )
     if exit_code != 0:
@@ -62,7 +62,7 @@ def install_cluster_logging(cluster_id, endpoint, username, password, logger):
 
     logger("Install Vector aggregator using Helm...")
     exit_code, output = run_command(
-        "helm install vector-aggregator vector/vector --version 0.58.0  --values /src/modules/.cluster_logging/vector-aggregator-values.yaml --wait",
+        "helm install vector-aggregator vector --version 0.58.0 --repo https://helm.vector.dev --values /src/modules/.cluster_logging/vector-aggregator-values.yaml --wait",
         "helm install",
     )
     if exit_code != 0:
