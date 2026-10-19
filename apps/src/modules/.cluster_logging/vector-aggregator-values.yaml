@@ -48,6 +48,11 @@ envFrom:
   - configMapRef:
       name: cluster-metadata 
 env:
+  # Vector 0.57 disabled the interpolation of environment variables in the
+  # configuration by default. The configuration above relies on it, so it must
+  # be enabled again.
+  - name: VECTOR_DANGEROUSLY_ALLOW_ENV_VAR_INTERPOLATION
+    value: "true"
   - name: OPENSEARCH_ENDPOINT
     valueFrom:
       secretKeyRef:
