@@ -109,7 +109,7 @@
               --env GIT_BRANCH=$GIT_BRANCH \
               --env TEST_SCRIPT_PARAMS="$TEST_SCRIPT_PARAMS" \
               --env TEST_SCRIPT="$TEST_SCRIPT" \
-              --env VECTOR_AGGREGATOR='vector-aggregator.default.svc.cluster.local:6000' \
+              --env VECTOR_AGGREGATOR='http://vector-aggregator.default.svc.cluster.local:6000' \
               oci.stackable.tech/operator-test-runner:latest
     publishers:
       - archive:
