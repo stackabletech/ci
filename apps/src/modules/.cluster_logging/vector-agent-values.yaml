@@ -62,6 +62,7 @@ customConfig:
       type: elasticsearch
       inputs:
         - structured_operators
+      # v7 suppresses the doc type, which OpenSearch no longer accepts.
       api_version: v7
       endpoints:
         - "${OPENSEARCH_ENDPOINT}"
@@ -81,6 +82,7 @@ customConfig:
       type: elasticsearch
       inputs:
         - kubernetes_events
+      # v7 suppresses the doc type, which OpenSearch no longer accepts.
       api_version: v7
       endpoints:
         - "${OPENSEARCH_ENDPOINT}"

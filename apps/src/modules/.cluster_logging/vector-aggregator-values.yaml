@@ -29,14 +29,14 @@ customConfig:
       type: elasticsearch
       inputs:
         - enriched_logs
-      endpoint: "${OPENSEARCH_ENDPOINT}"
+      # v7 suppresses the doc type, which OpenSearch no longer accepts.
+      api_version: v7
+      endpoints:
+        - "${OPENSEARCH_ENDPOINT}"
       mode: bulk
       bulk:
         action: index
         index: t2-product-%F
-      # Do not send the type because it was removed in OpenSearch 2.0.0/
-      # Elasticsearch 8.0
-      suppress_type_name: true
       tls:
         verify_certificate: false
         verify_hostname: false 
