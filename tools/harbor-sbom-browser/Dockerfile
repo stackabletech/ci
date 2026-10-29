@@ -1,6 +1,6 @@
 FROM oci.stackable.tech/sdp/ubi10-rust-builder AS builder
 
-FROM registry.access.redhat.com/ubi10/ubi-minimal:10.2@sha256:a9f9316ec3a1419a2de6ce4d2d9f034d477e97cdf2a16d6f04b7bd632ac753c4 AS operator
+FROM registry.access.redhat.com/ubi10/ubi-minimal:10.2@sha256:ab67cd02caf8706e34a695a1432ebe965934f6128ec352a6c3f4048b43a4fb5e AS operator
 
 ARG VERSION
 ARG RELEASE="1"
@@ -8,8 +8,8 @@ ARG RELEASE="1"
 # Update image
 RUN microdnf install -y yum \
     && yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical \
-    && curl -L -O https://github.com/sigstore/cosign/releases/download/v3.1.3/cosign-3.1.3-1.x86_64.rpm \
-    && rpm -ivh cosign-3.1.3-1.x86_64.rpm \
+    && curl -L -O https://github.com/sigstore/cosign/releases/download/v3.1.4/cosign-3.1.4-1.x86_64.rpm \
+    && rpm -ivh cosign-3.1.4-1.x86_64.rpm \
     && yum clean all \
     && microdnf clean all
 
