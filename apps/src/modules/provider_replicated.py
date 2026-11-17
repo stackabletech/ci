@@ -2,10 +2,20 @@
 This module creates replicated.com clusters using the CLI
 """
 
+import json
 import re
 from time import sleep
 
 from modules.command import run_command
+
+# Label which marks the control plane nodes of an OpenShift cluster. The value is empty, so this is
+# an existence check.
+CONTROL_PLANE_LABEL = "node-role.kubernetes.io/master"
+
+# Upper bound for the OpenShift scheduler operator to taint the control plane after the patch below.
+# It usually takes a few seconds.
+TAINT_TIMEOUT_SECONDS = 300
+TAINT_POLL_INTERVAL_SECONDS = 5
 
 
 def api_call_create_cluster(cluster_name, spec, platform_version, logger):
@@ -102,6 +112,80 @@ def update_kubeconfig(cluster, logger):
     return True
 
 
+def control_plane_is_tainted(logger):
+    """
+    Checks if every control plane node carries a NoSchedule taint.
+
+    logger              logger (String-consuming function)
+
+    Returns True if all control plane nodes are tainted, False if at least one is not, and None if
+    the nodes could not be read at all.
+    """
+    exit_code, output = run_command(
+        f"kubectl get nodes --selector {CONTROL_PLANE_LABEL} --output json",
+        "get control plane nodes",
+    )
+    if exit_code != 0:
+        logger("Could not read the control plane nodes:")
+        logger(output)
+        return None
+
+    nodes = json.loads("".join(output))["items"]
+    if not nodes:
+        logger(f"No node carries the label {CONTROL_PLANE_LABEL}.")
+        return None
+
+    return all(
+        any(taint.get("effect") == "NoSchedule" for taint in node["spec"].get("taints", []))
+        for node in nodes
+    )
+
+
+def make_control_plane_unschedulable(logger):
+    """
+    Keeps workload off the control plane of an OpenShift cluster. (Blocking operation)
+
+    Replicated provisions OpenShift clusters whose control plane nodes are labelled as workers, so
+    they are schedulable but have little spare capacity left. A DaemonSet (OPA is deployed as one)
+    places a Pod on every schedulable node, and such a Pod can stay Pending on the control plane
+    until the test which waits for it times out. Unlike a Deployment Pod, it cannot be placed
+    elsewhere, because a DaemonSet Pod is bound to its node.
+
+    Setting mastersSchedulable to false makes the scheduler operator taint the control plane with
+    NoSchedule. The taint does not evict the Pods which are already running there, hence this
+    function waits for the taint before it returns, so that no workload is deployed in between.
+
+    logger              logger (String-consuming function)
+
+    Returns True if the control plane is unschedulable, otherwise the reason is logged and False is
+    returned.
+    """
+    exit_code, output = run_command(
+        "kubectl patch scheduler cluster --type merge"
+        " --patch '{\"spec\": {\"mastersSchedulable\": false}}'",
+        "patch scheduler",
+    )
+    if exit_code != 0:
+        logger("Could not set mastersSchedulable to false:")
+        logger(output)
+        return False
+
+    waited = 0
+    while waited < TAINT_TIMEOUT_SECONDS:
+        tainted = control_plane_is_tainted(logger)
+        if tainted is None:
+            return False
+        if tainted:
+            logger("The control plane is unschedulable.")
+            return True
+        logger("Waiting for the control plane to be tainted...")
+        sleep(TAINT_POLL_INTERVAL_SECONDS)
+        waited = waited + TAINT_POLL_INTERVAL_SECONDS
+
+    logger(f"The control plane was not tainted within {TAINT_TIMEOUT_SECONDS} seconds.")
+    return False
+
+
 def write_cluster_info_file(cluster_info_file):
     """
     Writes a file containing basic cluster information
@@ -140,6 +224,13 @@ def create_cluster(id, spec, platform_version, cluster_info_file, logger):
     if not update_kubeconfig(cluster, logger):
         logger("Error updating kubeconfig.")
         return None
+
+    # The Scheduler resource is specific to OpenShift.
+    if spec["distribution"] == "openshift":
+        logger("Making the control plane unschedulable...")
+        if not make_control_plane_unschedulable(logger):
+            logger("Error making the control plane unschedulable.")
+            return None
 
     write_cluster_info_file(cluster_info_file)
 
