@@ -398,7 +398,7 @@
   display_name: OPA Operator
   git_repo: opa-operator
   spec:
-    node-count: 2
+    node-count: 3
   platforms:
     - id: replicated-k3s
       spec: {}
